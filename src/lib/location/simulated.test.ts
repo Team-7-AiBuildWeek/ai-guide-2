@@ -124,6 +124,20 @@ describe('SimulatedLocation', () => {
     expect(offRoute).toBe(true);
   });
 
+  it('calling start() a second time does not double-emit (no leaked timer)', () => {
+    const fixes: Fix[] = [];
+    const sim = new SimulatedLocation(route, { intervalMs: 1000, accuracyM: 10 });
+    sim.start((f) => fixes.push(f));
+    sim.start((f) => fixes.push(f));
+    fixes.length = 0;
+
+    vi.advanceTimersByTime(3000);
+
+    // A leaked first timer alongside a second would double every fix.
+    expect(fixes).toHaveLength(3);
+    sim.stop();
+  });
+
   it('pause() halts emission and resume() restarts it', () => {
     const fixes: Fix[] = [];
     const sim = new SimulatedLocation(route, { intervalMs: 1000, accuracyM: 10 });

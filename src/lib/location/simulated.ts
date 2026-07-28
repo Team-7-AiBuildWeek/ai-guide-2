@@ -51,6 +51,10 @@ export class SimulatedLocation implements LocationProvider {
   }
 
   start(listener: FixListener): void {
+    // Calling start() twice must not double-register (see LocationProvider's
+    // contract) — without this, the previous interval keeps running
+    // alongside the new one, doubling every emitted fix.
+    this.stop();
     this.listener = listener;
     this.emitCurrent();
     this.timer = setInterval(() => {
