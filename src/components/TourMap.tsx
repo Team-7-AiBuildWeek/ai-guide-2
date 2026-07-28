@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Tour } from '../types/tour';
@@ -18,51 +18,71 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
   const map = useRef<mapboxgl.Map | null>(null);
   const userMarker = useRef<mapboxgl.Marker | null>(null);
   const stopMarkers = useRef<Map<string, mapboxgl.Marker>>(new Map());
+  // The map is an aid, not the product — a missing/expired token, a 404'd
+  // style, or no network must degrade to a placeholder, never take the
+  // whole app down. Both throw paths land here: the synchronous
+  // mapboxgl.Map constructor (caught below) and mapbox's own async
+  // 'error' event (registered below).
+  const [failed, setFailed] = useState(false);
 
   // Initialise the map once.
   useEffect(() => {
     if (map.current !== null || container.current === null) return;
 
-    const start = tour.routeGeoJson.coordinates[0];
-    map.current = new mapboxgl.Map({
-      container: container.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: start,
-      zoom: 15,
-    });
-
-    map.current.on('load', () => {
-      const m = map.current;
-      if (!m) return;
-
-      m.addSource('route', {
-        type: 'geojson',
-        data: { type: 'Feature', properties: {}, geometry: tour.routeGeoJson },
-      });
-      m.addLayer({
-        id: 'route-line',
-        type: 'line',
-        source: 'route',
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
-        paint: { 'line-color': '#2563eb', 'line-width': 5, 'line-opacity': 0.75 },
+    try {
+      const start = tour.routeGeoJson.coordinates[0];
+      map.current = new mapboxgl.Map({
+        container: container.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: start,
+        zoom: 15,
       });
 
-      for (const segment of tour.segments) {
-        if (segment.trigger === null || segment.kind !== 'stop') continue;
+      // Asynchronous failures — a 404'd style, a token revoked mid-session —
+      // arrive as an event rather than a throw. Route them into the same
+      // degraded state as the synchronous catch below.
+      map.current.on('error', () => setFailed(true));
 
-        const el = document.createElement('button');
-        el.className =
-          'h-7 w-7 rounded-full border-2 border-white bg-blue-600 text-xs font-bold text-white shadow';
-        el.textContent = String(segment.order);
-        el.setAttribute('aria-label', `Play ${segment.title}`);
-        el.addEventListener('click', () => onSelectStop(segment.id));
+      map.current.on('load', () => {
+        const m = map.current;
+        if (!m) return;
 
-        const marker = new mapboxgl.Marker({ element: el })
-          .setLngLat([segment.trigger.lng, segment.trigger.lat])
-          .addTo(m);
-        stopMarkers.current.set(segment.id, marker);
-      }
-    });
+        m.addSource('route', {
+          type: 'geojson',
+          data: { type: 'Feature', properties: {}, geometry: tour.routeGeoJson },
+        });
+        m.addLayer({
+          id: 'route-line',
+          type: 'line',
+          source: 'route',
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
+          paint: { 'line-color': '#2563eb', 'line-width': 5, 'line-opacity': 0.75 },
+        });
+
+        for (const segment of tour.segments) {
+          if (segment.trigger === null || segment.kind !== 'stop') continue;
+
+          const el = document.createElement('button');
+          el.className =
+            'h-7 w-7 rounded-full border-2 border-white bg-blue-600 text-xs font-bold text-white shadow';
+          el.textContent = String(segment.order);
+          el.setAttribute('aria-label', `Play ${segment.title}`);
+          el.addEventListener('click', () => onSelectStop(segment.id));
+
+          const marker = new mapboxgl.Marker({ element: el })
+            .setLngLat([segment.trigger.lng, segment.trigger.lat])
+            .addTo(m);
+          stopMarkers.current.set(segment.id, marker);
+        }
+      });
+    } catch {
+      // e.g. "An API access token is required to use Mapbox GL" — thrown
+      // synchronously out of the constructor when the token is missing.
+      map.current?.remove();
+      map.current = null;
+      setFailed(true);
+      return;
+    }
 
     return () => {
       const markers = stopMarkers.current;
@@ -101,5 +121,14 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
     }
   }, [playedIds]);
 
-  return <div ref={container} className="h-full w-full" />;
+  return (
+    <>
+      <div ref={container} className="h-full w-full" />
+      {failed && (
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-800 px-6 text-center text-sm text-slate-300">
+          Map unavailable right now. The tour will keep talking as you walk.
+        </div>
+      )}
+    </>
+  );
 }
