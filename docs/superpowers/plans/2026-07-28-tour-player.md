@@ -2458,7 +2458,7 @@ Add immediately after the `useTourPlayer` call:
 - [ ] **Step 7: Verify build and full suite**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 60 tests pass
+Expected: build succeeds; 63 tests pass
 
 - [ ] **Step 8: Commit**
 
@@ -2698,7 +2698,7 @@ Create `docs/TESTING.md`:
 - [ ] **Step 5: Verify build and full suite**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 60 tests pass
+Expected: build succeeds; 63 tests pass
 
 - [ ] **Step 6: Run the simulated walk end to end**
 
@@ -2715,7 +2715,7 @@ git commit -m "feat: add dev simulator panel, PWA shell and manual test procedur
 
 ## Definition of done
 
-- [ ] `npm test` passes with 60 tests
+- [ ] `npm test` passes with 63 tests
 - [ ] `npm run build` succeeds with no TypeScript errors
 - [ ] The simulated walk in `docs/TESTING.md` completes all eight checks
 - [ ] The app has been loaded on a real phone over HTTPS and tracked real GPS
