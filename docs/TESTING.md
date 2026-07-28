@@ -55,19 +55,21 @@ forgot the `export PATH=...` line above; it is not a bug in the code.
    an empty `played` set.
 10. Open the dev panel, set speed to 10×, and let it fire Dam Square,
     toward-the-palace, and Royal Palace as in step 6.
-11. As soon as Royal Palace finishes speaking, tap **pause** — this stops
-    the clock so the next step isn't a race against real time.
-12. Use **jump to** on **Noordermarkt**. It should fire immediately even
-    though Westerkerk has never been visited or played. This is the actual
-    skip-ahead check: the engine allows jumping up to 2 stops past wherever
-    it last fired (config `lookahead: 2`), provided the destination itself
-    hasn't already played. Note why the walk-to-Royal-Palace prefix in
-    step 10 is necessary and not incidental: jumping to Noordermarkt from a
-    standing start (nothing fired yet) would *not* work — Noordermarkt is
-    outside the lookahead window until the cursor has advanced past Royal
-    Palace.
-13. Tap **resume**. Westerkerk should not speak — it was skipped over, not
-    queued to play later.
+11. Use **jump to** on **Noordermarkt** while the simulator keeps running —
+    do not pause first. Pausing halts the simulator's clock entirely, so no
+    fixes reach the engine while paused; jumping while paused fires nothing
+    until you resume, which is easy to mistake for a bug. Within a couple of
+    seconds (it takes two consecutive in-radius fixes for the engine to
+    fire) it should speak, even though Westerkerk has never been visited or
+    played. This is the actual skip-ahead check: the engine allows jumping
+    up to 2 stops past wherever it last fired (config `lookahead: 2`),
+    provided the destination itself hasn't already played. Note why the
+    walk-to-Royal-Palace prefix in step 10 is necessary and not incidental:
+    jumping to Noordermarkt from a standing start (nothing fired yet) would
+    *not* work — Noordermarkt is outside the lookahead window until the
+    cursor has advanced past Royal Palace.
+12. Westerkerk should never speak during this run — it was skipped over,
+    not queued to play later.
 
 ## GPS permission denial and recovery (Task 7 behaviour)
 
