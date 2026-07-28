@@ -13,15 +13,18 @@ export class BrowserLocation implements LocationProvider {
   /**
    * `onError`, if given, is called with a human-readable message whenever the
    * browser reports a geolocation failure (permission denied, no fix
-   * available, timeout, ...). This is deliberately not part of
-   * `LocationProvider` — `SimulatedLocation` has no failure mode to report,
-   * and widening the shared interface for this implementation's needs would
-   * be the wrong trade. Consumers that care about GPS failures (i.e. the UI)
-   * pass a callback here instead.
+   * available, timeout, ...), and called again with `null` as soon as a fix
+   * arrives — a `POSITION_UNAVAILABLE` or timeout is frequently transient
+   * (the user walks out from under an awning), and a UI that latches the
+   * error message forever would tell the user the opposite of the truth.
+   * This is deliberately not part of `LocationProvider` — `SimulatedLocation`
+   * has no failure mode to report, and widening the shared interface for
+   * this implementation's needs would be the wrong trade. Consumers that
+   * care about GPS failures (i.e. the UI) pass a callback here instead.
    */
-  private readonly onError?: (message: string) => void;
+  private readonly onError?: (message: string | null) => void;
 
-  constructor(onError?: (message: string) => void) {
+  constructor(onError?: (message: string | null) => void) {
     this.onError = onError;
   }
 
@@ -36,6 +39,7 @@ export class BrowserLocation implements LocationProvider {
           accuracyM: position.coords.accuracy,
           timestamp: position.timestamp,
         };
+        this.onError?.(null);
         listener(fix);
       },
       (error) => {

@@ -85,7 +85,7 @@ describe('BrowserLocation', () => {
 
   it('reports a permission-denied error through the onError callback', () => {
     const fake = installFakeGeolocation();
-    const messages: string[] = [];
+    const messages: Array<string | null> = [];
     const provider = new BrowserLocation((m) => messages.push(m));
     provider.start(() => {});
 
@@ -97,7 +97,7 @@ describe('BrowserLocation', () => {
 
   it('reports a non-permission GPS failure with a message distinguishable from permission-denied', () => {
     const fake = installFakeGeolocation();
-    const messages: string[] = [];
+    const messages: Array<string | null> = [];
     const provider = new BrowserLocation((m) => messages.push(m));
     provider.start(() => {});
 
@@ -106,5 +106,19 @@ describe('BrowserLocation', () => {
     expect(messages).toHaveLength(1);
     expect(messages[0]).not.toMatch(/denied/i);
     expect(messages[0]).not.toBe('');
+  });
+
+  it('clears a prior error once a fix arrives', () => {
+    const fake = installFakeGeolocation();
+    const messages: Array<string | null> = [];
+    const provider = new BrowserLocation((m) => messages.push(m));
+    provider.start(() => {});
+
+    fake.emitError({ code: 2, message: 'Position unavailable' });
+    fake.emit({ latitude: 52.3731, longitude: 4.8936, accuracy: 14 });
+
+    expect(messages).toHaveLength(2);
+    expect(messages[0]).not.toBeNull();
+    expect(messages[1]).toBeNull();
   });
 });
