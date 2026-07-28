@@ -28,6 +28,41 @@ class ManualLocation implements LocationProvider {
   }
 }
 
+/**
+ * unlock() rejects on its first call, then succeeds on every call after —
+ * enough to prove a failed unlock doesn't permanently disable start().
+ */
+class UnlockFailsOnceAudio implements AudioPlayer {
+  played: Segment[] = [];
+  private resolvers: Array<() => void> = [];
+  private playing = false;
+  private unlockShouldFail = true;
+
+  async unlock() {
+    if (this.unlockShouldFail) {
+      this.unlockShouldFail = false;
+      throw new Error('unlock failed');
+    }
+  }
+  play(segment: Segment): Promise<void> {
+    this.played.push(segment);
+    this.playing = true;
+    return new Promise<void>((resolve) => {
+      this.resolvers.push(() => {
+        this.playing = false;
+        resolve();
+      });
+    });
+  }
+  stop() {
+    this.playing = false;
+    this.resolvers.shift()?.();
+  }
+  isPlaying() {
+    return this.playing;
+  }
+}
+
 class RecordingAudio implements AudioPlayer {
   played: Segment[] = [];
   private resolvers: Array<() => void> = [];
@@ -288,5 +323,42 @@ describe('useTourPlayer', () => {
     await waitFor(() =>
       expect(audio1.played.map((s) => s.id)).toEqual(['seg-0', 'seg-1']),
     );
+  });
+
+  it('rolls back the start() guard when unlock() rejects, so a later start() still works', async () => {
+    const location = new ManualLocation();
+    const audio = new UnlockFailsOnceAudio();
+    // makeTour()'s fixture has no intro segment; build one so a successful
+    // second start() enqueueing it is observable.
+    const introSegment: Segment = {
+      id: 'intro',
+      kind: 'intro',
+      order: -1,
+      title: 'Welcome',
+      script: 'Welcome',
+      audioUrl: null,
+      durationMs: null,
+      trigger: null,
+      triggerRadiusM: 0,
+      poiId: null,
+    };
+    const tour = makeTour({ segments: [introSegment, ...makeTour().segments] });
+    const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
+
+    // The first call's unlock() rejects. The caller must see that failure —
+    // not have it silently swallowed — so it can surface an error.
+    await act(async () => {
+      await expect(result.current.start()).rejects.toThrow('unlock failed');
+    });
+
+    // Without a rollback, hasStarted stays permanently true after the first
+    // (failed) call, so this second call would be silently swallowed by the
+    // re-entrancy guard: no listener, no intro, no error, no started state.
+    await act(async () => {
+      await result.current.start();
+    });
+
+    expect(location.startCount).toBe(1);
+    expect(audio.played.filter((s) => s.id === 'intro')).toHaveLength(1);
   });
 });

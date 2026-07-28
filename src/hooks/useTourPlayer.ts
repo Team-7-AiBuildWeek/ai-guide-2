@@ -94,7 +94,18 @@ export function useTourPlayer({
     if (hasStarted.current) return;
     hasStarted.current = true;
 
-    await audio.unlock();
+    try {
+      await audio.unlock();
+    } catch (err) {
+      // unlock() carries no never-rejects guarantee (unlike play()). If it
+      // throws, roll the guard back so the hook is startable again — leaving
+      // it permanently true would brick the start button for the rest of
+      // the hook's life after a single failed unlock, with no recovery short
+      // of remounting. Re-throw rather than swallow: the caller needs to
+      // know the unlock failed so it can surface an error.
+      hasStarted.current = false;
+      throw err;
+    }
     setStarted(true);
 
     const intro = tour.segments.find((s) => s.kind === 'intro');
