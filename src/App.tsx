@@ -13,7 +13,7 @@ import { DevPanel } from './components/DevPanel';
 // ?sim=1 in the URL runs the simulator instead of real GPS. Read once at
 // module scope — never recomputed per render — so it cannot make the
 // `location` memo below see a changing dependency and rebuild the provider.
-const useSim = new URLSearchParams(window.location.search).has('sim');
+const simRequested = new URLSearchParams(window.location.search).has('sim');
 
 export default function App() {
   const tour = amsterdamTour;
@@ -25,7 +25,7 @@ export default function App() {
 
   const location = useMemo(
     () =>
-      useSim
+      simRequested
         ? new SimulatedLocation(tour.routeGeoJson, {
             intervalMs: 1000,
             accuracyM: 12,
@@ -95,7 +95,7 @@ export default function App() {
           playedIds={player.playedIds}
           onSelectStop={player.playSegment}
         />
-        {useSim && <DevPanel sim={location as SimulatedLocation} tour={tour} />}
+        {simRequested && <DevPanel sim={location as SimulatedLocation} tour={tour} />}
       </div>
       <NowPlaying segment={player.currentSegment} offRoute={player.offRoute} />
       <div className="max-h-56 shrink-0 bg-white">

@@ -61,7 +61,12 @@ export class TriggerEngine {
   }
 
   get playedIds(): ReadonlySet<string> {
-    return this.played;
+    // A copy, not the live set — the `ReadonlySet` type only stops callers
+    // from calling mutating methods through this reference; it does nothing
+    // to stop them holding onto it and reading it later, at which point it
+    // would have silently changed underneath them since it's the same
+    // mutable object `onFix`/`selectManually` keep writing to.
+    return new Set(this.played);
   }
 
   onFix(fix: Fix): EngineEvent[] {
