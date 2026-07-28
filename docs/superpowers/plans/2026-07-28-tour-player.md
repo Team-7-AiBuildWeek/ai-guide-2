@@ -10,7 +10,10 @@
 
 ## Global Constraints
 
-- Node 20+ required.
+- Node `^20.19.0 || >=22.12.0` required — both `vite` and `jsdom` declare this
+  floor. Node 20.17 builds fine but fails the whole test suite with
+  `ERR_REQUIRE_ESM` inside jsdom's dependency chain, so a green build is not
+  evidence the tests can even run. `.nvmrc` pins 25.2.1.
 - TypeScript `strict: true`. No `any` in committed code.
 - Every module under `src/lib/` must be free of React imports — they are pure and unit-testable.
 - Distances are always metres, named with an `M` suffix (`accuracyM`, `radiusM`). Never mix units.
