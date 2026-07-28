@@ -1,1 +1,37 @@
+# Fly Launch generated a one-line .dockerignore alongside a `COPY . /srv/http/`
+# static-server Dockerfile. That combination publishes the entire build context
+# as downloadable files. Secrets first, everything else after.
+
+# Secrets — never in a build context, under any circumstances
+.env
+.env.*
+*.local
+!*.example
+
+# Version control history
+.git
+.gitignore
+
+# Dependencies and build output (installed/built inside the image)
+node_modules
+**/node_modules
+dist
+**/dist
+dev-dist
+**/dev-dist
+
+# Tooling and scratch
+.superpowers
+.claude
+.vscode
+.idea
+coverage
+*.log
+
+# Docs and plans — no reason to ship them
+docs
+README.md
+
+# Fly's own config
 fly.toml
+.dockerignore
