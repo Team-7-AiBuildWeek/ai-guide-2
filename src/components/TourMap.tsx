@@ -29,60 +29,65 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
   useEffect(() => {
     if (map.current !== null || container.current === null) return;
 
+    // Captured locally and closed over by every handler below — never
+    // `map.current` — so a handler registered on this instance can never act
+    // on a *different* instance that has since replaced it in the ref. Under
+    // React StrictMode's mount → cleanup → mount, the first instance's `load`
+    // event could otherwise arrive after `map.current` has been reassigned to
+    // the second instance, making a stale handler run its setup against the
+    // wrong map. Closing over the local makes that impossible by
+    // construction, independent of library internals or event timing.
+    let instance: mapboxgl.Map;
     try {
       const start = tour.routeGeoJson.coordinates[0];
-      map.current = new mapboxgl.Map({
+      instance = new mapboxgl.Map({
         container: container.current,
         style: 'mapbox://styles/mapbox/streets-v12',
         center: start,
         zoom: 15,
       });
-
-      // Asynchronous failures — a 404'd style, a token revoked mid-session —
-      // arrive as an event rather than a throw. Route them into the same
-      // degraded state as the synchronous catch below.
-      map.current.on('error', () => setFailed(true));
-
-      map.current.on('load', () => {
-        const m = map.current;
-        if (!m) return;
-
-        m.addSource('route', {
-          type: 'geojson',
-          data: { type: 'Feature', properties: {}, geometry: tour.routeGeoJson },
-        });
-        m.addLayer({
-          id: 'route-line',
-          type: 'line',
-          source: 'route',
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
-          paint: { 'line-color': '#2563eb', 'line-width': 5, 'line-opacity': 0.75 },
-        });
-
-        for (const segment of tour.segments) {
-          if (segment.trigger === null || segment.kind !== 'stop') continue;
-
-          const el = document.createElement('button');
-          el.className =
-            'h-7 w-7 rounded-full border-2 border-white bg-blue-600 text-xs font-bold text-white shadow';
-          el.textContent = String(segment.order);
-          el.setAttribute('aria-label', `Play ${segment.title}`);
-          el.addEventListener('click', () => onSelectStop(segment.id));
-
-          const marker = new mapboxgl.Marker({ element: el })
-            .setLngLat([segment.trigger.lng, segment.trigger.lat])
-            .addTo(m);
-          stopMarkers.current.set(segment.id, marker);
-        }
-      });
+      map.current = instance;
     } catch {
       // e.g. "An API access token is required to use Mapbox GL" — thrown
       // synchronously out of the constructor when the token is missing.
-      map.current?.remove();
-      map.current = null;
       setFailed(true);
       return;
     }
+
+    // Asynchronous failures — a 404'd style, a token revoked mid-session —
+    // arrive as an event rather than a throw. Route them into the same
+    // degraded state as the synchronous catch above.
+    instance.on('error', () => setFailed(true));
+
+    instance.on('load', () => {
+      instance.addSource('route', {
+        type: 'geojson',
+        data: { type: 'Feature', properties: {}, geometry: tour.routeGeoJson },
+      });
+      instance.addLayer({
+        id: 'route-line',
+        type: 'line',
+        source: 'route',
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#2563eb', 'line-width': 5, 'line-opacity': 0.75 },
+      });
+
+      for (const segment of tour.segments) {
+        if (segment.trigger === null || segment.kind !== 'stop') continue;
+
+        const el = document.createElement('button');
+        el.className =
+          'h-7 w-7 rounded-full border-2 border-white bg-blue-600 text-xs font-bold text-white shadow';
+        el.textContent = String(segment.order);
+        el.setAttribute('aria-label', `Play ${segment.title}`);
+        el.addEventListener('click', () => onSelectStop(segment.id));
+
+        const marker = new mapboxgl.Marker({ element: el })
+          .setLngLat([segment.trigger.lng, segment.trigger.lat])
+          .addTo(instance);
+        stopMarkers.current.set(segment.id, marker);
+      }
+    });
 
     return () => {
       const markers = stopMarkers.current;
@@ -93,8 +98,8 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
       const marker = userMarker.current;
       marker?.remove();
       userMarker.current = null;
-      map.current?.remove();
-      map.current = null;
+      instance.remove();
+      if (map.current === instance) map.current = null;
     };
   }, [tour, onSelectStop]);
 
