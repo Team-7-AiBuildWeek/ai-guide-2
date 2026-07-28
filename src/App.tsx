@@ -1,22 +1,37 @@
 import { useMemo, useState } from 'react';
 import { amsterdamTour } from './fixtures/amsterdam-tour';
 import { useTourPlayer } from './hooks/useTourPlayer';
+import { useWakeLock } from './hooks/useWakeLock';
 import { SimulatedLocation } from './lib/location/simulated';
+import { BrowserLocation } from './lib/location/browser';
 import { SpeechSynthesisPlayer } from './lib/audio/speechSynthesis';
 import { TourMap } from './components/TourMap';
 import { NowPlaying } from './components/NowPlaying';
 import { StopList } from './components/StopList';
 
+// ?sim=1 in the URL runs the simulator instead of real GPS. Read once at
+// module scope — never recomputed per render — so it cannot make the
+// `location` memo below see a changing dependency and rebuild the provider.
+const useSim = new URLSearchParams(window.location.search).has('sim');
+
 export default function App() {
   const tour = amsterdamTour;
 
   const location = useMemo(
-    () => new SimulatedLocation(tour.routeGeoJson, { intervalMs: 1000, accuracyM: 12, noiseM: 8 }),
+    () =>
+      useSim
+        ? new SimulatedLocation(tour.routeGeoJson, {
+            intervalMs: 1000,
+            accuracyM: 12,
+            noiseM: 8,
+          })
+        : new BrowserLocation(),
     [tour],
   );
   const audio = useMemo(() => new SpeechSynthesisPlayer(tour.language), [tour]);
 
   const player = useTourPlayer({ tour, location, audio });
+  useWakeLock(player.started);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
 
