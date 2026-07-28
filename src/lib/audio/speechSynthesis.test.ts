@@ -6,7 +6,10 @@ class FakeUtterance {
   onend: (() => void) | null = null;
   onerror: (() => void) | null = null;
   lang = '';
-  constructor(public text: string) {}
+  text: string;
+  constructor(text: string) {
+    this.text = text;
+  }
 }
 
 function installFakeSpeech() {
@@ -101,7 +104,7 @@ describe('SpeechSynthesisPlayer', () => {
   });
 
   it('protects against stale callbacks when a second play overwrites the first', async () => {
-    const { spoken, synth } = installFakeSpeech();
+    const { spoken } = installFakeSpeech();
     const player = new SpeechSynthesisPlayer('en');
     // Start first segment
     const firstPromise = player.play(segment);
@@ -113,6 +116,8 @@ describe('SpeechSynthesisPlayer', () => {
       script: 'Next stop.',
     });
     expect(spoken).toHaveLength(2);
+    // First should be settled immediately
+    await expect(firstPromise).resolves.toBeUndefined();
     // Fire the first segment's callback late (simulating cancel() failure)
     spoken[0].onend?.();
     // The second segment must still be settleable via stop()

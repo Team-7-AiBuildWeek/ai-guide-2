@@ -11,39 +11,32 @@ class FakeAudio {
     error: new Set(),
   };
 
-  constructor() {
-    vi.spyOn(this, 'addEventListener');
-    vi.spyOn(this, 'removeEventListener');
-    vi.spyOn(this, 'play');
-    vi.spyOn(this, 'pause');
-  }
-
-  play() {
+  play(): Promise<void> {
     this.paused = false;
     return Promise.resolve();
   }
 
-  pause() {
+  pause(): void {
     this.paused = true;
   }
 
-  addEventListener(event: string, handler: () => void) {
+  addEventListener(event: string, handler: () => void): void {
     if (event in this.listeners) {
       this.listeners[event].add(handler);
     }
   }
 
-  removeEventListener(event: string, handler: () => void) {
+  removeEventListener(event: string, handler: () => void): void {
     if (event in this.listeners) {
       this.listeners[event].delete(handler);
     }
   }
 
-  fireEnded() {
+  fireEnded(): void {
     this.listeners.ended.forEach((handler) => handler());
   }
 
-  fireError() {
+  fireError(): void {
     this.listeners.error.forEach((handler) => handler());
   }
 }
@@ -104,10 +97,13 @@ describe('HtmlAudioPlayer', () => {
       audioUrl: 'https://example.com/audio2.mp3',
     });
     const listenerCountAfter = fakeAudio.listeners.ended.size;
-    // First should be settled
+    // First should be settled immediately when second starts
     await expect(firstPromise).resolves.toBeUndefined();
     // Only one pair of listeners should be active
     expect(listenerCountAfter).toBe(listenerCountBefore);
+    // Second should also resolve (even without firing ended)
+    player.stop();
+    await expect(secondPromise).resolves.toBeUndefined();
   });
 
   it('play() with audioUrl: null resolves rather than rejecting', async () => {

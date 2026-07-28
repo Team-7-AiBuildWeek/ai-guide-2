@@ -11,8 +11,11 @@ import type { Segment } from '../../types/tour';
 export class SpeechSynthesisPlayer implements AudioPlayer {
   private playing = false;
   private currentResolve: (() => void) | null = null;
+  private readonly lang: string;
 
-  constructor(private readonly lang: string) {}
+  constructor(lang: string) {
+    this.lang = lang;
+  }
 
   async unlock(): Promise<void> {
     // speechSynthesis needs no gesture unlock, but some browsers stay silent
