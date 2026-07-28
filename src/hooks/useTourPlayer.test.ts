@@ -82,6 +82,9 @@ class LocationThrowsOnce implements LocationProvider {
   stop() {
     this.listeners = [];
   }
+  emit(fix: Fix) {
+    for (const listener of this.listeners) listener(fix);
+  }
 }
 
 class RecordingAudio implements AudioPlayer {
@@ -408,6 +411,67 @@ describe('useTourPlayer', () => {
     expect(result.current.started).toBe(true);
     expect(location.startCount).toBe(2);
     expect(location.listeners).toHaveLength(1);
+  });
+
+  it('does not leave the drain queue deadlocked when location.start() throws after the intro was already enqueued', async () => {
+    // Regression for a bug in the location.start()-failure rollback itself:
+    // enqueue(intro) always runs before location.start() is attempted (by
+    // design — some LocationProviders, e.g. SimulatedLocation, deliver their
+    // first fix synchronously from inside start(), so the intro must already
+    // be queued ahead of anything that could fire). If location.start() then
+    // throws, the intro's own audio.play() has already been invoked and is
+    // sitting unresolved. Without stopping it and resetting queue/draining
+    // state, `draining` never returns to false — nothing left in the test
+    // (or the real app) would ever settle that promise — so a retried
+    // start()'s fresh enqueue(intro) sits behind it forever, and so does
+    // every real segment enqueued after that (here, seg-0). That's a
+    // deadlock of the entire narration pipeline for the rest of the
+    // session, strictly worse than "the intro plays twice."
+    const location = new LocationThrowsOnce();
+    const audio = new RecordingAudio();
+    const introSegment: Segment = {
+      id: 'intro',
+      kind: 'intro',
+      order: -1,
+      title: 'Welcome',
+      script: 'Welcome',
+      audioUrl: null,
+      durationMs: null,
+      trigger: null,
+      triggerRadiusM: 0,
+      poiId: null,
+    };
+    const tour = makeTour({ segments: [introSegment, ...makeTour().segments] });
+    const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
+
+    await act(async () => {
+      await expect(result.current.start()).rejects.toThrow('geolocation unavailable');
+    });
+
+    // The failed attempt's intro must not be left "playing" forever.
+    expect(audio.isPlaying()).toBe(false);
+
+    await act(async () => {
+      await result.current.start();
+    });
+    expect(result.current.started).toBe(true);
+
+    // Walk to the first stop on the successful retry.
+    await act(async () => {
+      location.emit(fixAt(STOP_COORDS[0], 10, 1_000_000));
+      location.emit(fixAt(STOP_COORDS[0], 10, 1_001_000));
+    });
+
+    // One finishOne() lets whatever is currently playing (the retry's own
+    // intro) finish, exactly as a real narration completing naturally would.
+    // If the failed attempt's drain loop was left stuck, this settles *that*
+    // stale loop instead (it's the oldest pending promise), replaying the
+    // intro a second time and leaving seg-0 still stuck in the queue.
+    await act(async () => {
+      audio.finishOne();
+    });
+
+    await waitFor(() => expect(audio.played.map((s) => s.id)).toContain('seg-0'));
   });
 
   describe('outro', () => {

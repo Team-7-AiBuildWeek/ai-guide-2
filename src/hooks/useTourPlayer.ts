@@ -146,11 +146,26 @@ export function useTourPlayer({
       });
     } catch (err) {
       // navigator.geolocation is undefined on insecure origins in some
-      // browsers, so this can throw synchronously. Without this rollback,
-      // `started` would already be true and `hasStarted` permanently set,
-      // leaving the app on the map screen with no live GPS listener and no
-      // way back short of remounting. Roll back both so the entry screen
-      // re-renders and start() is callable again.
+      // browsers, so this can throw synchronously. The intro (if any) was
+      // already enqueued above and may already be playing. Without this
+      // cleanup, that enqueue's drain loop is left permanently stuck —
+      // draining.current never returns to false because nothing ever
+      // settles its pending audio.play() — so a retried start()'s fresh
+      // enqueue(intro) would sit in the queue forever, deadlocked, and take
+      // every subsequent GPS-triggered segment down with it for the rest of
+      // the session. Reset to a clean slate first, mirroring the full reset
+      // playSegment already does when it needs one (including bumping
+      // `generation`, so the stale loop's tail can't touch shared state
+      // after this point even if some future change makes audio.stop() stop
+      // resolving it synchronously).
+      generation.current += 1;
+      audio.stop();
+      queue.current = [];
+      draining.current = false;
+      // Without this rollback, `started` would already be true and
+      // `hasStarted` permanently set, leaving the app on the map screen with
+      // no live GPS listener and no way back short of remounting. Roll back
+      // both so the entry screen re-renders and start() is callable again.
       hasStarted.current = false;
       setStarted(false);
       throw err;
