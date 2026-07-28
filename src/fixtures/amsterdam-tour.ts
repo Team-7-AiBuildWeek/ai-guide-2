@@ -7,9 +7,13 @@ import type { Tour } from '../types/tour';
  *
  * Spec §8 requires walk cues to fire on *departure* from a stop rather than on
  * arrival at the next one. That is achieved by placement, not by engine logic:
- * a 'walk' segment's trigger sits just past the preceding stop, so it fires as
- * the walker leaves. Plan 2's routing stage must preserve this convention when
- * it generates walk segments.
+ * a 'walk' segment's trigger sits roughly 25% of the way along the leg from
+ * the preceding stop to the next one — unambiguously past departure (clear of
+ * the preceding stop's own trigger radius) and comfortably before arrival, so
+ * it cannot be mistaken for either neighbour's trigger. The trigger coordinate
+ * must also sit on or very near the route line, since the simulator and the
+ * off-route check both measure distance to that line. Plan 2's routing stage
+ * must preserve this convention when it generates walk segments.
  */
 export const amsterdamTour: Tour = {
   id: 'fixture-amsterdam-01',
@@ -64,7 +68,7 @@ export const amsterdamTour: Tour = {
         'Carry on west across the square, keeping the large neoclassical building on your right.',
       audioUrl: null,
       durationMs: null,
-      trigger: { lat: 52.3731, lng: 4.8924 },
+      trigger: { lat: 52.3731, lng: 4.893 },
       triggerRadiusM: 25,
       poiId: null,
     },
