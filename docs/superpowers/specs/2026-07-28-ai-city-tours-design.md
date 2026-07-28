@@ -98,7 +98,7 @@ Verified pricing, ~30,000 characters per 40-minute tour:
 |---|---|---|---|---|
 | Google WaveNet | $4 | $0.12 | — | 40+ |
 | Google Neural2 | $16 | $0.48 | 1M chars/mo | 40+ |
-| **Google Chirp 3 HD** | **$30** | **$0.90** | **1M chars/mo** | **31** |
+| **Google Chirp 3 HD** | **$30** | **$0.90** | **1M chars/mo** | **50+** |
 | Azure Neural | $16 | $0.48 | 500k chars/mo | 140+ locales |
 | Azure Neural HD | $22 | $0.66 | 500k chars/mo | — |
 | ElevenLabs Flash v2.5 | ~$83 eff. | $2.50 | 10k credits | 32 |
@@ -109,10 +109,13 @@ credit per character, Flash/Turbo v2.5 consumes 0.5. Tier ceilings bite as hard
 as the rate — Creator ($22/mo, 121k credits) is four tours a month.
 
 **Decision: Google Chirp 3 HD.** ~3× cheaper than ElevenLabs Flash, ~5.5×
-cheaper than v2, near-identical language coverage (31 vs 32), and its 1M
-chars/month free tier covers the entire prototype phase at zero cost. Eight
-voices (4M/4F) shared across all languages, so a persona keeps its identity
-across the whole catalogue.
+cheaper than v2, wider language coverage (50+ vs 32), and its 1M chars/month
+free tier covers the entire prototype phase at zero cost. Eight voices (4M/4F)
+shared across all languages, so a persona keeps its identity across the whole
+catalogue.
+
+*Verified 2026-07-28: Chirp 3 HD now lists 50+ locales, including `sk-SK`.
+The earlier figure of 31 was stale.*
 
 **Open question (§11):** foreign proper-noun pronunciation. Every tour is
 saturated with local toponyms in a language that is not the narration language
@@ -123,8 +126,14 @@ is **unverified**. `TtsProvider` keeps the decision reversible.
 
 ## 5. Languages
 
-**English, German, French, Spanish, Italian, Dutch.** All six sit comfortably
-inside both Google's and ElevenLabs' coverage, so there is no provider risk.
+**English, German, French, Spanish, Italian, Dutch, Slovak.** All seven sit
+comfortably inside both Google's and ElevenLabs' coverage, so there is no
+provider risk.
+
+*Slovak added 2026-07-28 alongside the choice of Bratislava as the first city.
+It is the local language, which makes it the control in the §11.1 toponym
+spike: it is the only voice that pronounces the street names correctly by
+construction, so it defines what the other six should sound like.*
 
 **Ground in English, write in the target language.** Wikipedia's language
 editions have uneven geo coverage; English has substantially more geo-tagged
@@ -134,10 +143,19 @@ tours thin.
 ```
 Wikidata (language-agnostic IDs, coordinates, multilingual labels)
   + English Wikipedia (grounding)
+  + local-language Wikipedia via Wikidata sitelink, always
   + target-language Wikipedia via Wikidata sitelink, where it exists
        ↓
   Claude Opus 5 writes natively in the target language
 ```
+
+*Amended 2026-07-28 to always pull the **local**-language article, regardless of
+narration language. Measured in Bratislava: English has 81 geo-tagged articles
+within 1 km, Slovak has 400+, and individual burgher houses — Jakubov dom,
+Ungerov dom, Pawerov dom — have Slovak articles and no English one. English
+remains the spine; the local edition is what makes the difference between "a
+baroque palace on Ventúrska" and something specific. Opus 5 reads the source
+language without needing it translated first.*
 
 Do **not** translate finished narration — translated tour copy reads stilted.
 Generate directly in the target language.
@@ -298,10 +316,18 @@ Per tour, **cold city** (full generation, single language):
 
 | Item | Cost |
 |---|---|
-| Claude Opus 5 — curation + full narration | ~$0.35 |
+| Claude Opus 5 — curation + full narration | ~$0.46 |
 | Chirp 3 HD — ~30k chars | ~$0.90 |
 | Maps | negligible |
-| **Total** | **~$1.25** |
+| **Total** | **~$1.36** |
+
+*Corrected 2026-07-28. The original ~$0.35 omitted adaptive thinking tokens,
+which bill at the output rate (~4k tokens ≈ $0.10). Roughly 65% of the
+generation cost is narration output — ~5,000 words of bespoke prose, which is
+the product and has no cheaper form. See the Plan 2a spec §3.5 for the
+per-stage breakdown and the two mitigations (two-stage context trimming and
+prompt caching on the candidate block) that cut curation from ~$0.12 to
+~$0.04.*
 
 Claude Opus 5 is $5 / $25 per MTok input / output. Chirp 3 HD's 1M chars/month
 free tier covers roughly 33 full tours — the entire prototype phase costs
@@ -314,13 +340,21 @@ routing.
 ## 11. Open questions and spikes
 
 1. **Toponym pronunciation (highest priority).** Generate a page of real
-   Amsterdam street names in Spanish, German and Italian Chirp 3 HD voices and
-   listen. If unacceptable, test SSML `<phoneme>` support on Chirp 3 HD; if that
-   is unavailable, evaluate falling back to Neural2 or paying for ElevenLabs on
-   this dimension alone. Half a day, and it should happen before any TTS
-   integration is written.
-2. **Chirp 3 HD SSML surface.** Unverified whether full SSML including
-   `<phoneme>` is supported, or only the restricted markup set.
+   **Bratislava** street names — *Hviezdoslavovo námestie*, *Františkánske
+   námestie*, *Michalská brána*, *Primaciálny palác*, *Ventúrska* — in Spanish,
+   German and Italian Chirp 3 HD voices and listen, with the Slovak voice as the
+   control. Half a day, before any TTS integration is written.
+
+   *Retargeted from Amsterdam 2026-07-28. Slovak orthography — ľ, ť, ď, ň, č, š,
+   ž and heavy consonant clusters — in voices with no Slovak phonology is a
+   far harsher test than Dutch. The risk is front-loaded: if Chirp survives
+   Bratislava, Amsterdam and Prague are easy.*
+
+2. ~~**Chirp 3 HD SSML surface.**~~ **Resolved 2026-07-28.** Chirp 3 HD does
+   support SSML including `<phoneme>` with IPA — marked Preview, and **not
+   supported on streaming requests**, only synchronous ones. This gives §11.1 a
+   real fallback short of changing vendor, at the cost of forcing non-streaming
+   synthesis wherever phoneme overrides are used.
 3. **Gemini TTS.** Supports natural-language style prompting ("read this
    warmly, like sharing a secret"), which maps directly onto free-text personas
    in a way fixed-voice APIs don't. Current per-character pricing not verified.
@@ -329,7 +363,16 @@ routing.
    and users get a walk that doesn't match what they asked for.
 5. **Wake lock behaviour** across iOS Safari versions and in standalone PWA
    (added-to-home-screen) mode.
-6. **Target cities** for the prototype not yet chosen.
+6. ~~**Target cities**~~ **Resolved 2026-07-28: Bratislava old town.** Chosen
+   because the author lives there and can re-walk a fix in ten minutes rather
+   than on the next trip. Measured density: 81 geo-tagged English Wikipedia
+   articles within 1 km of Hlavné námestie, 400+ on Slovak Wikipedia.
+
+   It also surfaced a defect in §8 before any pipeline code existed: old-town
+   POIs sit tens of metres apart while GPS accuracy in Michalská and Ventúrska
+   runs 30–50 m, so the accuracy-adaptive radius grows larger than the spacing
+   between stops. See the Plan 2a spec §3.3 — the fix is to curate to *stops*
+   (places you stand) rather than *POIs* (things that exist).
 
 ## 12. Risks
 
