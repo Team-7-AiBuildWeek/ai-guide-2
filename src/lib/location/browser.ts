@@ -10,6 +10,21 @@ import type { Fix, FixListener, LocationProvider } from './types';
 export class BrowserLocation implements LocationProvider {
   private watchId: number | null = null;
 
+  /**
+   * `onError`, if given, is called with a human-readable message whenever the
+   * browser reports a geolocation failure (permission denied, no fix
+   * available, timeout, ...). This is deliberately not part of
+   * `LocationProvider` — `SimulatedLocation` has no failure mode to report,
+   * and widening the shared interface for this implementation's needs would
+   * be the wrong trade. Consumers that care about GPS failures (i.e. the UI)
+   * pass a callback here instead.
+   */
+  private readonly onError?: (message: string) => void;
+
+  constructor(onError?: (message: string) => void) {
+    this.onError = onError;
+  }
+
   start(listener: FixListener): void {
     this.stop();
 
@@ -25,6 +40,11 @@ export class BrowserLocation implements LocationProvider {
       },
       (error) => {
         console.warn('Geolocation error', error.code, error.message);
+        this.onError?.(
+          error.code === 1 // GeolocationPositionError.PERMISSION_DENIED
+            ? 'Location access was denied. Enable location for this site in your browser settings to continue the walk.'
+            : 'Could not get a GPS fix. Move to an open area and try again.',
+        );
       },
       {
         enableHighAccuracy: true,

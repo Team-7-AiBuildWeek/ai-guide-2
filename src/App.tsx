@@ -17,6 +17,11 @@ const useSim = new URLSearchParams(window.location.search).has('sim');
 export default function App() {
   const tour = amsterdamTour;
 
+  // setGpsError (from useState) is referentially stable across the
+  // component's lifetime, so including it in the memo's deps below cannot
+  // trigger a re-creation of `location` on re-render.
+  const [gpsError, setGpsError] = useState<string | null>(null);
+
   const location = useMemo(
     () =>
       useSim
@@ -25,8 +30,8 @@ export default function App() {
             accuracyM: 12,
             noiseM: 8,
           })
-        : new BrowserLocation(),
-    [tour],
+        : new BrowserLocation(setGpsError),
+    [tour, setGpsError],
   );
   const audio = useMemo(() => new SpeechSynthesisPlayer(tour.language), [tour]);
 
@@ -74,6 +79,14 @@ export default function App() {
 
   return (
     <div className="flex h-dvh flex-col">
+      {gpsError !== null && (
+        <p
+          className="shrink-0 bg-red-600 px-4 py-2 text-center text-sm font-medium text-white"
+          role="alert"
+        >
+          {gpsError}
+        </p>
+      )}
       <div className="min-h-0 flex-1">
         <TourMap
           tour={tour}
