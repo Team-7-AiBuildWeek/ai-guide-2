@@ -40,8 +40,9 @@ export class TriggerEngine {
   private readonly config: EngineConfig;
 
   private cursorIndex = 0;
-  private hits = 0;
-  private hitSegmentId: string | null = null;
+  /** Consecutive in-radius fixes per segment id. Segments that fall out of
+   * range are deleted, not decremented — hysteresis means *consecutive*. */
+  private hits = new Map<string, number>();
   private played = new Set<string>();
 
   private offRouteSince: number | null = null;
@@ -77,31 +78,34 @@ export class TriggerEngine {
     const events: EngineEvent[] = [];
     events.push(...this.evaluateOffRoute(fix));
 
-    const candidate = this.findCandidate(fix);
+    const candidates = this.findCandidates(fix);
+    const inRange = new Set(candidates.map((c) => c.segment.id));
 
-    if (candidate === null) {
-      this.hits = 0;
-      this.hitSegmentId = null;
-      return events;
+    // Anything no longer in range loses its streak entirely.
+    for (const id of [...this.hits.keys()]) {
+      if (!inRange.has(id)) this.hits.delete(id);
     }
 
-    // Restart the count if the user moved to a different candidate.
-    if (this.hitSegmentId !== candidate.segment.id) {
-      this.hitSegmentId = candidate.segment.id;
-      this.hits = 0;
+    // Every in-range segment advances. Incrementing only the nearest is what
+    // caused the original defect: GPS jitter flipping which of two co-located
+    // stops is nearest reset both counters on every fix, so neither ever fired.
+    for (const c of candidates) {
+      this.hits.set(c.segment.id, (this.hits.get(c.segment.id) ?? 0) + 1);
     }
 
-    this.hits += 1;
+    const ready = candidates
+      .filter((c) => (this.hits.get(c.segment.id) ?? 0) >= this.config.requiredHits)
+      .sort((a, b) => a.distanceM - b.distanceM);
 
-    if (this.hits >= this.config.requiredHits) {
-      this.played.add(candidate.segment.id);
+    const winner = ready[0];
+    if (winner !== undefined) {
+      this.played.add(winner.segment.id);
       // The cursor bounds the forward lookahead window; a fix on a segment
       // behind it (reached via skip-ahead, then backtracked to) must not
       // regress it and shrink that window.
-      this.cursorIndex = Math.max(this.cursorIndex, candidate.index + 1);
-      this.hits = 0;
-      this.hitSegmentId = null;
-      events.push({ type: 'fire', segment: candidate.segment });
+      this.cursorIndex = Math.max(this.cursorIndex, winner.index + 1);
+      this.hits.delete(winner.segment.id);
+      events.push({ type: 'fire', segment: winner.segment });
     }
 
     return events;
@@ -118,14 +122,17 @@ export class TriggerEngine {
     const segment = this.tour.segments[index];
     this.played.add(segment.id);
     if (index + 1 > this.cursorIndex) this.cursorIndex = index + 1;
-    this.hits = 0;
-    this.hitSegmentId = null;
+    this.hits.clear();
     return segment;
   }
 
   /**
-   * Finds the nearest not-yet-played segment within the lookahead window
-   * whose adapted radius contains this fix.
+   * Finds every not-yet-played segment within the lookahead window whose
+   * adapted radius contains this fix — not just the nearest. Two stops can
+   * legitimately be in range at once (co-located stops with overlapping
+   * accuracy-widened radii); `onFix` is responsible for advancing hysteresis
+   * on all of them and picking the nearest only among those that are ready
+   * to fire.
    *
    * Scans from the start rather than from the cursor: the cursor only caps
    * how far ahead a walker may skip, it is not a claim that everything
@@ -133,13 +140,13 @@ export class TriggerEngine {
    * scanning from the cursor would make segments passed over by a skip-ahead
    * permanently unreachable.
    */
-  private findCandidate(fix: Fix): { segment: Segment; index: number } | null {
+  private findCandidates(fix: Fix): { segment: Segment; index: number; distanceM: number }[] {
     const end = Math.min(
       this.tour.segments.length,
       this.cursorIndex + this.config.lookahead + 1,
     );
 
-    let best: { segment: Segment; index: number; distanceM: number } | null = null;
+    const found: { segment: Segment; index: number; distanceM: number }[] = [];
 
     for (let i = 0; i < end; i++) {
       const segment = this.tour.segments[i];
@@ -152,12 +159,10 @@ export class TriggerEngine {
       const radiusM = Math.max(segment.triggerRadiusM, fix.accuracyM);
       if (distanceM > radiusM) continue;
 
-      if (best === null || distanceM < best.distanceM) {
-        best = { segment, index: i, distanceM };
-      }
+      found.push({ segment, index: i, distanceM });
     }
 
-    return best === null ? null : { segment: best.segment, index: best.index };
+    return found;
   }
 
   private evaluateOffRoute(fix: Fix): EngineEvent[] {

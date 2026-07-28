@@ -55,3 +55,38 @@ export function fixAt(
 export function eastOf(coord: { lat: number; lng: number }, metres: number) {
   return { lat: coord.lat, lng: coord.lng + metres / metresPerDegreeLng(coord.lat) };
 }
+
+/**
+ * Builds a tour whose stops sit at caller-supplied coordinates and ids.
+ * `makeTour`'s fixed stops are ~165 m apart (an Amsterdam fixture); this
+ * helper exists for tests that need stops tens of metres apart, as they
+ * routinely are around Bratislava's Hlavné námestie.
+ */
+export function tourWithStopsAt(stops: { id: string; lat: number; lng: number }[]): Tour {
+  const segments: Segment[] = stops.map((s, i) => ({
+    id: s.id,
+    kind: 'stop',
+    order: i,
+    title: `Stop ${s.id}`,
+    script: `Narration for stop ${s.id}.`,
+    audioUrl: null,
+    durationMs: null,
+    trigger: { lat: s.lat, lng: s.lng },
+    triggerRadiusM: 25,
+    poiId: `poi-${s.id}`,
+  }));
+
+  return {
+    id: 'tour-test',
+    city: 'Bratislava',
+    language: 'en',
+    persona: 'historian',
+    title: 'Test Tour',
+    segments,
+    routeGeoJson: {
+      type: 'LineString',
+      coordinates: stops.map((s) => [s.lng, s.lat] as [number, number]),
+    },
+    estimatedDurationMin: 30,
+  };
+}

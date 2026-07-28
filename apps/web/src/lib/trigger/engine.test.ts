@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { TriggerEngine } from './engine';
-import { makeTour, makeSegment, STOP_COORDS, fixAt, eastOf } from './testFixtures';
+import { makeTour, makeSegment, STOP_COORDS, fixAt, eastOf, tourWithStopsAt } from './testFixtures';
 
 describe('TriggerEngine — accuracy gating', () => {
   it('discards fixes with accuracy worse than the threshold', () => {
@@ -35,6 +35,39 @@ describe('TriggerEngine — hysteresis', () => {
     engine.onFix(fixAt(eastOf(STOP_COORDS[0], 200), 10)); // wandered off
     const events = engine.onFix(fixAt(STOP_COORDS[0], 10)); // back, but only 1 hit
     expect(events).toHaveLength(0);
+  });
+});
+
+describe('TriggerEngine — co-located stops', () => {
+  it('fires when two stops are simultaneously in range and the nearest flips', () => {
+    const tour = tourWithStopsAt([
+      { id: 'a', lat: 48.1436, lng: 17.1085 },
+      { id: 'b', lat: 48.1441, lng: 17.1085 }, // ~56m north
+    ]);
+    const engine = new TriggerEngine(tour, { requiredHits: 2 });
+
+    // Both stops sit inside a 50m-accuracy radius from a point between them.
+    const base = { lng: 17.1085, accuracyM: 50 };
+    const nearerA = { ...base, lat: 48.14370 };
+    const nearerB = { ...base, lat: 48.14400 };
+
+    expect(engine.onFix({ ...nearerA, timestamp: 1000 })).toEqual([]);
+    const events = engine.onFix({ ...nearerB, timestamp: 2000 });
+
+    // Before the fix: hitSegmentId flips, hits resets, nothing ever fires.
+    expect(events.filter((e) => e.type === 'fire')).toHaveLength(1);
+  });
+
+  it('does not fire a segment that left the radius before reaching the threshold', () => {
+    const tour = tourWithStopsAt([{ id: 'a', lat: 48.1436, lng: 17.1085 }]);
+    const engine = new TriggerEngine(tour, { requiredHits: 2 });
+
+    engine.onFix({ lat: 48.1436, lng: 17.1085, accuracyM: 20, timestamp: 1000 });
+    // ~500m away: out of range, so the streak must be discarded, not held.
+    engine.onFix({ lat: 48.1481, lng: 17.1085, accuracyM: 20, timestamp: 2000 });
+    const events = engine.onFix({ lat: 48.1436, lng: 17.1085, accuracyM: 20, timestamp: 3000 });
+
+    expect(events.filter((e) => e.type === 'fire')).toHaveLength(0);
   });
 });
 
