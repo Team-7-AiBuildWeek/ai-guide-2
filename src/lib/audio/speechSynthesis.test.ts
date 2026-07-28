@@ -14,15 +14,23 @@ function installFakeSpeech() {
   const synth = {
     speak: vi.fn((u: FakeUtterance) => {
       spoken.push(u);
-      // Finish on the next microtask so play() can be awaited.
-      queueMicrotask(() => u.onend?.());
+      // Don't auto-complete; tests control when onend fires via endSpeaking()
     }),
     cancel: vi.fn(),
     speaking: false,
   };
   vi.stubGlobal('speechSynthesis', synth);
   vi.stubGlobal('SpeechSynthesisUtterance', FakeUtterance);
-  return { synth, spoken };
+
+  // Helper to manually fire onend on the most recently spoken utterance
+  const endSpeaking = () => {
+    if (spoken.length > 0) {
+      const last = spoken[spoken.length - 1];
+      queueMicrotask(() => last.onend?.());
+    }
+  };
+
+  return { synth, spoken, endSpeaking };
 }
 
 const segment: Segment = {
@@ -42,26 +50,31 @@ describe('SpeechSynthesisPlayer', () => {
   beforeEach(() => vi.unstubAllGlobals());
 
   it('speaks the segment script', async () => {
-    const { spoken } = installFakeSpeech();
+    const { spoken, endSpeaking } = installFakeSpeech();
     const player = new SpeechSynthesisPlayer('en');
-    await player.play(segment);
+    const playPromise = player.play(segment);
+    endSpeaking();
+    await playPromise;
     expect(spoken).toHaveLength(1);
     expect(spoken[0].text).toBe('You are standing on Dam Square.');
   });
 
   it('sets the utterance language', async () => {
-    const { spoken } = installFakeSpeech();
+    const { spoken, endSpeaking } = installFakeSpeech();
     const player = new SpeechSynthesisPlayer('nl');
-    await player.play(segment);
+    const playPromise = player.play(segment);
+    endSpeaking();
+    await playPromise;
     expect(spoken[0].lang).toBe('nl');
   });
 
   it('reports isPlaying while speaking', async () => {
-    installFakeSpeech();
+    const { endSpeaking } = installFakeSpeech();
     const player = new SpeechSynthesisPlayer('en');
     expect(player.isPlaying()).toBe(false);
     const pending = player.play(segment);
     expect(player.isPlaying()).toBe(true);
+    endSpeaking();
     await pending;
     expect(player.isPlaying()).toBe(false);
   });
@@ -78,10 +91,33 @@ describe('SpeechSynthesisPlayer', () => {
   });
 
   it('cancels the previous segment when a new one starts', async () => {
-    const { synth } = installFakeSpeech();
+    const { synth, endSpeaking } = installFakeSpeech();
     const player = new SpeechSynthesisPlayer('en');
     void player.play(segment);
-    await player.play({ ...segment, id: 'seg-1', script: 'Next stop.' });
+    const nextPromise = player.play({ ...segment, id: 'seg-1', script: 'Next stop.' });
+    endSpeaking();
+    await nextPromise;
     expect(synth.cancel).toHaveBeenCalled();
+  });
+
+  it('protects against stale callbacks when a second play overwrites the first', async () => {
+    const { spoken, synth } = installFakeSpeech();
+    const player = new SpeechSynthesisPlayer('en');
+    // Start first segment
+    const firstPromise = player.play(segment);
+    expect(spoken).toHaveLength(1);
+    // Start second segment (which calls stop() and cancel())
+    const secondPromise = player.play({
+      ...segment,
+      id: 'seg-1',
+      script: 'Next stop.',
+    });
+    expect(spoken).toHaveLength(2);
+    // Fire the first segment's callback late (simulating cancel() failure)
+    spoken[0].onend?.();
+    // The second segment must still be settleable via stop()
+    player.stop();
+    await expect(secondPromise).resolves.toBeUndefined();
+    expect(player.isPlaying()).toBe(false);
   });
 });

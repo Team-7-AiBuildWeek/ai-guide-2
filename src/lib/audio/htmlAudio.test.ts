@@ -113,11 +113,14 @@ describe('HtmlAudioPlayer', () => {
   it('play() with audioUrl: null resolves rather than rejecting', async () => {
     installFakeAudio();
     const player = new HtmlAudioPlayer();
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const playPromise = player.play({
       ...segment,
       audioUrl: null,
     });
     await expect(playPromise).resolves.toBeUndefined();
+    expect(warnSpy).toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 
   it('isPlaying() transitions correctly and is not corrupted by stale callbacks', async () => {

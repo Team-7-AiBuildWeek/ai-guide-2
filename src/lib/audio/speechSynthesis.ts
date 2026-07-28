@@ -21,12 +21,19 @@ export class SpeechSynthesisPlayer implements AudioPlayer {
   }
 
   play(segment: Segment): Promise<void> {
-    speechSynthesis.cancel();
+    // Settle any previous playback first
+    this.stop();
 
     return new Promise<void>((resolve) => {
+      // Capture the resolve for this call so stale callbacks can't mutate shared state
+      const callResolve = resolve;
+
       const finish = () => {
-        this.playing = false;
-        this.currentResolve = null;
+        // Only mutate state if this is still the current call
+        if (this.currentResolve === callResolve) {
+          this.playing = false;
+          this.currentResolve = null;
+        }
         resolve();
       };
 
@@ -39,7 +46,7 @@ export class SpeechSynthesisPlayer implements AudioPlayer {
         console.warn(`Speech synthesis error for segment ${segment.id}`);
       };
 
-      this.currentResolve = resolve;
+      this.currentResolve = callResolve;
       this.playing = true;
       speechSynthesis.speak(utterance);
     });

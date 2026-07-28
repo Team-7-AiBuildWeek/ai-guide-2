@@ -34,13 +34,13 @@ export class HtmlAudioPlayer implements AudioPlayer {
   }
 
   play(segment: Segment): Promise<void> {
+    // Settle any previous playback first (must happen on every path)
+    this.stop();
+
     if (segment.audioUrl === null) {
       console.warn(`Segment ${segment.id} has no audioUrl`);
       return Promise.resolve();
     }
-
-    // Settle any previous playback first
-    this.stop();
 
     return new Promise<void>((resolve) => {
       const finish = () => {
