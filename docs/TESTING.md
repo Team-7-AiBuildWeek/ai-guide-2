@@ -21,6 +21,21 @@ Do **not** run `nvm use` — on Windows that rewrites a machine-wide symlink,
 which is not this repo's to change. If you ever see `ERR_REQUIRE_ESM`, you
 forgot the `export PATH=...` line above; it is not a bug in the code.
 
+## Mapbox token — read this before `npm run dev`
+
+The map view needs a Mapbox public access token. Copy `.env.local.example` to
+`.env.local` and set `VITE_MAPBOX_TOKEN` to a real token:
+
+```bash
+cp .env.local.example .env.local
+```
+
+`.env.local` is gitignored — this step is per-machine, not something you
+commit. Without it, `TourMap` degrades to a placeholder ("Map unavailable
+right now") rather than failing outright; narration and the trigger engine
+are unaffected, but you won't be able to see the map or tap stop markers on
+it, which several steps below rely on.
+
 ## Simulated walk (no walking required)
 
 1. `npm run dev`
