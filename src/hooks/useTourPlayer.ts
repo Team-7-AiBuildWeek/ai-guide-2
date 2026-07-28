@@ -42,6 +42,20 @@ export function useTourPlayer({
   // loop. A loop whose generation is stale must not touch shared state — see
   // playSegment.
   const generation = useRef(0);
+  // Guards start() against re-entrancy. A `started` state check would still
+  // be racy: two calls can both read `started === false` before either
+  // write lands, since setStarted(true) only runs after `await
+  // audio.unlock()` resolves. This ref is set synchronously before that
+  // await, closing the window a double tap could slip through.
+  const hasStarted = useRef(false);
+
+  // Kept current on every render so the unmount-only cleanup effect below
+  // always stops whatever provider is actually in use, without the effect
+  // needing to depend on audio/location identity (see that effect).
+  const audioRef = useRef(audio);
+  const locationRef = useRef(location);
+  audioRef.current = audio;
+  locationRef.current = location;
 
   const drain = useCallback(async () => {
     if (draining.current) return;
@@ -77,6 +91,9 @@ export function useTourPlayer({
   );
 
   const start = useCallback(async () => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+
     await audio.unlock();
     setStarted(true);
 
@@ -107,12 +124,19 @@ export function useTourPlayer({
     [audio, enqueue, engine],
   );
 
+  // Runs once per mount; its cleanup fires only at unmount, via the refs
+  // above. Depending on [audio, location] here would make React tear down
+  // the current provider on every identity change and never restart it — a
+  // consumer that passes fresh audio/location instances on every render
+  // (unmemoized) would silently kill the tour mid-walk with no recovery
+  // short of calling start() again. Unmount is the only point this hook
+  // itself should stop anything.
   useEffect(() => {
     return () => {
-      location.stop();
-      audio.stop();
+      locationRef.current.stop();
+      audioRef.current.stop();
     };
-  }, [audio, location]);
+  }, []);
 
   return { started, start, currentSegment, playedIds, lastFix, offRoute, playSegment };
 }

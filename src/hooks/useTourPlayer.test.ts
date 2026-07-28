@@ -7,15 +7,24 @@ import type { AudioPlayer } from '../lib/audio/types';
 import type { Segment } from '../types/tour';
 
 class ManualLocation implements LocationProvider {
-  private listener: FixListener | null = null;
+  /**
+   * Every registered listener, not just the most recent one — a fake that
+   * overwrites a single field on each start() call masks double-registration
+   * bugs, since the second call would silently replace the first instead of
+   * revealing that both are now live (as two independent setInterval loops
+   * would be on the real SimulatedLocation).
+   */
+  listeners: FixListener[] = [];
+  startCount = 0;
   start(listener: FixListener) {
-    this.listener = listener;
+    this.startCount += 1;
+    this.listeners.push(listener);
   }
   stop() {
-    this.listener = null;
+    this.listeners = [];
   }
   emit(fix: Fix) {
-    this.listener?.(fix);
+    for (const listener of this.listeners) listener(fix);
   }
 }
 
@@ -194,5 +203,90 @@ describe('useTourPlayer', () => {
     });
 
     await waitFor(() => expect(result.current.offRoute).toBe(true));
+  });
+
+  it('start() is idempotent: a double call registers the listener once and enqueues the intro once', async () => {
+    const location = new ManualLocation();
+    const audio = new RecordingAudio();
+    // makeTour()'s fixture has no intro segment; build one so a double
+    // enqueue would be observable.
+    const introSegment: Segment = {
+      id: 'intro',
+      kind: 'intro',
+      order: -1,
+      title: 'Welcome',
+      script: 'Welcome',
+      audioUrl: null,
+      durationMs: null,
+      trigger: null,
+      triggerRadiusM: 0,
+      poiId: null,
+    };
+    const tour = makeTour({ segments: [introSegment, ...makeTour().segments] });
+    const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
+
+    // Simulate a double tap: both calls begin before either's audio.unlock()
+    // has resolved, since setStarted(true) only runs after that await.
+    await act(async () => {
+      await Promise.all([result.current.start(), result.current.start()]);
+    });
+
+    expect(location.startCount).toBe(1);
+
+    // If the intro had been enqueued twice, finishing the first play reveals
+    // a second 'intro' play right behind it once the drain loop advances.
+    await act(async () => {
+      audio.finishOne();
+      await Promise.resolve();
+    });
+    expect(audio.played.filter((s) => s.id === 'intro')).toHaveLength(1);
+  });
+
+  it('does not tear down the location listener or in-flight audio when the audio/location identity changes on re-render', async () => {
+    const tour = makeTour();
+    const location1 = new ManualLocation();
+    const audio1 = new RecordingAudio();
+
+    const { result, rerender } = renderHook(
+      (props: { location: ManualLocation; audio: RecordingAudio }) =>
+        useTourPlayer({ tour, location: props.location, audio: props.audio }),
+      { initialProps: { location: location1, audio: audio1 } },
+    );
+
+    await act(async () => {
+      await result.current.start();
+    });
+
+    await act(async () => {
+      location1.emit(fixAt(STOP_COORDS[0], 10, 1_000_000));
+      location1.emit(fixAt(STOP_COORDS[0], 10, 1_001_000));
+    });
+    await waitFor(() => expect(audio1.played.map((s) => s.id)).toEqual(['seg-0']));
+
+    // A consumer that hasn't memoized its provider instances passes fresh
+    // objects on every render. The hook must not go silently dead because of
+    // that alone — that requires depending on [audio, location] in the
+    // teardown effect, which is exactly the bug under test.
+    const location2 = new ManualLocation();
+    const audio2 = new RecordingAudio();
+    await act(async () => {
+      rerender({ location: location2, audio: audio2 });
+    });
+
+    // seg-0's playback must not have been cancelled purely by the identity
+    // change.
+    expect(audio1.isPlaying()).toBe(true);
+
+    // The original location listener must still be live too.
+    await act(async () => {
+      location1.emit(fixAt(STOP_COORDS[1], 10, 1_002_000));
+      location1.emit(fixAt(STOP_COORDS[1], 10, 1_003_000));
+    });
+    await act(async () => {
+      audio1.finishOne();
+    });
+    await waitFor(() =>
+      expect(audio1.played.map((s) => s.id)).toEqual(['seg-0', 'seg-1']),
+    );
   });
 });
