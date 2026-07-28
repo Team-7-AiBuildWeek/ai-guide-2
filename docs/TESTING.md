@@ -38,6 +38,13 @@ it, which several steps below rely on.
 
 ## Simulated walk (no walking required)
 
+The dev panel's speed slider goes up to 20×, but speeds above ~10× can
+outrun the trigger engine's hysteresis: at 20× the simulator advances
+roughly 28 m per fix, wider than several trigger radii, so a segment can be
+skipped over between one fix and the next and never fire. That's the
+simulator moving faster than the engine is designed to track, not a
+trigger-engine bug — run this walkthrough at 10× or below.
+
 1. `npm run dev`
 2. Open `http://localhost:5173/?sim=1` in a browser
 3. Tap **Start the walk** — the intro narration should speak immediately
