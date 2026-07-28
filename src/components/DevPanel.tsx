@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import type { SimulatedLocation } from '../lib/location/simulated';
-import type { Tour } from '../types/tour';
+import type { LatLng, Segment, Tour } from '../types/tour';
+import { fractionAlongLineString } from '../lib/geo';
 
 interface DevPanelProps {
   sim: SimulatedLocation;
   tour: Tour;
+}
+
+/** Narrows to segments with a real trigger coordinate, for the type checker. */
+function hasTrigger(s: Segment): s is Segment & { trigger: LatLng } {
+  return s.trigger !== null;
 }
 
 /**
@@ -17,7 +23,7 @@ export function DevPanel({ sim, tour }: DevPanelProps) {
   const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(false);
 
-  const stops = tour.segments.filter((s) => s.trigger !== null);
+  const stops = tour.segments.filter(hasTrigger);
 
   if (!open) {
     return (
@@ -78,10 +84,12 @@ export function DevPanel({ sim, tour }: DevPanelProps) {
 
       <div className="space-y-1">
         <span className="text-slate-400">jump to</span>
-        {stops.map((stop, i) => (
+        {stops.map((stop) => (
           <button
             key={stop.id}
-            onClick={() => sim.jumpTo(stops.length === 1 ? 0 : i / (stops.length - 1))}
+            onClick={() =>
+              sim.jumpTo(fractionAlongLineString(stop.trigger, tour.routeGeoJson))
+            }
             className="block w-full truncate rounded bg-slate-700 px-2 py-1 text-left"
           >
             {stop.title}

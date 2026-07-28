@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { haversineM, distanceToLineStringM, metresPerDegreeLng } from './geo';
+import {
+  haversineM,
+  distanceToLineStringM,
+  metresPerDegreeLng,
+  fractionAlongLineString,
+} from './geo';
 import type { LineString } from '../types/tour';
 
 describe('metresPerDegreeLng', () => {
@@ -67,5 +72,63 @@ describe('distanceToLineStringM', () => {
     const d = distanceToLineStringM({ lat: 52.3731, lng: 4.89 }, line);
     expect(d).toBeGreaterThan(75);
     expect(d).toBeLessThan(90);
+  });
+});
+
+describe('fractionAlongLineString', () => {
+  // Deliberately unevenly spaced: P0→P1 is ~163 m, P1→P2 is much longer, so a
+  // naive index/(count-1) fraction (0.5 for the middle vertex) would be very
+  // wrong. This mirrors the real bug: the dev panel's "jump to" buttons used
+  // stop index instead of arc length, so most stops on the real (uneven)
+  // fixture route were never reached.
+  const line: LineString = {
+    type: 'LineString',
+    coordinates: [
+      [4.8936, 52.3731], // P0
+      [4.8912, 52.3731], // P1
+      [4.884, 52.3731], // P2 — much further from P1 than P1 is from P0
+    ],
+  };
+
+  const p0 = { lat: 52.3731, lng: 4.8936 };
+  const p1 = { lat: 52.3731, lng: 4.8912 };
+  const p2 = { lat: 52.3731, lng: 4.884 };
+  const d01 = haversineM(p0, p1);
+  const d12 = haversineM(p1, p2);
+  const total = d01 + d12;
+
+  it('returns ~0 at the route start', () => {
+    expect(fractionAlongLineString(p0, line)).toBeCloseTo(0, 3);
+  });
+
+  it('returns ~1 at the route end', () => {
+    expect(fractionAlongLineString(p2, line)).toBeCloseTo(1, 3);
+  });
+
+  it('is proportional to real arc length, not vertex index, on an unevenly spaced route', () => {
+    const expected = d01 / total;
+    const fraction = fractionAlongLineString(p1, line);
+    expect(fraction).toBeCloseTo(expected, 3);
+    // The naive index-based fraction would have placed this vertex at 0.5.
+    expect(fraction).toBeLessThan(0.3);
+  });
+
+  it('returns the expected fraction for a point at a known segment midpoint', () => {
+    const mid = { lat: 52.3731, lng: (p0.lng + p1.lng) / 2 };
+    const expected = d01 / 2 / total;
+    expect(fractionAlongLineString(mid, line)).toBeCloseTo(expected, 3);
+  });
+
+  it('projects a point off to the side onto the nearest point on the route', () => {
+    const onLineMid = { lat: 52.3731, lng: (p0.lng + p1.lng) / 2 };
+    const offToSide = { lat: 52.374, lng: (p0.lng + p1.lng) / 2 }; // ~100 m north
+    const expected = d01 / 2 / total;
+    expect(fractionAlongLineString(offToSide, line)).toBeCloseTo(expected, 2);
+    // A perpendicular nudge shouldn't meaningfully change where it lands
+    // along the route.
+    const delta = Math.abs(
+      fractionAlongLineString(offToSide, line) - fractionAlongLineString(onLineMid, line),
+    );
+    expect(delta).toBeLessThan(0.01);
   });
 });

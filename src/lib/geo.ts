@@ -42,13 +42,25 @@ function toLocalXY(p: LatLng, origin: LatLng): { x: number; y: number } {
   };
 }
 
-/** Shortest distance in metres from a point to a 2-vertex segment. */
-function distanceToSegmentM(p: LatLng, a: LatLng, b: LatLng): number {
+/**
+ * Closest point on a 2-vertex segment to `p`, in the segment's local planar
+ * frame. `t` is the clamped projection parameter (0 = at `a`, 1 = at `b`);
+ * `distanceM` is the perpendicular (or endpoint) distance to that point.
+ *
+ * Shared by `distanceToLineStringM` (which only needs `distanceM`) and
+ * `fractionAlongLineString` (which also needs `t` to locate the point along
+ * the route).
+ */
+function closestPointOnSegment(
+  p: LatLng,
+  a: LatLng,
+  b: LatLng,
+): { distanceM: number; t: number } {
   const pl = toLocalXY(p, a);
   const bl = toLocalXY(b, a);
 
   const lengthSq = bl.x ** 2 + bl.y ** 2;
-  if (lengthSq === 0) return haversineM(p, a);
+  if (lengthSq === 0) return { distanceM: haversineM(p, a), t: 0 };
 
   // Projection parameter, clamped to the segment.
   let t = (pl.x * bl.x + pl.y * bl.y) / lengthSq;
@@ -56,7 +68,12 @@ function distanceToSegmentM(p: LatLng, a: LatLng, b: LatLng): number {
 
   const dx = pl.x - t * bl.x;
   const dy = pl.y - t * bl.y;
-  return Math.sqrt(dx ** 2 + dy ** 2);
+  return { distanceM: Math.sqrt(dx ** 2 + dy ** 2), t };
+}
+
+/** Shortest distance in metres from a point to a 2-vertex segment. */
+function distanceToSegmentM(p: LatLng, a: LatLng, b: LatLng): number {
+  return closestPointOnSegment(p, a, b).distanceM;
 }
 
 /** Shortest distance in metres from a point to any part of a LineString. */
@@ -74,4 +91,42 @@ export function distanceToLineStringM(p: LatLng, line: LineString): number {
     min = Math.min(min, distanceToSegmentM(p, a, b));
   }
   return min;
+}
+
+/**
+ * Fraction (0..1) of `line`'s total length at the point on it closest to `p`.
+ *
+ * Used by the dev-panel simulator to jump directly to a stop: a stop's
+ * *index* among the tour's segments is not proportional to its distance
+ * along the route, so `index / (count - 1)` targets the wrong place on any
+ * route that isn't evenly spaced. Projecting the stop's own trigger
+ * coordinate onto the route and taking cumulative-distance-to-there is the
+ * only fraction that actually lands within the stop's trigger radius.
+ */
+export function fractionAlongLineString(p: LatLng, line: LineString): number {
+  const coords = line.coordinates;
+  if (coords.length < 2) return 0;
+
+  const points: LatLng[] = coords.map(([lng, lat]) => ({ lat, lng }));
+
+  const cumulativeM = [0];
+  for (let i = 1; i < points.length; i++) {
+    cumulativeM.push(cumulativeM[i - 1] + haversineM(points[i - 1], points[i]));
+  }
+  const totalM = cumulativeM[cumulativeM.length - 1];
+  if (totalM === 0) return 0;
+
+  let bestDistanceM = Infinity;
+  let bestAlongM = 0;
+  for (let i = 0; i < points.length - 1; i++) {
+    const a = points[i];
+    const b = points[i + 1];
+    const segLenM = haversineM(a, b);
+    const { distanceM, t } = closestPointOnSegment(p, a, b);
+    if (distanceM < bestDistanceM) {
+      bestDistanceM = distanceM;
+      bestAlongM = cumulativeM[i] + t * segLenM;
+    }
+  }
+  return bestAlongM / totalM;
 }
