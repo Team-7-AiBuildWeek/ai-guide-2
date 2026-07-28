@@ -12,6 +12,8 @@ import type { Segment } from '../../types/tour';
 export class HtmlAudioPlayer implements AudioPlayer {
   private readonly element: HTMLAudioElement;
   private playing = false;
+  private currentResolve: (() => void) | null = null;
+  private currentCleanup: (() => void) | null = null;
 
   constructor() {
     this.element = new Audio();
@@ -33,12 +35,14 @@ export class HtmlAudioPlayer implements AudioPlayer {
 
   play(segment: Segment): Promise<void> {
     if (segment.audioUrl === null) {
-      return Promise.reject(new Error(`Segment ${segment.id} has no audioUrl`));
+      console.warn(`Segment ${segment.id} has no audioUrl`);
+      return Promise.resolve();
     }
 
+    // Settle any previous playback first
     this.stop();
 
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       const finish = () => {
         cleanup();
         this.playing = false;
@@ -47,12 +51,18 @@ export class HtmlAudioPlayer implements AudioPlayer {
       const fail = () => {
         cleanup();
         this.playing = false;
-        reject(new Error(`Playback failed for segment ${segment.id}`));
+        console.warn(`Playback failed for segment ${segment.id}`);
+        resolve();
       };
       const cleanup = () => {
         this.element.removeEventListener('ended', finish);
         this.element.removeEventListener('error', fail);
+        this.currentResolve = null;
+        this.currentCleanup = null;
       };
+
+      this.currentResolve = resolve;
+      this.currentCleanup = cleanup;
 
       this.element.addEventListener('ended', finish);
       this.element.addEventListener('error', fail);
@@ -64,6 +74,16 @@ export class HtmlAudioPlayer implements AudioPlayer {
   }
 
   stop(): void {
+    // Store references before calling cleanup (which clears them)
+    const resolve = this.currentResolve;
+    const cleanup = this.currentCleanup;
+
+    if (cleanup) {
+      cleanup();
+    }
+    if (resolve) {
+      resolve();
+    }
     this.element.pause();
     this.playing = false;
   }

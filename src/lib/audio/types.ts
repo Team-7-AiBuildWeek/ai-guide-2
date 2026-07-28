@@ -6,7 +6,11 @@ export interface AudioPlayer {
    * allow programmatic playback until audio has been started once by a tap.
    */
   unlock(): Promise<void>;
-  /** Resolves when the segment has finished playing or was stopped. */
+  /**
+   * Plays a segment. Always resolves, never rejects. If the segment has no
+   * audioUrl or playback fails, logs a warning and resolves immediately.
+   * Resolves when the segment finishes playing or is stopped.
+   */
   play(segment: Segment): Promise<void>;
   stop(): void;
   isPlaying(): boolean;

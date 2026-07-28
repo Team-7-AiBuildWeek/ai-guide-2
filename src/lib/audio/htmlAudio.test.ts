@@ -1,0 +1,134 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { HtmlAudioPlayer } from './htmlAudio';
+import type { Segment } from '../../types/tour';
+
+class FakeAudio {
+  src = '';
+  preload = '';
+  paused = true;
+  listeners: Record<string, Set<() => void>> = {
+    ended: new Set(),
+    error: new Set(),
+  };
+
+  constructor() {
+    vi.spyOn(this, 'addEventListener');
+    vi.spyOn(this, 'removeEventListener');
+    vi.spyOn(this, 'play');
+    vi.spyOn(this, 'pause');
+  }
+
+  play() {
+    this.paused = false;
+    return Promise.resolve();
+  }
+
+  pause() {
+    this.paused = true;
+  }
+
+  addEventListener(event: string, handler: () => void) {
+    if (event in this.listeners) {
+      this.listeners[event].add(handler);
+    }
+  }
+
+  removeEventListener(event: string, handler: () => void) {
+    if (event in this.listeners) {
+      this.listeners[event].delete(handler);
+    }
+  }
+
+  fireEnded() {
+    this.listeners.ended.forEach((handler) => handler());
+  }
+
+  fireError() {
+    this.listeners.error.forEach((handler) => handler());
+  }
+}
+
+function installFakeAudio() {
+  let fakeAudio: FakeAudio;
+  vi.stubGlobal('Audio', class extends FakeAudio {
+    constructor() {
+      super();
+      fakeAudio = this;
+    }
+  });
+  return { getFakeAudio: () => fakeAudio };
+}
+
+const segment: Segment = {
+  id: 'seg-0',
+  kind: 'stop',
+  order: 0,
+  title: 'Dam Square',
+  script: 'You are standing on Dam Square.',
+  audioUrl: 'https://example.com/audio.mp3',
+  durationMs: 5000,
+  trigger: { lat: 52.3731, lng: 4.8936 },
+  triggerRadiusM: 25,
+  poiId: 'poi-0',
+};
+
+describe('HtmlAudioPlayer', () => {
+  beforeEach(() => vi.unstubAllGlobals());
+
+  it('resolves play() when the fake fires ended', async () => {
+    const { getFakeAudio } = installFakeAudio();
+    const player = new HtmlAudioPlayer();
+    const playPromise = player.play(segment);
+    const fakeAudio = getFakeAudio();
+    fakeAudio.fireEnded();
+    await expect(playPromise).resolves.toBeUndefined();
+  });
+
+  it('settles play() promise when stop() is called mid-playback', async () => {
+    installFakeAudio();
+    const player = new HtmlAudioPlayer();
+    const playPromise = player.play(segment);
+    player.stop();
+    await expect(playPromise).resolves.toBeUndefined();
+  });
+
+  it('starting a second play() while one is in flight settles the first', async () => {
+    const { getFakeAudio } = installFakeAudio();
+    const player = new HtmlAudioPlayer();
+    const firstPromise = player.play(segment);
+    const fakeAudio = getFakeAudio();
+    const listenerCountBefore = fakeAudio.listeners.ended.size;
+    const secondPromise = player.play({
+      ...segment,
+      id: 'seg-1',
+      audioUrl: 'https://example.com/audio2.mp3',
+    });
+    const listenerCountAfter = fakeAudio.listeners.ended.size;
+    // First should be settled
+    await expect(firstPromise).resolves.toBeUndefined();
+    // Only one pair of listeners should be active
+    expect(listenerCountAfter).toBe(listenerCountBefore);
+  });
+
+  it('play() with audioUrl: null resolves rather than rejecting', async () => {
+    installFakeAudio();
+    const player = new HtmlAudioPlayer();
+    const playPromise = player.play({
+      ...segment,
+      audioUrl: null,
+    });
+    await expect(playPromise).resolves.toBeUndefined();
+  });
+
+  it('isPlaying() transitions correctly and is not corrupted by stale callbacks', async () => {
+    const { getFakeAudio } = installFakeAudio();
+    const player = new HtmlAudioPlayer();
+    expect(player.isPlaying()).toBe(false);
+    const playPromise = player.play(segment);
+    expect(player.isPlaying()).toBe(true);
+    const fakeAudio = getFakeAudio();
+    fakeAudio.fireEnded();
+    await playPromise;
+    expect(player.isPlaying()).toBe(false);
+  });
+});

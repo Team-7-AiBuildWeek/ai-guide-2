@@ -10,6 +10,7 @@ import type { Segment } from '../../types/tour';
  */
 export class SpeechSynthesisPlayer implements AudioPlayer {
   private playing = false;
+  private currentResolve: (() => void) | null = null;
 
   constructor(private readonly lang: string) {}
 
@@ -23,17 +24,22 @@ export class SpeechSynthesisPlayer implements AudioPlayer {
     speechSynthesis.cancel();
 
     return new Promise<void>((resolve) => {
-      const utterance = new SpeechSynthesisUtterance(segment.script);
-      utterance.lang = this.lang;
-
       const finish = () => {
         this.playing = false;
+        this.currentResolve = null;
         resolve();
       };
 
-      utterance.onend = finish;
-      utterance.onerror = finish;
+      const utterance = new SpeechSynthesisUtterance(segment.script);
+      utterance.lang = this.lang;
 
+      utterance.onend = finish;
+      utterance.onerror = () => {
+        finish();
+        console.warn(`Speech synthesis error for segment ${segment.id}`);
+      };
+
+      this.currentResolve = resolve;
       this.playing = true;
       speechSynthesis.speak(utterance);
     });
@@ -41,6 +47,10 @@ export class SpeechSynthesisPlayer implements AudioPlayer {
 
   stop(): void {
     speechSynthesis.cancel();
+    if (this.currentResolve) {
+      this.currentResolve();
+      this.currentResolve = null;
+    }
     this.playing = false;
   }
 

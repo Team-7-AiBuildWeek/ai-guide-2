@@ -66,12 +66,14 @@ describe('SpeechSynthesisPlayer', () => {
     expect(player.isPlaying()).toBe(false);
   });
 
-  it('cancels any in-flight utterance on stop', async () => {
+  it('settles the play() promise when stop() is called', async () => {
     const { synth } = installFakeSpeech();
     const player = new SpeechSynthesisPlayer('en');
-    void player.play(segment);
+    const playPromise = player.play(segment);
     player.stop();
     expect(synth.cancel).toHaveBeenCalled();
+    // The key test: the promise must settle, not hang
+    await expect(playPromise).resolves.toBeUndefined();
     expect(player.isPlaying()).toBe(false);
   });
 
