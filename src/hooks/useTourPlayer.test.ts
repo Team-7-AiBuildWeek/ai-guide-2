@@ -63,6 +63,27 @@ class UnlockFailsOnceAudio implements AudioPlayer {
   }
 }
 
+/**
+ * Throws synchronously on its first start() call — e.g. navigator.geolocation
+ * being undefined on an insecure origin — then succeeds on every call after.
+ */
+class LocationThrowsOnce implements LocationProvider {
+  listeners: FixListener[] = [];
+  startCount = 0;
+  private shouldThrow = true;
+  start(listener: FixListener) {
+    this.startCount += 1;
+    if (this.shouldThrow) {
+      this.shouldThrow = false;
+      throw new Error('geolocation unavailable');
+    }
+    this.listeners.push(listener);
+  }
+  stop() {
+    this.listeners = [];
+  }
+}
+
 class RecordingAudio implements AudioPlayer {
   played: Segment[] = [];
   private resolvers: Array<() => void> = [];
@@ -360,5 +381,124 @@ describe('useTourPlayer', () => {
 
     expect(location.startCount).toBe(1);
     expect(audio.played.filter((s) => s.id === 'intro')).toHaveLength(1);
+  });
+
+  it('rolls back start() when location.start() throws, so the app is not started-but-dead and retry works', async () => {
+    const location = new LocationThrowsOnce();
+    const audio = new RecordingAudio();
+    const { result } = renderHook(() =>
+      useTourPlayer({ tour: makeTour(), location, audio }),
+    );
+
+    await act(async () => {
+      await expect(result.current.start()).rejects.toThrow('geolocation unavailable');
+    });
+
+    // Must not be left started-but-dead: `started` flipping true before the
+    // throw would leave the entry screen gone and no live GPS listener, with
+    // no way back short of remounting.
+    expect(result.current.started).toBe(false);
+
+    // A second start() must actually retry location.start() rather than being
+    // silently swallowed by hasStarted staying permanently true.
+    await act(async () => {
+      await result.current.start();
+    });
+
+    expect(result.current.started).toBe(true);
+    expect(location.startCount).toBe(2);
+    expect(location.listeners).toHaveLength(1);
+  });
+
+  describe('outro', () => {
+    const outroSegment: Segment = {
+      id: 'outro',
+      kind: 'outro',
+      order: 99,
+      title: 'That is the walk',
+      script: 'Thanks for walking it.',
+      audioUrl: null,
+      durationMs: null,
+      trigger: null,
+      triggerRadiusM: 0,
+      poiId: null,
+    };
+
+    it('enqueues the outro once every triggerable segment has played, and only once', async () => {
+      const location = new ManualLocation();
+      const audio = new RecordingAudio();
+      const tour = makeTour({ segments: [...makeTour().segments, outroSegment] });
+      const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
+
+      await act(async () => {
+        await result.current.start();
+      });
+
+      // Walk every stop in order, two consecutive hits each (requiredHits: 2).
+      let t = 1_000_000;
+      await act(async () => {
+        for (const coord of STOP_COORDS) {
+          location.emit(fixAt(coord, 10, t));
+          t += 1000;
+          location.emit(fixAt(coord, 10, t));
+          t += 1000;
+        }
+      });
+
+      // Drain the queue: seg-0, seg-1, seg-2, seg-3, then the outro.
+      for (let i = 0; i < 5; i++) {
+        await act(async () => {
+          audio.finishOne();
+        });
+      }
+
+      await waitFor(() =>
+        expect(audio.played.map((s) => s.id)).toEqual([
+          'seg-0',
+          'seg-1',
+          'seg-2',
+          'seg-3',
+          'outro',
+        ]),
+      );
+
+      // Further fixes at the final stop's coordinates must not re-fire the
+      // outro — it already played once.
+      await act(async () => {
+        location.emit(fixAt(STOP_COORDS[3], 10, t));
+        t += 1000;
+        location.emit(fixAt(STOP_COORDS[3], 10, t));
+        await Promise.resolve();
+      });
+
+      expect(audio.played.filter((s) => s.id === 'outro')).toHaveLength(1);
+    });
+
+    it('does not fire the outro when a walker skips ahead without playing every stop', async () => {
+      const location = new ManualLocation();
+      const audio = new RecordingAudio();
+      const tour = makeTour({ segments: [...makeTour().segments, outroSegment] });
+      const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
+
+      await act(async () => {
+        await result.current.start();
+      });
+
+      // A deliberate tap jumps straight to the last stop, skipping seg-1 and
+      // seg-2 — a walker who skips ahead has not finished the tour.
+      act(() => {
+        result.current.playSegment('seg-3');
+      });
+
+      await waitFor(() => expect(audio.played.map((s) => s.id)).toEqual(['seg-3']));
+
+      // Give any pending microtasks every chance to (wrongly) queue the outro.
+      await act(async () => {
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+
+      expect(audio.played.some((s) => s.id === 'outro')).toBe(false);
+    });
   });
 });

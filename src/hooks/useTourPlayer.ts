@@ -90,6 +90,29 @@ export function useTourPlayer({
     [drain, engine],
   );
 
+  // Fires the outro once every triggerable segment (every segment with a
+  // real trigger coordinate — i.e. every stop and walk cue) has played. Not
+  // a new state machine: just a completion check against the engine's own
+  // played set, run after anything that could complete the tour. Guarded by
+  // that same set so it can only ever enqueue once, and it deliberately does
+  // NOT trigger on reaching the last stop by position or index — a walker
+  // who skipped ahead over an earlier stop has not finished, since that
+  // earlier stop's id is still missing from playedIds.
+  const maybeEnqueueOutro = useCallback(() => {
+    const outro = tour.segments.find((s) => s.kind === 'outro');
+    if (!outro) return;
+    if (engine.playedIds.has(outro.id)) return;
+
+    const triggerable = tour.segments.filter((s) => s.trigger !== null);
+    const allPlayed = triggerable.every((s) => engine.playedIds.has(s.id));
+    if (!allPlayed) return;
+
+    // selectManually adds outro.id to the engine's played set as a side
+    // effect, which is what makes the guard above prevent a second fire.
+    engine.selectManually(outro.id);
+    enqueue(outro);
+  }, [tour, engine, enqueue]);
+
   const start = useCallback(async () => {
     if (hasStarted.current) return;
     hasStarted.current = true;
@@ -111,15 +134,28 @@ export function useTourPlayer({
     const intro = tour.segments.find((s) => s.kind === 'intro');
     if (intro) enqueue(intro);
 
-    location.start((fix) => {
-      setLastFix(fix);
-      for (const event of engine.onFix(fix)) {
-        if (event.type === 'fire') enqueue(event.segment);
-        if (event.type === 'offRoute') setOffRoute(true);
-        if (event.type === 'backOnRoute') setOffRoute(false);
-      }
-    });
-  }, [audio, enqueue, engine, location, tour]);
+    try {
+      location.start((fix) => {
+        setLastFix(fix);
+        for (const event of engine.onFix(fix)) {
+          if (event.type === 'fire') enqueue(event.segment);
+          if (event.type === 'offRoute') setOffRoute(true);
+          if (event.type === 'backOnRoute') setOffRoute(false);
+        }
+        maybeEnqueueOutro();
+      });
+    } catch (err) {
+      // navigator.geolocation is undefined on insecure origins in some
+      // browsers, so this can throw synchronously. Without this rollback,
+      // `started` would already be true and `hasStarted` permanently set,
+      // leaving the app on the map screen with no live GPS listener and no
+      // way back short of remounting. Roll back both so the entry screen
+      // re-renders and start() is callable again.
+      hasStarted.current = false;
+      setStarted(false);
+      throw err;
+    }
+  }, [audio, enqueue, engine, location, maybeEnqueueOutro, tour]);
 
   const playSegment = useCallback(
     (id: string) => {
@@ -131,8 +167,9 @@ export function useTourPlayer({
       queue.current = [];
       draining.current = false;
       enqueue(segment);
+      maybeEnqueueOutro();
     },
-    [audio, enqueue, engine],
+    [audio, enqueue, engine, maybeEnqueueOutro],
   );
 
   // Runs once per mount; its cleanup fires only at unmount, via the refs
