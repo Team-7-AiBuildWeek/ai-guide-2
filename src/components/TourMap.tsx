@@ -65,11 +65,13 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
     });
 
     return () => {
-      for (const marker of stopMarkers.current.values()) {
+      const markers = stopMarkers.current;
+      for (const marker of markers.values()) {
         marker.remove();
       }
-      stopMarkers.current.clear();
-      userMarker.current?.remove();
+      markers.clear();
+      const marker = userMarker.current;
+      marker?.remove();
       userMarker.current = null;
       map.current?.remove();
       map.current = null;
