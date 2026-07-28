@@ -18,6 +18,7 @@ export default function App() {
 
   const player = useTourPlayer({ tour, location, audio });
   const [starting, setStarting] = useState(false);
+  const [startError, setStartError] = useState<string | null>(null);
 
   if (!player.started) {
     return (
@@ -30,12 +31,24 @@ export default function App() {
           disabled={starting}
           onClick={async () => {
             setStarting(true);
-            await player.start();
+            setStartError(null);
+            try {
+              await player.start();
+            } catch {
+              setStartError('Could not start the walk. Please try again.');
+            } finally {
+              setStarting(false);
+            }
           }}
           className="rounded-full bg-blue-600 px-8 py-4 text-lg font-semibold disabled:opacity-50"
         >
           {starting ? 'Starting…' : 'Start the walk'}
         </button>
+        {startError !== null && (
+          <p className="text-sm font-medium text-red-400" role="alert">
+            {startError}
+          </p>
+        )}
         <p className="max-w-xs text-xs text-slate-400">
           Keep your phone in your hand with the screen on. Narration starts by itself as
           you arrive at each stop.
