@@ -123,4 +123,21 @@ describe('SimulatedLocation', () => {
     const offRoute = fixes.some((f) => Math.abs(f.lat - 52.3731) > 1e-7);
     expect(offRoute).toBe(true);
   });
+
+  it('pause() halts emission and resume() restarts it', () => {
+    const fixes: Fix[] = [];
+    const sim = new SimulatedLocation(route, { intervalMs: 1000, accuracyM: 10 });
+    sim.start((f) => fixes.push(f));
+    vi.advanceTimersByTime(2000);
+    const countBeforePause = fixes.length;
+
+    sim.pause();
+    vi.advanceTimersByTime(3000);
+    expect(fixes).toHaveLength(countBeforePause);
+
+    sim.resume();
+    vi.advanceTimersByTime(2000);
+    expect(fixes.length).toBeGreaterThan(countBeforePause);
+    sim.stop();
+  });
 });
