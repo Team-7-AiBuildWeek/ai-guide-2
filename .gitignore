@@ -13,6 +13,11 @@ dist-ssr
 *.local
 
 .env.local
+.env
+.env.*.local
+
+# Scratch workspace for subagent-driven execution ledgers
+.superpowers/
 
 # Editor directories and files
 .vscode/*
