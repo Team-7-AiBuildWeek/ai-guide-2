@@ -103,6 +103,23 @@ describe('TriggerEngine — ordering', () => {
     const events = engine.onFix(fixAt(STOP_COORDS[0], 10));
     expect(events).toHaveLength(0);
   });
+
+  it('fires a skipped-over segment when the walker returns to it', () => {
+    const engine = new TriggerEngine(makeTour());
+
+    // Skip straight to stop 2, jumping over stops 0 and 1.
+    engine.onFix(fixAt(STOP_COORDS[2], 10));
+    engine.onFix(fixAt(STOP_COORDS[2], 10)); // fires seg-2, cursor -> 3
+
+    // Walk back to stop 1, which was passed over and never played.
+    engine.onFix(fixAt(STOP_COORDS[1], 10));
+    const events = engine.onFix(fixAt(STOP_COORDS[1], 10));
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({
+      type: 'fire',
+      segment: expect.objectContaining({ id: 'seg-1' }),
+    });
+  });
 });
 
 describe('TriggerEngine — non-triggered segments', () => {
@@ -174,5 +191,23 @@ describe('TriggerEngine — off-route detection', () => {
 
     const back = engine.onFix(fixAt(STOP_COORDS[1], 10, 1_040_000));
     expect(back.some((e) => e.type === 'backOnRoute')).toBe(true);
+  });
+
+  it('does not announce offRoute across a long gap of discarded fixes', () => {
+    const engine = new TriggerEngine(makeTour());
+    const far = { lat: 52.3760, lng: 4.8912 };
+
+    engine.onFix(fixAt(far, 10, 1_000_000)); // first off-route observation
+
+    // Urban canyon: every fix over the next ~10 minutes is too inaccurate to
+    // use and is discarded before it ever reaches off-route evaluation.
+    engine.onFix(fixAt(far, 80, 1_100_000));
+    engine.onFix(fixAt(far, 80, 1_300_000));
+
+    // GPS recovers long after the last valid observation. A single fresh
+    // sample should not retroactively count the whole silent gap as time
+    // spent off-route.
+    const events = engine.onFix(fixAt(far, 10, 1_700_000));
+    expect(events.some((e) => e.type === 'offRoute')).toBe(false);
   });
 });
