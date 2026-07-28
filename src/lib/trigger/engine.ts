@@ -50,11 +50,6 @@ export class TriggerEngine {
    * not discarded for poor accuracy). Used to detect long gaps between
    * observations — see evaluateOffRoute. */
   private lastValidFixAt: number | null = null;
-  /** True if at least one fix was discarded for poor accuracy since the last
-   * valid fix. A gap that is merely sparse (no discards, just infrequent
-   * polling) is still a continuous observation; a gap where fixes arrived
-   * but were unusable is not. */
-  private discardedSinceLastValidFix = false;
 
   constructor(tour: Tour, config: Partial<EngineConfig> = {}) {
     this.tour = tour;
@@ -72,10 +67,7 @@ export class TriggerEngine {
   onFix(fix: Fix): EngineEvent[] {
     // Urban canyons produce wildly inaccurate fixes. Acting on them causes
     // narration to fire streets away from the actual stop.
-    if (fix.accuracyM > this.config.maxAccuracyM) {
-      this.discardedSinceLastValidFix = true;
-      return [];
-    }
+    if (fix.accuracyM > this.config.maxAccuracyM) return [];
 
     const events: EngineEvent[] = [];
     events.push(...this.evaluateOffRoute(fix));
@@ -166,17 +158,14 @@ export class TriggerEngine {
   private evaluateOffRoute(fix: Fix): EngineEvent[] {
     const distanceM = distanceToLineStringM(fix, this.tour.routeGeoJson);
 
-    // How long since we last had a usable fix at all, and whether any fixes
-    // arrived but were discarded for poor accuracy in between. Mobile
-    // browsers suspend JavaScript when the phone backgrounds, and urban
-    // canyons can drop every fix's accuracy below the usable threshold for
-    // minutes at a stretch — neither is "sustained off-route observation",
-    // even though a merely sparse (but unbroken) stream of valid fixes is.
+    // How long since we last had any usable fix at all. Mobile browsers
+    // suspend JavaScript when the phone backgrounds, and urban canyons can
+    // drop every fix's accuracy below the usable threshold for minutes at a
+    // stretch — a gap that long is not "sustained off-route observation",
+    // regardless of why no valid fix arrived during it.
     const gapSincePreviousFixMs =
       this.lastValidFixAt === null ? null : fix.timestamp - this.lastValidFixAt;
-    const hadDiscardsDuringGap = this.discardedSinceLastValidFix;
     this.lastValidFixAt = fix.timestamp;
-    this.discardedSinceLastValidFix = false;
 
     if (distanceM <= this.config.offRouteThresholdM) {
       const wasAnnounced = this.offRouteAnnounced;
@@ -186,15 +175,13 @@ export class TriggerEngine {
     }
 
     const gapTooLong =
-      hadDiscardsDuringGap &&
-      gapSincePreviousFixMs !== null &&
-      gapSincePreviousFixMs > this.config.offRouteDurationMs;
+      gapSincePreviousFixMs !== null && gapSincePreviousFixMs > this.config.offRouteDurationMs;
 
     if (this.offRouteSince === null || gapTooLong) {
       // Either the first off-route sample, or a fix that arrived after a
-      // long gap during which fixes were being dropped for poor accuracy:
-      // treat it as a fresh observation rather than the far end of one
-      // continuous off-route stretch.
+      // gap long enough that we can't claim continuous observation: treat
+      // it as a fresh observation rather than the far end of one continuous
+      // off-route stretch.
       this.offRouteSince = fix.timestamp;
       return [];
     }

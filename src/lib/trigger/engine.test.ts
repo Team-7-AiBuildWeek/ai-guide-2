@@ -160,54 +160,67 @@ describe('TriggerEngine — manual selection', () => {
 });
 
 describe('TriggerEngine — off-route detection', () => {
+  const far = { lat: 52.3760, lng: 4.8912 }; // ~320 m north of the route
+  const START = 1_000_000;
+
   it('emits offRoute after the threshold distance is held for the duration', () => {
     const engine = new TriggerEngine(makeTour());
-    const far = { lat: 52.3760, lng: 4.8912 }; // ~320 m north of the route
 
-    engine.onFix(fixAt(far, 10, 1_000_000));
-    const early = engine.onFix(fixAt(far, 10, 1_010_000)); // 10 s — too soon
-    expect(early.some((e) => e.type === 'offRoute')).toBe(false);
+    // Realistic ~1 Hz GPS cadence, continuously off-route.
+    const fireTimestamps: number[] = [];
+    for (let t = START; t <= START + 34_000; t += 1_000) {
+      const events = engine.onFix(fixAt(far, 10, t));
+      if (events.some((e) => e.type === 'offRoute')) fireTimestamps.push(t);
+    }
 
-    const late = engine.onFix(fixAt(far, 10, 1_035_000)); // 35 s — past threshold
-    expect(late.some((e) => e.type === 'offRoute')).toBe(true);
+    // Nothing should have fired before the 30 s threshold, and exactly one
+    // event should have fired at or after it.
+    expect(fireTimestamps).toHaveLength(1);
+    expect(fireTimestamps[0] - START).toBeGreaterThanOrEqual(30_000);
   });
 
   it('emits offRoute only once until the user returns', () => {
     const engine = new TriggerEngine(makeTour());
-    const far = { lat: 52.3760, lng: 4.8912 };
 
-    engine.onFix(fixAt(far, 10, 1_000_000));
-    engine.onFix(fixAt(far, 10, 1_035_000));
-    const again = engine.onFix(fixAt(far, 10, 1_060_000));
-    expect(again.some((e) => e.type === 'offRoute')).toBe(false);
+    let fireCount = 0;
+    for (let t = START; t <= START + 60_000; t += 1_000) {
+      const events = engine.onFix(fixAt(far, 10, t));
+      fireCount += events.filter((e) => e.type === 'offRoute').length;
+    }
+
+    // Still off-route a further 30 s past the original announcement — must
+    // not announce a second time.
+    expect(fireCount).toBe(1);
   });
 
   it('emits backOnRoute when the user returns to the route', () => {
     const engine = new TriggerEngine(makeTour());
-    const far = { lat: 52.3760, lng: 4.8912 };
 
-    engine.onFix(fixAt(far, 10, 1_000_000));
-    engine.onFix(fixAt(far, 10, 1_035_000)); // offRoute fires
+    let t = START;
+    for (; t <= START + 30_000; t += 1_000) {
+      engine.onFix(fixAt(far, 10, t)); // drives past the announcement threshold
+    }
 
-    const back = engine.onFix(fixAt(STOP_COORDS[1], 10, 1_040_000));
+    // One more 1 Hz sample, back on the route.
+    const back = engine.onFix(fixAt(STOP_COORDS[1], 10, t));
     expect(back.some((e) => e.type === 'backOnRoute')).toBe(true);
   });
 
-  it('does not announce offRoute across a long gap of discarded fixes', () => {
+  it('does not announce offRoute across a long gap with no fixes at all', () => {
     const engine = new TriggerEngine(makeTour());
-    const far = { lat: 52.3760, lng: 4.8912 };
 
-    engine.onFix(fixAt(far, 10, 1_000_000)); // first off-route observation
+    // A few 1 Hz off-route samples, well short of the 30 s threshold.
+    engine.onFix(fixAt(far, 10, START));
+    engine.onFix(fixAt(far, 10, START + 1_000));
+    engine.onFix(fixAt(far, 10, START + 2_000));
 
-    // Urban canyon: every fix over the next ~10 minutes is too inaccurate to
-    // use and is discarded before it ever reaches off-route evaluation.
-    engine.onFix(fixAt(far, 80, 1_100_000));
-    engine.onFix(fixAt(far, 80, 1_300_000));
-
-    // GPS recovers long after the last valid observation. A single fresh
-    // sample should not retroactively count the whole silent gap as time
-    // spent off-route.
-    const events = engine.onFix(fixAt(far, 10, 1_700_000));
+    // Then nothing at all for ten minutes — e.g. the tab was backgrounded —
+    // before a single fresh off-route fix arrives. The gap alone, with no
+    // discarded fixes in it, must be enough to restart the timer: a single
+    // sample after a silent gap this long cannot be "sustained" off-route
+    // observation.
+    const tenMinutesLater = START + 2_000 + 10 * 60_000;
+    const events = engine.onFix(fixAt(far, 10, tenMinutesLater));
     expect(events.some((e) => e.type === 'offRoute')).toBe(false);
   });
 });
