@@ -1091,12 +1091,12 @@ export class TriggerEngine {
 - [ ] **Step 5: Run tests to verify they pass**
 
 Run: `npm test src/lib/trigger`
-Expected: PASS — 17 tests
+Expected: PASS — 19 tests
 
 - [ ] **Step 6: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS — 34 tests total
+Expected: PASS — 36 tests total
 
 - [ ] **Step 7: Commit**
 
@@ -1387,7 +1387,7 @@ export class HtmlAudioPlayer implements AudioPlayer {
 - [ ] **Step 7: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS — 39 tests total
+Expected: PASS — 41 tests total
 
 - [ ] **Step 8: Commit**
 
@@ -1888,7 +1888,7 @@ Expected: PASS — 6 tests
 - [ ] **Step 7: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS — 45 tests total
+Expected: PASS — 47 tests total
 
 - [ ] **Step 8: Commit**
 
@@ -2198,7 +2198,7 @@ export default function App() {
 - [ ] **Step 6: Verify it builds and the suite still passes**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 45 tests pass
+Expected: build succeeds; 47 tests pass
 
 - [ ] **Step 7: Commit**
 
@@ -2455,7 +2455,7 @@ Add immediately after the `useTourPlayer` call:
 - [ ] **Step 7: Verify build and full suite**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 49 tests pass
+Expected: build succeeds; 51 tests pass
 
 - [ ] **Step 8: Commit**
 
@@ -2695,7 +2695,7 @@ Create `docs/TESTING.md`:
 - [ ] **Step 5: Verify build and full suite**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 49 tests pass
+Expected: build succeeds; 51 tests pass
 
 - [ ] **Step 6: Run the simulated walk end to end**
 
@@ -2712,7 +2712,7 @@ git commit -m "feat: add dev simulator panel, PWA shell and manual test procedur
 
 ## Definition of done
 
-- [ ] `npm test` passes with 49 tests
+- [ ] `npm test` passes with 51 tests
 - [ ] `npm run build` succeeds with no TypeScript errors
 - [ ] The simulated walk in `docs/TESTING.md` completes all eight checks
 - [ ] The app has been loaded on a real phone over HTTPS and tracked real GPS
