@@ -8,6 +8,7 @@ import { SpeechSynthesisPlayer } from './lib/audio/speechSynthesis';
 import { TourMap } from './components/TourMap';
 import { NowPlaying } from './components/NowPlaying';
 import { StopList } from './components/StopList';
+import { DevPanel } from './components/DevPanel';
 
 // ?sim=1 in the URL runs the simulator instead of real GPS. Read once at
 // module scope — never recomputed per render — so it cannot make the
@@ -87,13 +88,14 @@ export default function App() {
           {gpsError}
         </p>
       )}
-      <div className="min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1">
         <TourMap
           tour={tour}
           lastFix={player.lastFix}
           playedIds={player.playedIds}
           onSelectStop={player.playSegment}
         />
+        {useSim && <DevPanel sim={location as SimulatedLocation} tour={tour} />}
       </div>
       <NowPlaying segment={player.currentSegment} offRoute={player.offRoute} />
       <div className="max-h-56 shrink-0 bg-white">
