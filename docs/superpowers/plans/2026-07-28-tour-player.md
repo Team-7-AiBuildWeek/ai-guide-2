@@ -30,7 +30,11 @@
 
 **Interfaces:**
 - Consumes: nothing
-- Produces: `LatLng`, `Segment`, `SegmentKind`, `Tour` types; `haversineM(a: LatLng, b: LatLng): number`; `distanceToLineStringM(p: LatLng, line: LineString): number`
+- Produces: `LatLng`, `Segment`, `SegmentKind`, `Tour` types; `M_PER_DEG_LAT: number`; `metresPerDegreeLng(lat: number): number`; `haversineM(a: LatLng, b: LatLng): number`; `distanceToLineStringM(p: LatLng, line: LineString): number`
+
+`metresPerDegreeLng` is exported because Tasks 2 and 3 both need the same
+latitude-dependent conversion. Do not re-derive `111320 * Math.cos(lat)` in
+those files — import this instead.
 
 - [ ] **Step 1: Scaffold the project**
 
@@ -128,8 +132,20 @@ Create `src/lib/geo.test.ts`:
 
 ```typescript
 import { describe, it, expect } from 'vitest';
-import { haversineM, distanceToLineStringM } from './geo';
+import { haversineM, distanceToLineStringM, metresPerDegreeLng } from './geo';
 import type { LineString } from '../types/tour';
+
+describe('metresPerDegreeLng', () => {
+  it('equals the equatorial constant at the equator', () => {
+    expect(metresPerDegreeLng(0)).toBeCloseTo(111320, 0);
+  });
+
+  it('shrinks with latitude', () => {
+    // cos(52.37°) ≈ 0.6106
+    expect(metresPerDegreeLng(52.3731)).toBeGreaterThan(67000);
+    expect(metresPerDegreeLng(52.3731)).toBeLessThan(68500);
+  });
+});
 
 describe('haversineM', () => {
   it('returns 0 for identical points', () => {
@@ -202,7 +218,20 @@ import type { LatLng, LineString } from '../types/tour';
 
 const EARTH_RADIUS_M = 6371008.8;
 
+/** Metres per degree of latitude. Effectively constant across the globe. */
+export const M_PER_DEG_LAT = 111320;
+
 const toRad = (deg: number): number => (deg * Math.PI) / 180;
+
+/**
+ * Metres per degree of longitude at a given latitude.
+ *
+ * Shared by the simulator and test helpers — do not re-derive this formula
+ * elsewhere.
+ */
+export function metresPerDegreeLng(lat: number): number {
+  return M_PER_DEG_LAT * Math.cos(toRad(lat));
+}
 
 /** Great-circle distance in metres between two coordinates. */
 export function haversineM(a: LatLng, b: LatLng): number {
@@ -223,11 +252,9 @@ export function haversineM(a: LatLng, b: LatLng): number {
  * Accurate enough for the sub-kilometre distances a walking tour deals with.
  */
 function toLocalXY(p: LatLng, origin: LatLng): { x: number; y: number } {
-  const mPerDegLat = 111320;
-  const mPerDegLng = 111320 * Math.cos(toRad(origin.lat));
   return {
-    x: (p.lng - origin.lng) * mPerDegLng,
-    y: (p.lat - origin.lat) * mPerDegLat,
+    x: (p.lng - origin.lng) * metresPerDegreeLng(origin.lat),
+    y: (p.lat - origin.lat) * M_PER_DEG_LAT,
   };
 }
 
@@ -269,7 +296,7 @@ export function distanceToLineStringM(p: LatLng, line: LineString): number {
 - [ ] **Step 7: Run tests to verify they pass**
 
 Run: `npm test`
-Expected: PASS — 7 tests
+Expected: PASS — 9 tests
 
 - [ ] **Step 8: Commit**
 
@@ -462,7 +489,7 @@ Create `src/lib/location/simulated.ts`:
 ```typescript
 import type { Fix, FixListener, LocationProvider } from './types';
 import type { LatLng, LineString } from '../../types/tour';
-import { haversineM } from '../geo';
+import { haversineM, metresPerDegreeLng, M_PER_DEG_LAT } from '../geo';
 
 export interface SimulatedOptions {
   /** Base walking speed in metres per second. Default 1.4 (normal pace). */
@@ -592,13 +619,11 @@ export class SimulatedLocation implements LocationProvider {
 
   private applyNoise(p: LatLng): LatLng {
     if (this.noiseM === 0) return p;
-    const mPerDegLat = 111320;
-    const mPerDegLng = 111320 * Math.cos((p.lat * Math.PI) / 180);
     const angle = Math.random() * 2 * Math.PI;
     const radius = Math.random() * this.noiseM;
     return {
-      lat: p.lat + (Math.sin(angle) * radius) / mPerDegLat,
-      lng: p.lng + (Math.cos(angle) * radius) / mPerDegLng,
+      lat: p.lat + (Math.sin(angle) * radius) / M_PER_DEG_LAT,
+      lng: p.lng + (Math.cos(angle) * radius) / metresPerDegreeLng(p.lat),
     };
   }
 }
@@ -640,6 +665,7 @@ Create `src/lib/trigger/testFixtures.ts`:
 
 ```typescript
 import type { Segment, Tour } from '../../types/tour';
+import { metresPerDegreeLng } from '../geo';
 
 /** Four stops in a straight east-west line, roughly 165 m apart. */
 export const STOP_COORDS = [
@@ -693,8 +719,7 @@ export function fixAt(
 
 /** Offsets a coordinate east by `metres`. */
 export function eastOf(coord: { lat: number; lng: number }, metres: number) {
-  const mPerDegLng = 111320 * Math.cos((coord.lat * Math.PI) / 180);
-  return { lat: coord.lat, lng: coord.lng + metres / mPerDegLng };
+  return { lat: coord.lat, lng: coord.lng + metres / metresPerDegreeLng(coord.lat) };
 }
 ```
 
@@ -1071,7 +1096,7 @@ Expected: PASS — 17 tests
 - [ ] **Step 6: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS — 31 tests total
+Expected: PASS — 33 tests total
 
 - [ ] **Step 7: Commit**
 
@@ -1362,7 +1387,7 @@ export class HtmlAudioPlayer implements AudioPlayer {
 - [ ] **Step 7: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS — 36 tests total
+Expected: PASS — 38 tests total
 
 - [ ] **Step 8: Commit**
 
@@ -1564,6 +1589,10 @@ class RecordingAudio implements AudioPlayer {
   }
   stop() {
     this.playing = false;
+    // Real players resolve their pending playback when cancelled — cancelling
+    // speechSynthesis fires onend, and pausing an <audio> element ends the
+    // wait. The fake must mirror that, or it hides interruption bugs.
+    this.resolvers.shift()?.();
   }
   isPlaying() {
     return this.playing;
@@ -1659,6 +1688,40 @@ describe('useTourPlayer', () => {
     await waitFor(() => expect(audio.played.map((s) => s.id)).toEqual(['seg-2']));
   });
 
+  it('keeps the manual selection current after it interrupts playback', async () => {
+    const location = new ManualLocation();
+    const audio = new RecordingAudio();
+    const { result } = renderHook(() =>
+      useTourPlayer({ tour: makeTour(), location, audio }),
+    );
+
+    await act(async () => {
+      await result.current.start();
+    });
+
+    await act(async () => {
+      location.emit(fixAt(STOP_COORDS[0], 10, 1_000_000));
+      location.emit(fixAt(STOP_COORDS[0], 10, 1_001_000));
+    });
+    await waitFor(() => expect(result.current.currentSegment?.id).toBe('seg-0'));
+
+    // Interrupting resolves seg-0's pending play(). Without a generation
+    // guard, that stale drain loop resumes, finds the queue empty and clears
+    // currentSegment — blanking the bar while seg-2 is actually playing.
+    await act(async () => {
+      result.current.playSegment('seg-2');
+    });
+
+    await waitFor(() => expect(result.current.currentSegment?.id).toBe('seg-2'));
+
+    // Give the stale loop every chance to misbehave before asserting again.
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(result.current.currentSegment?.id).toBe('seg-2');
+  });
+
   it('sets offRoute when the engine reports it', async () => {
     const location = new ManualLocation();
     const audio = new RecordingAudio();
@@ -1737,12 +1800,17 @@ export function useTourPlayer({
   // segments queue behind whatever is playing (spec §8).
   const queue = useRef<Segment[]>([]);
   const draining = useRef(false);
+  // Bumped whenever the queue is discarded out from under a running drain
+  // loop. A loop whose generation is stale must not touch shared state — see
+  // playSegment.
+  const generation = useRef(0);
 
   const drain = useCallback(async () => {
     if (draining.current) return;
     draining.current = true;
+    const myGeneration = generation.current;
 
-    while (queue.current.length > 0) {
+    while (queue.current.length > 0 && generation.current === myGeneration) {
       const next = queue.current.shift() as Segment;
       setCurrentSegment(next);
       try {
@@ -1752,8 +1820,13 @@ export function useTourPlayer({
       }
     }
 
-    draining.current = false;
-    setCurrentSegment(null);
+    // Only the newest loop owns the trailing state. A superseded loop exits
+    // silently; clearing here would blank the segment its replacement is
+    // already playing.
+    if (generation.current === myGeneration) {
+      draining.current = false;
+      setCurrentSegment(null);
+    }
   }, [audio]);
 
   const enqueue = useCallback(
@@ -1785,6 +1858,9 @@ export function useTourPlayer({
   const playSegment = useCallback(
     (id: string) => {
       const segment = engine.selectManually(id);
+      // A deliberate tap outranks whatever is playing. Automatic triggers
+      // still queue (spec §8) — this interruption is user-initiated.
+      generation.current += 1;
       audio.stop();
       queue.current = [];
       draining.current = false;
@@ -1807,12 +1883,12 @@ export function useTourPlayer({
 - [ ] **Step 6: Run test to verify it passes**
 
 Run: `npm test src/hooks`
-Expected: PASS — 5 tests
+Expected: PASS — 6 tests
 
 - [ ] **Step 7: Run the whole suite**
 
 Run: `npm test`
-Expected: PASS — 41 tests total
+Expected: PASS — 44 tests total
 
 - [ ] **Step 8: Commit**
 
@@ -2122,7 +2198,7 @@ export default function App() {
 - [ ] **Step 6: Verify it builds and the suite still passes**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 41 tests pass
+Expected: build succeeds; 44 tests pass
 
 - [ ] **Step 7: Commit**
 
@@ -2379,7 +2455,7 @@ Add immediately after the `useTourPlayer` call:
 - [ ] **Step 7: Verify build and full suite**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 45 tests pass
+Expected: build succeeds; 48 tests pass
 
 - [ ] **Step 8: Commit**
 
@@ -2619,7 +2695,7 @@ Create `docs/TESTING.md`:
 - [ ] **Step 5: Verify build and full suite**
 
 Run: `npm run build && npm test`
-Expected: build succeeds; 45 tests pass
+Expected: build succeeds; 48 tests pass
 
 - [ ] **Step 6: Run the simulated walk end to end**
 
@@ -2636,7 +2712,7 @@ git commit -m "feat: add dev simulator panel, PWA shell and manual test procedur
 
 ## Definition of done
 
-- [ ] `npm test` passes with 45 tests
+- [ ] `npm test` passes with 48 tests
 - [ ] `npm run build` succeeds with no TypeScript errors
 - [ ] The simulated walk in `docs/TESTING.md` completes all eight checks
 - [ ] The app has been loaded on a real phone over HTTPS and tracked real GPS
