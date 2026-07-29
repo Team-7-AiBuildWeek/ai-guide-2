@@ -1,0 +1,63 @@
+{
+  "_synthetic": true,
+  "_comment": "Hand-authored placeholder for a recorded claude-opus-5 curation response. It was never returned by the live API — no Anthropic call was made to produce it. Every wikidataQid below is checked against apps/api/cassettes (the real recorded discovery cassette) by curation/index.test.ts, and every consecutive standingPoint pair is checked to be >=100m apart with haversineM from @ai-guide/shared. Replace this file with a real recording (CASSETTE_MODE=record) once budget is approved for a live curation call; until then it exists only to exercise curate()'s parsing and validation paths in tests.",
+  "tourTitle": "Bratislava's Castle Hill to Old Town",
+  "stops": [
+    {
+      "wikidataQids": ["Q593311"],
+      "standingPoint": { "lat": 48.142222222222, "lng": 17.1 },
+      "title": "Bratislava Castle",
+      "why": "The whitewashed fortress on the hill is the city's most recognisable silhouette and the natural place to start: it overlooks the Old Town the rest of the walk covers, and its courtyard sets up the Habsburg-era history that recurs at nearly every later stop.",
+      "order": 0
+    },
+    {
+      "wikidataQids": ["Q239560"],
+      "standingPoint": { "lat": 48.141944444444, "lng": 17.104722222222 },
+      "title": "St Martin's Cathedral",
+      "why": "Ten Hungarian kings and queens were crowned here, including Maria Theresa. The coronation route the walk now follows toward the Old Town was the same one the procession took.",
+      "order": 1
+    },
+    {
+      "wikidataQids": ["Q481659"],
+      "standingPoint": { "lat": 48.1425, "lng": 17.1064 },
+      "title": "Universitas Istropolitana",
+      "why": "Bratislava's short-lived 15th-century university, founded by Matthias Corvinus. Its modest surviving building is easy to miss on the way into the Old Town, but it explains why the city briefly rivalled Vienna as a seat of learning.",
+      "order": 2
+    },
+    {
+      "wikidataQids": ["Q1717975"],
+      "standingPoint": { "lat": 48.1451, "lng": 17.1068 },
+      "title": "Michael's Gate",
+      "why": "The sole surviving gate of the medieval fortifications, and still the Old Town's northern threshold. Passing under its tower is the clearest way to feel the transition from the modern city into the walled centre.",
+      "order": 3
+    },
+    {
+      "wikidataQids": ["Q1450292"],
+      "standingPoint": { "lat": 48.14490278, "lng": 17.10831944 },
+      "title": "Franciscan Church",
+      "why": "One of the oldest sacred buildings in the city, tucked just off the main pedestrian street. Its plain Gothic exterior is a deliberate contrast with the Baroque façades the walk passes next.",
+      "order": 4
+    },
+    {
+      "wikidataQids": ["Q938516"],
+      "standingPoint": { "lat": 48.14396194, "lng": 17.10867389 },
+      "title": "Primate's Palace",
+      "why": "Napoleon and Emperor Francis II signed the Peace of Pressburg in the Hall of Mirrors here in 1805. The neoclassical façade, with its cast-iron cardinal's-hat roof ornament, is worth pausing under before descending toward the river.",
+      "order": 5
+    },
+    {
+      "wikidataQids": ["Q1639599"],
+      "standingPoint": { "lat": 48.14176389, "lng": 17.10826389 },
+      "title": "Hviezdoslavovo námestie",
+      "why": "A long, leafy square running down toward the Danube and the National Theatre, named for the Slovak poet Pavol Országh Hviezdoslav. It gives the walk a breather between the dense monument clusters on either side.",
+      "order": 6
+    },
+    {
+      "wikidataQids": ["Q949192", "Q4178866", "Q439356"],
+      "standingPoint": { "lat": 48.14341937, "lng": 17.10850522 },
+      "title": "Hlavné námestie",
+      "why": "The Old Town's main square, the Roland Fountain at its centre and the Old Town Hall on its north side are metres apart and heard from the same spot — this is the natural closing stop, where the walk's threads (market square, town governance, coronation-era fountain) come together.",
+      "order": 7
+    }
+  ]
+}

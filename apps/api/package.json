@@ -7,5 +7,9 @@
     "dev": "node --experimental-strip-types --watch src/index.ts",
     "build": "tsc -b"
   },
-  "dependencies": { "hono": "^4.9.0", "@ai-guide/shared": "*" }
+  "dependencies": {
+    "@ai-guide/shared": "*",
+    "@anthropic-ai/sdk": "^0.115.0",
+    "hono": "^4.9.0"
+  }
 }

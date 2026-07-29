@@ -1,7 +1,7 @@
 ﻿import { useState } from 'react';
 import type { SimulatedLocation } from '../lib/location/simulated';
 import type { LatLng, Segment, Tour } from '@ai-guide/shared';
-import { fractionAlongLineString } from '../lib/geo';
+import { fractionAlongLineString } from '@ai-guide/shared';
 
 interface DevPanelProps {
   sim: SimulatedLocation;

@@ -1,6 +1,6 @@
 ﻿import type { Fix, FixListener, LocationProvider } from './types';
 import type { LatLng, LineString } from '@ai-guide/shared';
-import { haversineM, metresPerDegreeLng, M_PER_DEG_LAT } from '../geo';
+import { haversineM, metresPerDegreeLng, M_PER_DEG_LAT } from '@ai-guide/shared';
 
 export interface SimulatedOptions {
   /** Base walking speed in metres per second. Default 1.4 (normal pace). */

@@ -1,6 +1,6 @@
 ﻿import type { Segment, Tour } from '@ai-guide/shared';
 import type { Fix } from '../location/types';
-import { haversineM, distanceToLineStringM } from '../geo';
+import { haversineM, distanceToLineStringM } from '@ai-guide/shared';
 
 export type EngineEvent =
   | { type: 'fire'; segment: Segment }

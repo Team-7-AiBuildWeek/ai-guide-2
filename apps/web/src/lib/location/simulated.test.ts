@@ -1,6 +1,6 @@
 ﻿import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SimulatedLocation } from './simulated';
-import { haversineM } from '../geo';
+import { haversineM } from '@ai-guide/shared';
 import type { Fix } from './types';
 import type { LineString } from '@ai-guide/shared';
 

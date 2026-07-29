@@ -1,11 +1,11 @@
-﻿import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import {
   haversineM,
   distanceToLineStringM,
   metresPerDegreeLng,
   fractionAlongLineString,
 } from './geo';
-import type { LineString } from '@ai-guide/shared';
+import type { LineString } from './tour';
 
 describe('metresPerDegreeLng', () => {
   it('equals the equatorial constant at the equator', () => {
@@ -13,7 +13,7 @@ describe('metresPerDegreeLng', () => {
   });
 
   it('shrinks with latitude', () => {
-    // cos(52.37Â°) â‰ˆ 0.6106
+    // cos(52.37°) ≈ 0.6106
     expect(metresPerDegreeLng(52.3731)).toBeGreaterThan(67000);
     expect(metresPerDegreeLng(52.3731)).toBeLessThan(68500);
   });
@@ -76,7 +76,7 @@ describe('distanceToLineStringM', () => {
 });
 
 describe('fractionAlongLineString', () => {
-  // Deliberately unevenly spaced: P0â†’P1 is ~163 m, P1â†’P2 is much longer, so a
+  // Deliberately unevenly spaced: P0→P1 is ~163 m, P1→P2 is much longer, so a
   // naive index/(count-1) fraction (0.5 for the middle vertex) would be very
   // wrong. This mirrors the real bug: the dev panel's "jump to" buttons used
   // stop index instead of arc length, so most stops on the real (uneven)
@@ -86,7 +86,7 @@ describe('fractionAlongLineString', () => {
     coordinates: [
       [4.8936, 52.3731], // P0
       [4.8912, 52.3731], // P1
-      [4.884, 52.3731], // P2 â€” much further from P1 than P1 is from P0
+      [4.884, 52.3731], // P2 — much further from P1 than P1 is from P0
     ],
   };
 

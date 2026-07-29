@@ -1,5 +1,5 @@
 ﻿import type { Segment, Tour } from '@ai-guide/shared';
-import { metresPerDegreeLng } from '../geo';
+import { metresPerDegreeLng } from '@ai-guide/shared';
 
 /** Four stops in a straight east-west line, roughly 165 m apart. */
 export const STOP_COORDS = [

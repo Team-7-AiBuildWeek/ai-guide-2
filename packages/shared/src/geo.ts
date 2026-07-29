@@ -1,4 +1,4 @@
-﻿import type { LatLng, LineString } from '@ai-guide/shared';
+import type { LatLng, LineString } from './tour.ts';
 
 const EARTH_RADIUS_M = 6371008.8;
 
@@ -10,7 +10,7 @@ const toRad = (deg: number): number => (deg * Math.PI) / 180;
 /**
  * Metres per degree of longitude at a given latitude.
  *
- * Shared by the simulator and test helpers â€” do not re-derive this formula
+ * Shared by the simulator and test helpers — do not re-derive this formula
  * elsewhere.
  */
 export function metresPerDegreeLng(lat: number): number {
