@@ -113,15 +113,12 @@ describe('assembled Bratislava tour fixture', () => {
     //      68.9m apart with radii of 60.0m each (radii sum 120.0m). All 7
     //      of the tour's stop/walk-cue pairs overlap this way — confirmed
     //      numerically, not merely suspected.
-    //   2. TriggerEngine.findCandidates (apps/web/src/lib/trigger/engine.ts)
-    //      considers every not-yet-played segment within its lookahead
-    //      window simultaneously, and onFix's winner is `ready[0]` after
-    //      sorting by distance ALONE — it does not prefer whichever
-    //      candidate comes first in tour order. That is deliberate design
-    //      (see the engine's own comment on co-located stops) for the case
-    //      of two candidates; a real route can put THREE candidates
-    //      (stop, its walk cue, and the next stop) simultaneously in range
-    //      when their zones overlap this widely.
+    //   2. TriggerEngine sorted ready candidates by distance ALONE, so it did
+    //      not prefer whichever came first in tour order. That was fine for
+    //      two co-located stops, where order is arbitrary; a real route puts
+    //      THREE candidates (a stop, its walk cue, and the next stop) in
+    //      range at once when zones overlap this widely, and there order is
+    //      not arbitrary at all.
     //   3. The recorded route's final leg (Hviezdoslavovo námestie ->
     //      Hlavné námestie) additionally passes within ~0.1m of its own
     //      earlier self at a different arc-length position — confirmed by
@@ -131,21 +128,20 @@ describe('assembled Bratislava tour fixture', () => {
     //      property of Mapbox's real walking directions for this street
     //      layout, not of how the cue point's fraction is computed.
     //
-    // Net effect: orders 9/10 occasionally swap, and orders 13/14/15 can
-    // fire as 15/14/13 — every segment still fires exactly once (see the
-    // test above), but not always in tour order for this specific stretch.
-    // Fixing it needs either a narrower walk-cue radius policy (a product
-    // decision task-8-brief.md explicitly asks NOT to make silently) or an
-    // order-aware tie-break in TriggerEngine (owned by Task 2) — both out
-    // of this task's scope. Tracked here rather than hidden.
-    it.fails(
-      'fires segments in ascending tour order (currently fails for the overlapping stop 13/walk 14/stop 15 cluster — see comment above)',
-      async () => {
-        const { tour, fired } = await walkTheRoute();
-        const triggeredSegments = tour.segments.filter((s) => s.trigger !== null);
+    // Net effect before the fix: orders 9/10 swapped and 13/14/15 fired as
+    // 15/14/13 — every segment fired exactly once, but not in tour order.
+    //
+    // RESOLVED by changing the tie-break from distance to tour order. The
+    // radii were left alone deliberately: overlapping zones are harmless once
+    // the earliest unplayed candidate wins, and a wide walk-cue zone is what
+    // makes the cue fire reliably. Distance could never have fixed point 3
+    // above anyway — where a route touches its own earlier path, distance
+    // carries no information about progress.
+    it('fires segments in ascending tour order', async () => {
+      const { tour, fired } = await walkTheRoute();
+      const triggeredSegments = tour.segments.filter((s) => s.trigger !== null);
 
-        expect(fired.map((f) => f.order)).toEqual(triggeredSegments.map((s) => s.order));
-      },
-    );
+      expect(fired.map((f) => f.order)).toEqual(triggeredSegments.map((s) => s.order));
+    });
   });
 });

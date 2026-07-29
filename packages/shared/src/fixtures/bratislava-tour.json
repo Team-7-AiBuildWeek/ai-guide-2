@@ -201,13 +201,13 @@
         "id": "bratislava-castle-to-old-town-sk-seg-12",
         "kind": "walk",
         "order": 12,
-        "title": "Smer k Hviezdoslavovmu námestiu",
-        "script": "Od paláca sa vydajte dolu miernym svahom smerom k rieke. Cesta vás privedie na dlhé zelené námestie lemované stromami, ktoré sa tiahne smerom k Národnému divadlu.",
+        "title": "Smer k Hlavnému námestiu",
+        "script": "Z námestia sa vydajte späť smerom do centra starého mesta, uličkami mierne na sever. Po niekoľkých minútach chôdze sa uličky otvoria do širokého hlavného námestia s fontánou uprostred.",
         "audioUrl": null,
         "durationMs": null,
         "trigger": {
-          "lat": 48.143273357283775,
-          "lng": 17.10829180100778
+          "lat": 48.143707655710614,
+          "lng": 17.10859149080748
         },
         "triggerRadiusM": 43.148648023383586,
         "poiIds": []
@@ -216,6 +216,40 @@
         "id": "bratislava-castle-to-old-town-sk-seg-13",
         "kind": "stop",
         "order": 13,
+        "title": "Hlavné námestie",
+        "script": "Toto je Hlavné námestie — po slovensky Hlavné námestie, po anglicky Main Square. Fontána Rolanda uprostred a Stará radnica na severnej strane námestia sú od seba vzdialené len pár krokov a dá sa ich počúvať z jedného miesta. Fontána z konca šestnásteho storočia je najstaršou fontánou svojho druhu na Slovensku a stále slúži ako obľúbený orientačný bod stretávania. Stará radnica, zložená z niekoľkých budov spájaných storočia, bola sídlom mestskej samosprávy a dodnes v nej sídli mestské múzeum. Toto námestie bolo od stredoveku trhovým centrom mesta a miestom, kadiaľ prechádzali korunovačné sprievody smerujúce od katedrály k hradu — tri vlákna dnešnej prechádzky, trh, samospráva a korunovácia, sa tu napokon stretávajú.",
+        "audioUrl": null,
+        "durationMs": null,
+        "trigger": {
+          "lat": 48.142985,
+          "lng": 17.10837
+        },
+        "triggerRadiusM": 44.37850904344975,
+        "poiIds": [
+          "Q949192",
+          "Q4178866",
+          "Q439356"
+        ]
+      },
+      {
+        "id": "bratislava-castle-to-old-town-sk-seg-14",
+        "kind": "walk",
+        "order": 14,
+        "title": "Smer k Hviezdoslavovmu námestiu",
+        "script": "Od paláca sa vydajte dolu miernym svahom smerom k rieke. Cesta vás privedie na dlhé zelené námestie lemované stromami, ktoré sa tiahne smerom k Národnému divadlu.",
+        "audioUrl": null,
+        "durationMs": null,
+        "trigger": {
+          "lat": 48.14272945484773,
+          "lng": 17.109053639753
+        },
+        "triggerRadiusM": 44.37850904344975,
+        "poiIds": []
+      },
+      {
+        "id": "bratislava-castle-to-old-town-sk-seg-15",
+        "kind": "stop",
+        "order": 15,
         "title": "Hviezdoslavovo námestie",
         "script": "Toto je Hviezdoslavovo námestie — po slovensky Hviezdoslavovo námestie, po anglicky Hviezdoslav Square. Dlhé, zelenou zeleňou lemované námestie je pomenované po slovenskom básnikovi Pavlovi Országhovi Hviezdoslavovi, ktorého socha stojí na jeho hornom konci. Námestie sa tiahne smerom k Národnému divadlu a k Dunaju, a ponúka prechádzajúcim chvíľu oddychu medzi hustými zhlukmi pamiatok na oboch stranách trasy. V lete tu bývajú pouličné kaviarne a trhy, v zime vianočné stánky — je to miesto, kde sa mestský život odohráva dodnes, nielen v minulosti. Jeho pokojná dlhá os je zámerným protikladom k stiesnenému, uzavretému priestoru hlavného námestia, ktoré nás čaká na konci prechádzky.",
         "audioUrl": null,
@@ -224,43 +258,9 @@
           "lat": 48.14176389,
           "lng": 17.10826389
         },
-        "triggerRadiusM": 60,
+        "triggerRadiusM": 54.403797635157936,
         "poiIds": [
           "Q1639599"
-        ]
-      },
-      {
-        "id": "bratislava-castle-to-old-town-sk-seg-14",
-        "kind": "walk",
-        "order": 14,
-        "title": "Smer k Hlavnému námestiu",
-        "script": "Z námestia sa vydajte späť smerom do centra starého mesta, uličkami mierne na sever. Po niekoľkých minútach chôdze sa uličky otvoria do širokého hlavného námestia s fontánou uprostred.",
-        "audioUrl": null,
-        "durationMs": null,
-        "trigger": {
-          "lat": 48.14199899628143,
-          "lng": 17.10912312721586
-        },
-        "triggerRadiusM": 60,
-        "poiIds": []
-      },
-      {
-        "id": "bratislava-castle-to-old-town-sk-seg-15",
-        "kind": "stop",
-        "order": 15,
-        "title": "Hlavné námestie",
-        "script": "Toto je Hlavné námestie — po slovensky Hlavné námestie, po anglicky Main Square. Fontána Rolanda uprostred a Stará radnica na severnej strane námestia sú od seba vzdialené len pár krokov a dá sa ich počúvať z jedného miesta. Fontána z konca šestnásteho storočia je najstaršou fontánou svojho druhu na Slovensku a stále slúži ako obľúbený orientačný bod stretávania. Stará radnica, zložená z niekoľkých budov spájaných storočia, bola sídlom mestskej samosprávy a dodnes v nej sídli mestské múzeum. Toto námestie bolo od stredoveku trhovým centrom mesta a miestom, kadiaľ prechádzali korunovačné sprievody smerujúce od katedrály k hradu — tri vlákna dnešnej prechádzky, trh, samospráva a korunovácia, sa tu napokon stretávajú.",
-        "audioUrl": null,
-        "durationMs": null,
-        "trigger": {
-          "lat": 48.14341937,
-          "lng": 17.10850522
-        },
-        "triggerRadiusM": 60,
-        "poiIds": [
-          "Q949192",
-          "Q4178866",
-          "Q439356"
         ]
       },
       {
@@ -820,6 +820,10 @@
           48.143126
         ],
         [
+          17.108452,
+          48.143078
+        ],
+        [
           17.10892,
           48.142893
         ],
@@ -854,53 +858,9 @@
         [
           17.108223,
           48.141733
-        ],
-        [
-          17.108252,
-          48.14171
-        ],
-        [
-          17.109515,
-          48.142129
-        ],
-        [
-          17.109396,
-          48.14231
-        ],
-        [
-          17.109365,
-          48.142357
-        ],
-        [
-          17.109349,
-          48.142376
-        ],
-        [
-          17.109326,
-          48.142402
-        ],
-        [
-          17.109206,
-          48.142543
-        ],
-        [
-          17.10892,
-          48.142893
-        ],
-        [
-          17.108329,
-          48.143126
-        ],
-        [
-          17.108188,
-          48.143186
-        ],
-        [
-          17.108481,
-          48.143432
         ]
       ]
     },
-    "estimatedDurationMin": 39.327666666666666
+    "estimatedDurationMin": 35.440166666666656
   }
 }

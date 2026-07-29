@@ -24,10 +24,10 @@ type Validated = { ok: true; output: CurationOutput } | { ok: false; error: stri
  * 1. Every QID the model returned must exist in the candidate set it was
  *    given. This is the anti-hallucination guard — Opus cannot invent a
  *    palace, because anything not in `pois` is rejected outright.
- * 2. Consecutive stops (by `order`) must be at least `MIN_STOP_SEPARATION_M`
- *    apart, computed with `haversineM` — the same distance function the
- *    trigger engine uses, so "far enough apart to trigger independently"
- *    means the same thing here as it does at runtime.
+ * 2. EVERY pair of stops must be at least `MIN_STOP_SEPARATION_M` apart —
+ *    not merely consecutive ones — computed with `haversineM`, the same
+ *    distance function the trigger engine uses, so "far enough apart to
+ *    trigger independently" means the same thing here as it does at runtime.
  */
 function validate(rawText: string, validQids: ReadonlySet<string>): Validated {
   let parsedJson: unknown;
@@ -60,17 +60,36 @@ function validate(rawText: string, validQids: ReadonlySet<string>): Validated {
   return { ok: true, output };
 }
 
+/**
+ * Checks EVERY pair of stops, not just consecutive ones.
+ *
+ * Checking only neighbours was the original rule and it was wrong. The trigger
+ * engine has no notion of consecutiveness: a stop's radius catches a walker
+ * wherever they happen to be, so two stops far apart in tour order but close
+ * on the ground still collide. The end-to-end test caught exactly this —
+ * Primaciálny palác (order 11) and Hlavné námestie (order 15) sit 62m apart,
+ * were never compared because they are not adjacent, and the walker triggered
+ * the final stop three-quarters of the way through the tour.
+ *
+ * Two adjacent squares 62m apart are also precisely what the design means by
+ * one stop rather than two: a stop is a place you stand, and you can stand in
+ * one place and see both.
+ */
 function findSeparationViolation(stops: CuratedStop[]): string | null {
   const byOrder = [...stops].sort((a, b) => a.order - b.order);
-  for (let i = 1; i < byOrder.length; i++) {
-    const prev = byOrder[i - 1];
-    const curr = byOrder[i];
-    const distanceM = haversineM(prev.standingPoint, curr.standingPoint);
-    if (distanceM < MIN_STOP_SEPARATION_M) {
-      return (
-        `Stops "${prev.title}" (order ${prev.order}) and "${curr.title}" (order ${curr.order}) ` +
-        `are only ${distanceM.toFixed(1)}m apart; consecutive stops must be at least ${MIN_STOP_SEPARATION_M}m apart.`
-      );
+  for (let i = 0; i < byOrder.length; i++) {
+    for (let j = i + 1; j < byOrder.length; j++) {
+      const a = byOrder[i];
+      const b = byOrder[j];
+      const distanceM = haversineM(a.standingPoint, b.standingPoint);
+      if (distanceM < MIN_STOP_SEPARATION_M) {
+        return (
+          `Stops "${a.title}" (order ${a.order}) and "${b.title}" (order ${b.order}) ` +
+          `are only ${distanceM.toFixed(1)}m apart; every pair of stops must be at least ` +
+          `${MIN_STOP_SEPARATION_M}m apart, however far apart they are in the tour. ` +
+          `Stops this close together should be merged into one stop with both QIDs.`
+        );
+      }
     }
   }
   return null;

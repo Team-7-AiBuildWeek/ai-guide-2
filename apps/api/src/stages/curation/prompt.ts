@@ -25,7 +25,11 @@ A stop is a PLACE YOU STAND, not a building. Several candidates that share a
 square are ONE stop: give its standingPoint as the point a guide would gather
 the group, and list every relevant QID in wikidataQids.
 
-Consecutive stops must be at least 100 metres apart.
+EVERY pair of stops must be at least 100 metres apart - not just consecutive
+ones. Two stops close together on the ground collide even if they are far
+apart in the tour, because the phone triggers narration by proximity alone.
+If two places are within 100 metres of each other, merge them into a single
+stop listing both QIDs.
 Target walking time: ${req.budgetMin} minutes.
 
 Reply with JSON only, matching:

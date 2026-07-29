@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import type { Tour } from '@ai-guide/shared';
 import { TriggerEngine } from './engine';
 import { makeTour, makeSegment, STOP_COORDS, fixAt, eastOf, tourWithStopsAt } from './testFixtures';
 
@@ -255,5 +256,71 @@ describe('TriggerEngine — off-route detection', () => {
     const tenMinutesLater = START + 2_000 + 10 * 60_000;
     const events = engine.onFix(fixAt(far, 10, tenMinutesLater));
     expect(events.some((e) => e.type === 'offRoute')).toBe(false);
+  });
+});
+
+describe('walk cues depend on their stop', () => {
+  const START = 1_000_000;
+
+  /** A stop with its departure cue 30 m away — closer than either radius, as
+   * happens on any short leg once the cue sits a quarter of the way along. */
+  function tourWithCueNearItsStop(): Tour {
+    const stop = { lat: 48.1436, lng: 17.1085 };
+    const cue = eastOf(stop, 30);
+    const tour = tourWithStopsAt([
+      { id: 'stop-a', lat: stop.lat, lng: stop.lng },
+      { id: 'cue-a', lat: cue.lat, lng: cue.lng },
+    ]);
+    tour.segments[1].kind = 'walk';
+    // Both radii must comfortably cover the 30 m gap, so that standing on the
+    // cue puts BOTH in range. That overlap is the situation under test; with
+    // the default 25 m radius the stop would simply be out of range and the
+    // test would prove nothing.
+    tour.segments[0].triggerRadiusM = 45;
+    tour.segments[1].triggerRadiusM = 45;
+    return tour;
+  }
+
+  it('does not fire a walk cue before the stop it departs from', () => {
+    const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
+
+    // Standing right on the cue, 30 m from the stop: both are in range, and
+    // the cue is nearer. It must still not fire first.
+    const atCue = eastOf({ lat: 48.1436, lng: 17.1085 }, 30);
+    engine.onFix(fixAt(atCue, 10, START));
+    const events = engine.onFix(fixAt(atCue, 10, START + 1_000));
+
+    const fired = events.filter((e) => e.type === 'fire');
+    expect(fired).toHaveLength(1);
+    expect(fired[0].type === 'fire' && fired[0].segment.id).toBe('stop-a');
+  });
+
+  it('releases the walk cue once its stop has played', () => {
+    const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
+    const atCue = eastOf({ lat: 48.1436, lng: 17.1085 }, 30);
+
+    engine.onFix(fixAt(atCue, 10, START));
+    engine.onFix(fixAt(atCue, 10, START + 1_000)); // stop-a fires
+    engine.onFix(fixAt(atCue, 10, START + 2_000));
+    const events = engine.onFix(fixAt(atCue, 10, START + 3_000));
+
+    const fired = events.filter((e) => e.type === 'fire');
+    expect(fired).toHaveLength(1);
+    expect(fired[0].type === 'fire' && fired[0].segment.id).toBe('cue-a');
+  });
+
+  it('never fires a skipped stop’s cue', () => {
+    // Skipping a stop means skipping its leg; its departure cue is then
+    // meaningless and must stay silent rather than surfacing later.
+    const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
+    const atCue = eastOf({ lat: 48.1436, lng: 17.1085 }, 30);
+
+    engine.selectManually('cue-a');
+    engine.onFix(fixAt(atCue, 10, START));
+    const events = engine.onFix(fixAt(atCue, 10, START + 1_000));
+
+    expect(
+      events.filter((e) => e.type === 'fire' && e.segment.id === 'cue-a'),
+    ).toHaveLength(0);
   });
 });

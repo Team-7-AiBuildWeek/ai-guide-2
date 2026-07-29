@@ -77,26 +77,26 @@
     {
       "order": 12,
       "kind": "walk",
-      "title": "Smer k Hviezdoslavovmu námestiu",
-      "script": "Od paláca sa vydajte dolu miernym svahom smerom k rieke. Cesta vás privedie na dlhé zelené námestie lemované stromami, ktoré sa tiahne smerom k Národnému divadlu."
-    },
-    {
-      "order": 13,
-      "kind": "stop",
-      "title": "Hviezdoslavovo námestie",
-      "script": "Toto je Hviezdoslavovo námestie — po slovensky Hviezdoslavovo námestie, po anglicky Hviezdoslav Square. Dlhé, zelenou zeleňou lemované námestie je pomenované po slovenskom básnikovi Pavlovi Országhovi Hviezdoslavovi, ktorého socha stojí na jeho hornom konci. Námestie sa tiahne smerom k Národnému divadlu a k Dunaju, a ponúka prechádzajúcim chvíľu oddychu medzi hustými zhlukmi pamiatok na oboch stranách trasy. V lete tu bývajú pouličné kaviarne a trhy, v zime vianočné stánky — je to miesto, kde sa mestský život odohráva dodnes, nielen v minulosti. Jeho pokojná dlhá os je zámerným protikladom k stiesnenému, uzavretému priestoru hlavného námestia, ktoré nás čaká na konci prechádzky."
-    },
-    {
-      "order": 14,
-      "kind": "walk",
       "title": "Smer k Hlavnému námestiu",
       "script": "Z námestia sa vydajte späť smerom do centra starého mesta, uličkami mierne na sever. Po niekoľkých minútach chôdze sa uličky otvoria do širokého hlavného námestia s fontánou uprostred."
     },
     {
-      "order": 15,
+      "order": 13,
       "kind": "stop",
       "title": "Hlavné námestie",
       "script": "Toto je Hlavné námestie — po slovensky Hlavné námestie, po anglicky Main Square. Fontána Rolanda uprostred a Stará radnica na severnej strane námestia sú od seba vzdialené len pár krokov a dá sa ich počúvať z jedného miesta. Fontána z konca šestnásteho storočia je najstaršou fontánou svojho druhu na Slovensku a stále slúži ako obľúbený orientačný bod stretávania. Stará radnica, zložená z niekoľkých budov spájaných storočia, bola sídlom mestskej samosprávy a dodnes v nej sídli mestské múzeum. Toto námestie bolo od stredoveku trhovým centrom mesta a miestom, kadiaľ prechádzali korunovačné sprievody smerujúce od katedrály k hradu — tri vlákna dnešnej prechádzky, trh, samospráva a korunovácia, sa tu napokon stretávajú."
+    },
+    {
+      "order": 14,
+      "kind": "walk",
+      "title": "Smer k Hviezdoslavovmu námestiu",
+      "script": "Od paláca sa vydajte dolu miernym svahom smerom k rieke. Cesta vás privedie na dlhé zelené námestie lemované stromami, ktoré sa tiahne smerom k Národnému divadlu."
+    },
+    {
+      "order": 15,
+      "kind": "stop",
+      "title": "Hviezdoslavovo námestie",
+      "script": "Toto je Hviezdoslavovo námestie — po slovensky Hviezdoslavovo námestie, po anglicky Hviezdoslav Square. Dlhé, zelenou zeleňou lemované námestie je pomenované po slovenskom básnikovi Pavlovi Országhovi Hviezdoslavovi, ktorého socha stojí na jeho hornom konci. Námestie sa tiahne smerom k Národnému divadlu a k Dunaju, a ponúka prechádzajúcim chvíľu oddychu medzi hustými zhlukmi pamiatok na oboch stranách trasy. V lete tu bývajú pouličné kaviarne a trhy, v zime vianočné stánky — je to miesto, kde sa mestský život odohráva dodnes, nielen v minulosti. Jeho pokojná dlhá os je zámerným protikladom k stiesnenému, uzavretému priestoru hlavného námestia, ktoré nás čaká na konci prechádzky."
     },
     {
       "order": 16,
