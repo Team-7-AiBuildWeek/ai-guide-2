@@ -18,6 +18,11 @@ export interface WikidataCandidate {
   sitelinks: number;
   enTitle: string | null;
   localTitle: string | null;
+  /** Direct `instance of` labels — "castle", "church building", "square".
+   * The type filter walks the subclass graph to decide *whether* an item is a
+   * place; these say *what kind*, which is what curation actually reasons
+   * about when matching a traveller's interests. */
+  types: string[];
 }
 
 /**
@@ -33,7 +38,7 @@ export interface WikidataCandidate {
 export function buildDiscoveryQuery(city: CityConfig): string {
   const radiusKm = city.radiusM / 1000;
   const lang = city.localLanguage;
-  return `SELECT DISTINCT ?item ?itemLabel ?lat ?lng ?sitelinks ?enTitle ?localTitle WHERE {
+  return `SELECT DISTINCT ?item ?itemLabel ?lat ?lng ?sitelinks ?enTitle ?localTitle ?directTypeLabel WHERE {
   SERVICE wikibase:around {
     ?item wdt:P625 ?coord .
     bd:serviceParam wikibase:center "Point(${city.centre.lng} ${city.centre.lat})"^^geo:wktLiteral .
@@ -41,6 +46,7 @@ export function buildDiscoveryQuery(city: CityConfig): string {
   }
   ?item wdt:P31/wdt:P279* ?type .
   VALUES ?type { ${CANDIDATE_TYPES.join(' ')} }
+  ?item wdt:P31 ?directType .
   ?item wikibase:sitelinks ?sitelinks .
   FILTER(?sitelinks >= 2)
   ?item p:P625/psv:P625 ?coordNode .
@@ -69,6 +75,7 @@ interface SparqlBinding {
   sitelinks: { value: string };
   enTitle?: { value: string };
   localTitle?: { value: string };
+  directTypeLabel?: { value: string };
 }
 
 interface SparqlResponse {
@@ -107,10 +114,22 @@ export async function fetchWikidataCandidates(
   const data = (await res.json()) as SparqlResponse;
 
   const seen = new Map<string, WikidataCandidate>();
+  const typesByQid = new Map<string, Set<string>>();
+
   for (const row of data.results.bindings) {
     const qid = qidFromUri(row.item.value);
-    // Keep the first coordinate seen for a given QID — later duplicate rows
-    // (a second P625 statement, or a second matched ?type) are dropped.
+
+    // Duplicate rows are expected: an item with two P625 statements, or one
+    // matching several ?directType values, produces one row each. Keep the
+    // first coordinate seen, but union the types across every row — that is
+    // the whole reason a duplicate row carries information.
+    const label = row.directTypeLabel?.value;
+    if (label !== undefined && !/^Q\d+$/.test(label)) {
+      const set = typesByQid.get(qid) ?? new Set<string>();
+      set.add(label);
+      typesByQid.set(qid, set);
+    }
+
     if (seen.has(qid)) continue;
     seen.set(qid, {
       qid,
@@ -120,7 +139,12 @@ export async function fetchWikidataCandidates(
       sitelinks: Number.parseInt(row.sitelinks.value, 10),
       enTitle: row.enTitle?.value ?? null,
       localTitle: row.localTitle?.value ?? null,
+      types: [],
     });
+  }
+
+  for (const [qid, candidate] of seen) {
+    candidate.types = [...(typesByQid.get(qid) ?? [])].sort();
   }
 
   return [...seen.values()]

@@ -59,6 +59,30 @@ describe('discover', () => {
     expect(Array.isArray(castle?.p31Types)).toBe(true);
   });
 
+  it('populates p31Types with the kind of place, not just an empty array', async () => {
+    // `Array.isArray([])` is true, so the assertion above passed for a while
+    // against a field that was empty for every single POI. Curation matches a
+    // traveller's interests against these, so empty is not a harmless default.
+    const pois = await discover(BRATISLAVA, { fetch: replayFetch() });
+
+    expect(pois.filter((p) => p.p31Types.length > 0).length).toBeGreaterThan(pois.length / 2);
+
+    const typesOf = (qid: string) => pois.find((p) => p.wikidataQid === qid)?.p31Types ?? [];
+    expect(typesOf('Q593311')).toContain('castle');
+    expect(typesOf('Q239560')).toContain('cathedral');
+    expect(typesOf('Q1717975')).toContain('city gate');
+    expect(typesOf('Q4178866')).toContain('fountain');
+  });
+
+  it('never leaks an unresolved QID into p31Types', async () => {
+    // Wikidata's label service returns the bare QID when it has no label in
+    // the requested languages. "Q12345" is not a kind of place and must not
+    // reach the curation prompt as though it were.
+    const pois = await discover(BRATISLAVA, { fetch: replayFetch() });
+    const all = pois.flatMap((p) => p.p31Types);
+    expect(all.filter((t) => /^Q\d+$/.test(t))).toEqual([]);
+  });
+
   it('attaches null, not a throw, for POIs Overpass has no wheelchair tag for', async () => {
     const pois = await discover(BRATISLAVA, { fetch: replayFetch() });
     const withTag = pois.filter((p) => p.wheelchair !== null);

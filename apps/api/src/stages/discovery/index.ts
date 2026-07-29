@@ -41,11 +41,11 @@ export async function assemblePois(
       wikidataQid: c.qid,
       names,
       point: { lat: c.lat, lng: c.lng },
-      // The validated SPARQL query (task-5-brief.md) doesn't select P31
-      // values — only filters on them — so this stage has nothing to put
-      // here. Left empty; a later stage can enrich it if it turns out to be
-      // needed.
-      p31Types: [],
+      // Direct `instance of` labels: "castle", "cathedral", "square". The
+      // subclass-graph filter decides *whether* an item is a place; these say
+      // *what kind*, which is what curation matches against a traveller's
+      // stated interests.
+      p31Types: c.types,
       wikiEnTitle: c.enTitle,
       wikiLocalTitle: c.localTitle,
       summaryEn: c.enTitle ? (enExtracts.get(c.enTitle) ?? null) : null,
