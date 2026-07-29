@@ -79,4 +79,20 @@ const toursRouter = createToursRouter({
 export const app = new Hono();
 
 app.get('/api/health', (c) => c.json({ ok: true }));
+
+/**
+ * Runtime configuration for the client.
+ *
+ * Only the Mapbox PUBLIC (`pk.`) token, which reaches the browser either way —
+ * it is designed to be client-visible and Mapbox GL sends it on every tile
+ * request. Serving it here rather than inlining it at build time is what lets
+ * a GitHub-triggered Fly deploy work: such a build cannot receive
+ * `--build-arg`, and committing the token to `fly.toml` was refused by
+ * GitHub's push protection, which cannot distinguish a public `pk.` token from
+ * a secret `sk.` one.
+ *
+ * Nothing secret goes in this response. `ANTHROPIC_API_KEY`, `DATABASE_URL`
+ * and `GENERATE_PASSPHRASE` are server-side only and must never appear here.
+ */
+app.get('/api/config', (c) => c.json({ mapboxToken }));
 app.route('/', toursRouter);

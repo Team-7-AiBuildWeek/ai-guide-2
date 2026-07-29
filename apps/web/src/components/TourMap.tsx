@@ -3,8 +3,11 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Tour } from '@ai-guide/shared';
 import type { Fix } from '../lib/location/types';
+import { loadConfig } from '../lib/api/config';
 
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN as string;
+// The token is fetched from the API at runtime rather than inlined here at
+// build time — see lib/api/config.ts for why. Assigned before the map is
+// constructed, inside the init effect below.
 
 interface TourMapProps {
   tour: Tour;
@@ -25,9 +28,35 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
   // 'error' event (registered below).
   const [failed, setFailed] = useState(false);
 
-  // Initialise the map once.
+  // The Mapbox token arrives from the API rather than the bundle, so the map
+  // cannot be built on first render. Held in state so the init effect below
+  // re-runs once it lands.
+  const [token, setToken] = useState<string | null>(null);
+
   useEffect(() => {
+    let cancelled = false;
+    loadConfig()
+      .then((config) => {
+        if (cancelled) return;
+        if (config.mapboxToken) setToken(config.mapboxToken);
+        else setFailed(true);
+      })
+      .catch(() => {
+        // Same degraded state as any other map failure: the tour keeps
+        // talking, which is the part that matters.
+        if (!cancelled) setFailed(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Initialise the map once the token is known.
+  useEffect(() => {
+    if (token === null) return;
     if (map.current !== null || container.current === null) return;
+
+    mapboxgl.accessToken = token;
 
     // Captured locally and closed over by every handler below â€” never
     // `map.current` â€” so a handler registered on this instance can never act
@@ -101,7 +130,7 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
       instance.remove();
       if (map.current === instance) map.current = null;
     };
-  }, [tour, onSelectStop]);
+  }, [tour, onSelectStop, token]);
 
   // Follow the user.
   useEffect(() => {

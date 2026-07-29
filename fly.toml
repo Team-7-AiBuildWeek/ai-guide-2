@@ -6,25 +6,14 @@
 app = 'ai-guide-2'
 primary_region = 'iad'
 
+# No [build.args]. The Mapbox token used to be inlined into the client bundle
+# at build time, which meant a GitHub-triggered deploy — unable to receive
+# `--build-arg` — needed the token committed here. GitHub's push protection
+# refused that, classifying the Mapbox JWT as a secret access token. It cannot
+# distinguish a public `pk.` token from a secret `sk.` one, and it was right to
+# stop us anyway: the token is now served to the client at runtime from
+# `GET /api/config`, so it lives only in `fly secrets` and never in git.
 [build]
-  [build.args]
-    # Vite inlines VITE_-prefixed variables into the client bundle at BUILD
-    # time, so `fly secrets set` cannot supply this one — secrets only reach a
-    # running container. Passing it here is what makes a GitHub-triggered
-    # deploy produce a working map, since such a build has no way to receive
-    # `--build-arg` from a command line.
-    #
-    # This is a Mapbox PUBLIC `pk.` token. It is designed to be readable by
-    # clients and already ships inside the JavaScript of every deployed build,
-    # so putting it here does not expose anything a visitor could not read
-    # from the bundle. Restrict it to your fly.dev hostname in the Mapbox
-    # dashboard (Account → Tokens → URL restrictions) and it is safe to commit.
-    #
-    # REPLACE THIS with your token before deploying. Left as a placeholder
-    # deliberately: committing your credential is your decision to make, not
-    # mine, and a token in git history is meaningfully harder to withdraw than
-    # one in a local file.
-    VITE_MAPBOX_TOKEN = "pk.REPLACE_ME"
 
 [http_service]
   internal_port = 8080

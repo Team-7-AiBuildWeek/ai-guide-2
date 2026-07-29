@@ -51,20 +51,20 @@ that one, run `fly apps create <new-name>` and change `app = '...'` in
 ### Deploying by pushing (no `flyctl` needed)
 
 If Fly's GitHub App is connected to this repo, a push to `main` builds and
-deploys on its own. That path cannot receive `--build-arg` from a command
-line, which is why `fly.toml` carries a `[build.args]` block with
-`VITE_MAPBOX_TOKEN` in it. **Replace the `pk.REPLACE_ME` placeholder there
-before your first push**, or the deploy succeeds and the map is dead.
+deploys on its own. **Nothing extra is needed** — set the secrets once (Fly
+dashboard → Secrets, no `flyctl` install required) and push.
 
-Putting a Mapbox token in a committed file is deliberate, not sloppy: `pk.`
-tokens are public by design and already ship inside the client JS of every
-build, so this exposes nothing a visitor could not read from the bundle.
-Restrict it to your `.fly.dev` hostname in the Mapbox dashboard
-(Account → Tokens → URL restrictions) and it is safe to commit.
+This used to be harder. The Mapbox token was inlined into the client bundle by
+Vite at build time, which a GitHub-triggered build cannot supply because it
+never sees `--build-arg`. The workaround was to commit the token in
+`fly.toml`, and GitHub's push protection refused it outright — it cannot
+distinguish a public `pk.` token from a secret `sk.` one, and blocked the
+push.
 
-Runtime secrets still have to be set once, from the Fly dashboard
-(Secrets tab) or the CLI. The dashboard is enough — no `flyctl` install
-required.
+That refusal pointed at the better design. The client now fetches the token
+from `GET /api/config` at runtime, so it lives only in `fly secrets`, is set
+**once** rather than twice, and never enters git. If you see documentation
+anywhere describing a build argument for `VITE_MAPBOX_TOKEN`, it is stale.
 
 ### A first deploy that cannot spend money
 
@@ -118,41 +118,36 @@ breaks a different part of the app.
   `GENERATE_PASSPHRASE` and `DAILY_SPEND_CAP_USD`). This is what you want
   running once you're ready to generate a tour for real.
 
-### `VITE_MAPBOX_TOKEN` needs setting twice — verified, not theoretical
+### `VITE_MAPBOX_TOKEN` — set once, as a runtime secret
 
-This was confirmed by actually building the image and running it locally
-with `docker run`, not just read off the source:
+It is needed in two places, but you only set it once:
 
-1. **Build time.** Vite inlines `VITE_`-prefixed variables into the static JS
-   bundle. `fly secrets set` only ever reaches the already-built,
-   already-running container — it cannot change what got baked into
-   `apps/web/dist` during `docker build`. Supply it as a build argument:
-   ```bash
-   fly deploy --build-arg VITE_MAPBOX_TOKEN="pk.your_real_token"
-   ```
-2. **Runtime, too.** `apps/api/src/stages/routing/mapbox.ts`'s
-   `resolveMapboxToken()` reads this same variable (or `MAPBOX_TOKEN`) to
-   call Mapbox Directions server-side for the routing stage — checked at
-   process startup, not lazily, so **the container will not boot at all**
-   without it. Running the built image locally with only
-   `GENERATE_PASSPHRASE` and `CASSETTE_MODE=replay` set crashed immediately
-   with `Error: MAPBOX_TOKEN (or VITE_MAPBOX_TOKEN) is not set in the
-   environment` — adding `VITE_MAPBOX_TOKEN` as a plain runtime env var
-   fixed it. So the `fly secrets set VITE_MAPBOX_TOKEN=...` line above is
-   required, not optional, alongside the build argument.
+1. **Server-side**, by `resolveMapboxToken()` in
+   `apps/api/src/stages/routing/mapbox.ts`, to call Mapbox Directions during
+   routing. Checked at process startup rather than lazily, so **the container
+   will not boot without it** — verified by running the built image with only
+   `GENERATE_PASSPHRASE` set, which crashed immediately with
+   `Error: MAPBOX_TOKEN (or VITE_MAPBOX_TOKEN) is not set in the environment`.
+2. **Client-side**, by the map. The client no longer gets it from the bundle;
+   it fetches `GET /api/config` at runtime and reads the token from there.
 
-(This is Mapbox's *public* token, meant to be shipped inside client bundles
-and restricted by URL on Mapbox's side — baking it into image layer history
-via a build arg is not the secret leak that baking `ANTHROPIC_API_KEY` in the
-same way would be. Don't do that with any of the other variables.)
+So `fly secrets set VITE_MAPBOX_TOKEN=...` covers both. There is no build
+argument and no `[build.args]` block — an earlier version of this document
+described one, and it is gone.
 
-If you switch to Fly's GitHub-integration deploys (below), there is no
-`--build-arg` flag to pass — add a `[build.args]` table to `fly.toml` instead
-(safe to commit, since this value is meant to be public):
-```toml
-[build.args]
-  VITE_MAPBOX_TOKEN = "pk.your_real_token"
-```
+Why it changed: inlining at build time meant a GitHub-triggered deploy (which
+cannot pass `--build-arg`) needed the token committed to `fly.toml`, and
+GitHub's push protection blocked that commit. It classifies any Mapbox JWT as
+a secret access token and cannot tell `pk.` from `sk.`. Serving it at runtime
+removed the problem rather than working around it.
+
+The token still reaches the browser — it is a public token and Mapbox GL sends
+it on every tile request. Restrict it by URL in the Mapbox dashboard
+(Account → Tokens → URL restrictions) to your `.fly.dev` hostname. What
+changed is that it is no longer in version control.
+
+**`/api/config` returns only this token.** `ANTHROPIC_API_KEY`, `DATABASE_URL`
+and `GENERATE_PASSPHRASE` are server-side only and must never be added to it.
 
 ## 3. Deploy
 
