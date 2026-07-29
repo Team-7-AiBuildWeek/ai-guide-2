@@ -37,6 +37,11 @@ export interface Tour {
   /** BCP-47 tag, e.g. 'en', 'nl'. */
   language: string;
   persona: string;
+  /** The traveller's own words that this tour was generated from. Kept
+   * because a personalised tour is defined by the request that produced it:
+   * it is what the semantic cache will be keyed on, and the only way to
+   * answer "why did I get this walk" after the fact. */
+  profileText: string;
   title: string;
   segments: Segment[];
   routeGeoJson: LineString;

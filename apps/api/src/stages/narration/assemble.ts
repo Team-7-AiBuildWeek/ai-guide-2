@@ -104,6 +104,7 @@ export function assembleTour(args: {
     city,
     language: request.language,
     persona: request.persona,
+    profileText: request.profileText,
     title: tourTitle,
     segments,
     routeGeoJson: route.line,

@@ -31,6 +31,7 @@ export function makeTour(overrides: Partial<Tour> = {}): Tour {
     city: 'Amsterdam',
     language: 'en',
     persona: 'historian',
+    profileText: 'test profile',
     title: 'Test Tour',
     segments: STOP_COORDS.map((_, i) => makeSegment(i)),
     routeGeoJson: {
@@ -81,6 +82,7 @@ export function tourWithStopsAt(stops: { id: string; lat: number; lng: number }[
     city: 'Bratislava',
     language: 'en',
     persona: 'historian',
+    profileText: 'test profile',
     title: 'Test Tour',
     segments,
     routeGeoJson: {

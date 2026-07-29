@@ -127,10 +127,7 @@ function mapSegmentRow(row: SegmentRow): Segment {
  *   existing city UUID. `ensureCity` returns the real `cities.id`, which is
  *   what actually gets stored as the FK — so a created `Job`'s `cityId` is
  *   that resolved UUID, not necessarily the literal string passed in.
- * - `saveTour` derives the city from `tour.city` the same way. `Tour` has
- *   no `profileText` field (that lives on `GenerateRequest`, not `Tour`),
- *   so `tours.profile_text` — NOT NULL in schema.sql — is stored as `''`
- *   here; nothing in the `TourRepository` contract reads it back.
+ * - `saveTour` derives the city from `tour.city` the same way.
  */
 export class PostgresTourRepository implements TourRepository {
   private pool: Pool;
@@ -244,7 +241,7 @@ export class PostgresTourRepository implements TourRepository {
           cityId,
           tour.language,
           tour.persona,
-          '', // Tour carries no profileText field — see class doc.
+          tour.profileText,
           tour.title,
           tour.routeGeoJson,
           Math.round(tour.estimatedDurationMin), // estimated_duration_min is `integer`
@@ -293,6 +290,7 @@ export class PostgresTourRepository implements TourRepository {
       id: string;
       language: string;
       persona: string;
+      profile_text: string;
       title: string;
       route: Tour['routeGeoJson'];
       estimated_duration_min: number;
@@ -314,6 +312,7 @@ export class PostgresTourRepository implements TourRepository {
       city: row.city_name,
       language: row.language,
       persona: row.persona,
+      profileText: row.profile_text,
       title: row.title,
       segments: segRes.rows.map(mapSegmentRow),
       routeGeoJson: row.route,

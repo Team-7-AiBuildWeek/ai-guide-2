@@ -80,6 +80,7 @@ export const TourSchema = z.object({
   city: z.string(),
   language: z.string(),
   persona: z.string(),
+  profileText: z.string(),
   title: z.string(),
   segments: z.array(SegmentSchema),
   routeGeoJson: LineStringSchema,

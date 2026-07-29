@@ -20,6 +20,7 @@ export const amsterdamTour: Tour = {
   city: 'Amsterdam',
   language: 'en',
   persona: 'historian',
+  profileText: 'A short hand-authored walk, written before the generator existed.',
   title: 'Centre and Jordaan â€” a short loop',
   estimatedDurationMin: 35,
   routeGeoJson: {
