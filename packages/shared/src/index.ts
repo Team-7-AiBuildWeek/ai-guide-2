@@ -1,2 +1,2 @@
-export * from './tour';
-export * from './schemas';
+export * from './tour.ts';
+export * from './schemas.ts';
