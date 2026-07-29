@@ -58,8 +58,12 @@ export class ChirpTtsProvider implements TtsProvider {
     if (!res.ok) {
       // Never include the URL: the API key is a query parameter, and this
       // message reaches logs and the job row.
+      // Generous, deliberately. Google's 403 for a restricted API key and its
+      // 403 for a disabled API differ only in a `details` block well past the
+      // first 300 characters, and truncating there turns a five-second fix
+      // into a debugging session.
       const detail = await res.text().catch(() => '');
-      throw new Error(`Chirp synthesis failed: ${res.status} ${detail.slice(0, 300)}`);
+      throw new Error(`Chirp synthesis failed: ${res.status} ${detail.slice(0, 1200)}`);
     }
 
     const data = (await res.json()) as { audioContent?: string };

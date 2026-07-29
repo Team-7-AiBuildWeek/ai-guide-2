@@ -103,7 +103,33 @@ await mkdir(outDir, { recursive: true });
 console.log('Toponym spike — Chirp 3 HD');
 console.log(`voice: ${VOICE}, languages: ${LANGUAGES.join(', ')}\n`);
 
-const characters = await run(new ChirpTtsProvider({ apiKey }), 'chirp');
+let characters: number;
+try {
+  characters = await run(new ChirpTtsProvider({ apiKey }), 'chirp');
+} catch (err) {
+  // This is a script a human runs, not a library. A stack trace here says
+  // "something in chirp.ts threw"; what the reader needs is which knob to
+  // turn in a console they have open in another tab.
+  const message = err instanceof Error ? err.message : String(err);
+  console.error('\nSpike failed.\n');
+
+  if (message.includes('API_KEY_SERVICE_BLOCKED')) {
+    console.error('The API key works, but is restricted and does not allow Text-to-Speech.');
+    console.error('  Google Cloud Console -> APIs & Services -> Credentials -> your key');
+    console.error('  -> API restrictions -> add "Cloud Text-to-Speech API" (or unrestrict).');
+  } else if (message.includes('SERVICE_DISABLED')) {
+    console.error('The Cloud Text-to-Speech API is not enabled on this project.');
+    console.error('  Google Cloud Console -> APIs & Services -> Enable APIs -> "Cloud Text-to-Speech API".');
+  } else if (message.includes('403')) {
+    console.error('Permission denied. Check the key is for a project with billing enabled,');
+    console.error('and that Cloud Text-to-Speech is both enabled and allowed by the key.');
+  } else {
+    console.error(message);
+  }
+
+  console.error('\nNo characters were billed for a failed request.');
+  process.exit(1);
+}
 
 console.log(`\ncharacters synthesised: ${characters}`);
 console.log(`cost at $30/1M: $${((characters * 30) / 1_000_000).toFixed(4)}`);
