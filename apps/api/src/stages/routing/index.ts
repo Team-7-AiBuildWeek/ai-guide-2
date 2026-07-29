@@ -43,7 +43,15 @@ const RADIUS_FACTOR = 0.4;
  * left over — radii cannot overlap by construction.
  */
 export function deriveRadiusM(distanceToNearestStopM: number): number {
-  return Math.min(MAX_RADIUS_M, Math.max(MIN_RADIUS_M, RADIUS_FACTOR * distanceToNearestStopM));
+  const raw = Math.min(MAX_RADIUS_M, Math.max(MIN_RADIUS_M, RADIUS_FACTOR * distanceToNearestStopM));
+  // Rounded to a tenth of a metre. GPS in these streets is accurate to
+  // ±10–50 m, so the trailing fifteen significant figures were never
+  // information — and they do not survive a round trip through Postgres
+  // `double precision`, which is how this surfaced: a radius written as
+  // 55.589413842579134 came back as 55.5894138425791. Rounding here removes
+  // the whole class of problem rather than loosening the assertion that
+  // caught it.
+  return Math.round(raw * 10) / 10;
 }
 
 /**
