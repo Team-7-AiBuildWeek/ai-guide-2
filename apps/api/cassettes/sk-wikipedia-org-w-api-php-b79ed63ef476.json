@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Kutscherfeldov+pal%C3%A1c&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:19:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-9hrff",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2792579354\"",
+      "set-cookie": "WMF-Uniq=o8gPINwBuRa-j20JSdd1MwOsAAAAAFvdW78ZG7H5pRlONxAlNIdKBdYOzXlLLdLo;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "46f70d54-028a-472c-9c51-4e1d7ba5b9d5"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":204957,\"ns\":0,\"title\":\"Kutscherfeldov palác\",\"extract\":\"Kutscherfeldov palác je najmenší rokokový palác v Bratislave na rohu Sedlárskej ulice 7 a Hlavného námestia 7 postavený v roku 1762 na mieste troch starších domov. Palác dal postaviť Leopold von Kutscherfeld, správca cisárskych majetkov v Mosonmagyaróvári. Neskôr ho predal grófovi Imrichovi Eszterházymu. V objekte dnes sídli veľvyslanectvo Francúzska a Francúzsky inštitút.\\nV tomto dome podľa pamätnej tabule z roku 1959 žil a pracoval slávny ruský skladateľ a klavirista Anton Grigorievič Rubinštejn (1829 – 1894).\\nJe to trojpodlažná budova štvorkrídlovej dispozície okolo stredného dvora. Nad portálom paláca nie je umiestnený erb ani jedného z majiteľov paláca.  \\nPalác vznikol v roku 1762 na mieste dvoch stredovekých parciel (podľa niektorých zdrojov 3 domov) s použitím muriva z predchádzajúcich stavieb. Domy boli okolo roku 1600 spojené a časti suterénu boli zaklenuté na stredný stĺp. Po prestavaní domu na palác bol ten vyzdobený architektonickými a výtvarnými detailmi, reprezentačným schodiskom s dekoratívnymi mrežami. Autorom projektu bol pravdepodobne Jakub Fellner z Fellenthalu, ktorému sa pripisuje aj autorstvo architektonického návrhu kaštieľa v Častkovciach.\\nStarý meštiansky dom mal na konci 17. storočia a v prvej polovici 18. storočia niekoľko majiteľov, ktorí si svoje podiely v dome navzájom predávali. V roku 1679 predal Ján Wulpinusz a jeho manželka Rosina (rod. Radingerová) svoj podiel domu Jozefovi Segnerovi a jeho manželke Anne (rod. Ernyeyovej) za 2 000 forintov. V roku 1700 bol Jozef Segner už majiteľom väčšej časti domu. Ďalší významný medzník v dejinách tohto objektu predstavuje 17. september 1711, kedy lekárnik Ján Juraj Peltz odkúpil za 900 forintov Gottmanovu čiastku domu. Peltz pokračoval v aktivite – v roku 1716 mu svoju časť domu predala Zuzana Puschová za 1 000 forintov a 23. marca 1719 mestský sudca Jozef Segner za 4 000 forintov. Napokon sa v roku 1722 celý dom stal vlastníctvom Jána Juraja Peltza, ktorý ho v roku 1746 predal lekárnikovi Jánovi Tomášovi Stellingovi za 10 000 zlatých. Od Stellinga dom odkúpil mešťanosta Kutscherfeld – Podevin, ktorý dom prestaval na rokokový palác. Vo vlastníctve rodiny Kutscherfeld – Podevin bol palác až do konca 18. storočia. V roku 1813 ho odkúpil gróf Imrich Esterházy a rodina Esterházy vlastnila palác až do konca 19. storočia.\\nLeopold von Kutscherfeld bol vplyvný správca magyaróvárskych majetkov. šľatchtickýktitul a erbovú listinu mu udelila 1. februára 1763 Mária Terézia. Roku 1760 bol Leopold von Kutscherfeld členom Uhorskej komory a riaditeľom pokladnice v Mosonmagyaróvári.\\n\\n \\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Kutscherfeldov palác\"}]}}"
+  }
+}

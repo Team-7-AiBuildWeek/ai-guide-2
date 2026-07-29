@@ -84,6 +84,28 @@ export class AnthropicLlmClient implements LlmClient {
 
     const text = message.content.filter(isTextBlock).map((block) => block.text).join('');
 
+    // A truncated response must say so. Left alone it surfaces downstream as
+    // "Response was not valid JSON: Unterminated string at position 1897",
+    // which points at the parser instead of the cap — the first live run of
+    // this pipeline lost two paid attempts to exactly that misdirection.
+    //
+    // Adaptive thinking is what makes this easy to hit: thinking tokens count
+    // against maxTokens, and on that run 7182 of an 8000 budget went to
+    // thinking, leaving 818 for the JSON.
+    if (message.stop_reason === 'max_tokens') {
+      // Deliberately does not quote a thinking-token count: the SDK does not
+      // merge `output_tokens_details` from the message_delta frame into the
+      // final message, so reading it here reports 0 even when thinking
+      // consumed nearly the whole budget. Stating the mechanism is honest;
+      // stating "0 were thinking" would be worse than saying nothing.
+      throw new Error(
+        `Response hit maxTokens (${args.maxTokens}) and was truncated after ` +
+          `${message.usage.output_tokens} output tokens. maxTokens caps thinking AND ` +
+          `output together, and adaptive thinking can take most of it — raise the cap. ` +
+          `It is a ceiling, not a reservation: billing follows tokens actually generated.`,
+      );
+    }
+
     return {
       text,
       costUsd: costUsd(message.model, {

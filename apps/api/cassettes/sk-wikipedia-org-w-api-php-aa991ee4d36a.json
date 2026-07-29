@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Erd%C5%91dyho+pal%C3%A1c+%28Vent%C3%BArska%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "696",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:18:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-z8m6l",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2951584099\"",
+      "set-cookie": "WMF-Uniq=AnA5xYqhWkbNtbUAzefbfwOsAAAAAFvdV1Ovo0HDHQMSodlMqDk8zhawJ3Y1dJJN;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "7d948af9-769d-499a-916e-b2a12bf041be"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":129989,\"ns\":0,\"title\":\"Erdődyho palác (Ventúrska)\",\"extract\":\"Erdődyho palác je neskorobarokový palác na Ventúrskej ulici 1 v Bratislave, ktorý vznikol v roku 1770. Bol postavený pre krajinského sudcu Juraja Erdődyho podľa projektu Mateja Walcha. Vznikol na mieste troch starších domov. Pôvodne to bola trojpodlažná budova, ktorá bola v prvej polovici 20. storočia rozšírená o ďalšie dve poschodia.\\nZačiatkom 21. storočia, v roku 2003, prešiel rozsiahlou rekonštrukciou. V súčasnosti sa tu nachádza bar a kaviareň, a reštaurácia, súčasťou ktorej je aj jedna z najväčších vínoték na Slovensku obsahujúca asi 400 druhov vína. V podzemí paláca sa nachádza moderný disko klub, súčasťou ktorého je funkčná trafostanica, ktorá slúži ako zdroj elektrického prúdu pre bratislavské Staré Mesto. Súčasťou klubu je najväčší bar z liateho betónu na Slovensku s dĺžkou 15 metrov.\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Erdődyho palác (Ventúrska)\"}]}}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=St.+Nicholas+Church%2C+Bratislava&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:14:34 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-w2g8m",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=treatment;we-1-8-account-creation-no-desktop-benefits=control;\",co_id;desc=\"4098431099\"",
+      "set-cookie": "WMF-Uniq=Pow3PxBIQFzEWuSG_FqdhwOsAAAAAFvdD_at5mfWkVaCvtdGTfiWlq70vQ0BNdPC;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "59b71bcc-9093-46c5-8b72-205d3bfce104"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":19172758,\"ns\":0,\"title\":\"St. Nicholas Church, Bratislava\",\"extract\":\"St. Nicholas Church in Bratislava is an Orthodox church situated on the castle hill next to the Bratislava Castle in Podhradie the historical part of Bratislava, the capital of Slovakia. The church was built in 1661 by Paul Pálffy's (1589–1655) widow Countess Frances, née Khuen (died 1672). It is an early baroque building built on the place of original Gothic church below the Bratislava Castle. The church is consecrated to Saint Nicholas, the patron of sailors. His statue is situated in the stone niche above the main entrance to the church. The church is a protected cultural monument.\\n\\n\\n== History ==\\n\\nArcheological research from the 1990s identified the remnants of an 11th-century rotunda at the place of the current church building. It was partially destroyed in 1270s then rebuilt divided into two floors, the lower underground floor serving as an ossuary. The surroundings of the church contained a graveyard that was active until the end of the 18th century. Probably in the half of 14th century the one-nave church of St. Nicholas was constructed in the original gothic footprints, the direct predecessor of the current church building. The church was torn down in 1526 together with many other sacral buildings outside of the Bratislava city walls in preparation of a Turkish siege.\\nIn 1661 the church was rebuilt by Countess Frances, née Khuen. The interior of the church was renovated in 1744. During the reign of Maria Theresa, in accordance with new rules about handling of the deceased a crypt was constructed underneath the church. It is a rather large room with burial chambers built into three of its walls. The crypt is accessible by a narrow staircase from a small extension building built against the southern wall of the church and it was later vandalized. In 1755 the church contained the altar of Saint Nicholas, altar of Saint Fabian, Saint Sebastian and the Holy Trinity. The altar of Piety was added prior to 1761, in 1779 the altars of the Saint Cross and altar of Saint Rosalia were added. At the end of the 18th century, a new pulpit by Peter Brandenthal was installed. In the 18th century, the church was administered by the Order of Friars Minor Capuchin. In the half of 18th century the church become part of the Second Bratislava Calvary, which was constructed in Podhradie.\\nAfter Podhradie was assimilated into Bratislava, the church was administrated by the Catholic funeral society of St. Nicholas (Slovak: Katolícky pohrebný spolok sv. Mikuláša) and it belonged to the St. Martin's Roman Catholic parish. As it was no longer used, in 1936 it was given to the newly established Greek Catholic Church of Bratislava. At the end of World War II in 1945 the church roof caught fire and the building was reconstructed by the Greek Catholic Church (during the years 1945-1950). The reconstruction was led by Father Jozef Haľko.\\nIn 1950 began the violent persecution of the Greek Catholic Church in Slovakia and the St. Nicholas church was given to the Orthodox Church. After the buildings surrounding the church were demolished in the 1960s and 1970s during the demolition of a large part of the historical Podhradie, the static of the church was compromised. Visible problems were compounded by a lightning strike in June 1966 and by repeated vandalism by the local youth. The communist government approved the reconstruction of the church but it was carried out only partially.\\n\\n\\n== Description ==\\nThe simple one-nave church building is built in an east–west orientation. It contains a small wooden bell tower.\\n\\n\\n== See also ==\\nPodhradie, Bratislava\\nOld Town, Bratislava\\nBratislava Castle\\n\\n\\n== References ==\\n\\n\\n== External links ==\"}]}}"
+  }
+}

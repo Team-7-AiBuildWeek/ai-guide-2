@@ -7,6 +7,7 @@ import {
 } from '@ai-guide/shared';
 import type { LlmClient, UserBlock } from '../../llm/anthropic.ts';
 import type { RouteResult } from '../routing/index.ts';
+import { speakingSeconds } from '../routing/index.ts';
 import {
   narrationSystemPrompt,
   narrationStopsBlock,
@@ -28,7 +29,18 @@ export {
   MAX_WALK_SCRIPT_CHARS,
 } from './prompt.ts';
 
-const MAX_TOKENS = 8000;
+/**
+ * Caps thinking AND output together.
+ *
+ * Narration is the larger of the two generations by far — ~30,000 characters
+ * of script is roughly 7,500 output tokens before any thinking at all, so the
+ * original 8000 could not have fitted the answer even with zero thinking.
+ * Curation hit exactly that wall on the first live run.
+ *
+ * max_tokens is a ceiling, not a reservation; billing follows what is
+ * actually generated, so headroom costs nothing.
+ */
+const MAX_TOKENS = 32_000;
 /** Total attempts, including the first — see the module doc below. */
 const MAX_ATTEMPTS = 2;
 
@@ -45,6 +57,43 @@ function expectedKindSequence(stopCount: number): SegmentKind[] {
   kinds.push('outro');
   return kinds;
 }
+
+/**
+ * Total minutes the narration will take to speak.
+ *
+ * This is the check the per-segment bounds were a poor proxy for. A tour is
+ * too long because of its TOTAL, and a single segment running slightly over
+ * says nothing about that — the first live run rejected two paid responses
+ * over nine characters on one segment out of twenty-one.
+ */
+export function estimatedNarrationMinutes(segments: NarrationOutput['segments']): number {
+  return segments.reduce((total, seg) => total + speakingSeconds(seg.script), 0) / 60;
+}
+
+/**
+ * Rejects narration that would blow the tour's whole time budget, allowing
+ * generous headroom: this is a guard against a runaway, not a style rule.
+ */
+function findTotalDurationViolation(
+  segments: NarrationOutput['segments'],
+  walkingMinutes: number,
+  budgetMin: number,
+): string | null {
+  const speakingMin = estimatedNarrationMinutes(segments);
+  const totalMin = speakingMin + walkingMinutes;
+  const ceiling = budgetMin * NARRATION_BUDGET_CEILING;
+  if (totalMin > ceiling) {
+    return (
+      `The narration would take ${speakingMin.toFixed(1)} minutes to speak, which with ` +
+      `${walkingMinutes.toFixed(1)} minutes of walking totals ${totalMin.toFixed(1)} minutes against a ` +
+      `${budgetMin}-minute budget. Shorten the scripts.`
+    );
+  }
+  return null;
+}
+
+/** Deliberately loose. The point is catching a runaway, not policing prose. */
+const NARRATION_BUDGET_CEILING = 1.5;
 
 function findLengthViolation(segments: NarrationOutput['segments']): string | null {
   for (const seg of segments) {
@@ -75,11 +124,18 @@ function findLengthViolation(segments: NarrationOutput['segments']): string | nu
  * 1. Exactly 2*stopCount+1 segments.
  * 2. The kind sequence, sorted by `order`, is exactly
  *    intro, stop, walk, stop, walk, ..., stop, outro.
- * 3. Every `stop` and `walk` script falls inside its length bounds — the
- *    highest-likelihood failure in the whole pipeline, because a script 3x
- *    the target length is a *plausible* one, not a JSON-shape violation.
+ * 3. No single script is obviously broken — empty, a stub, or several times
+ *    too long. Deliberately loose: the earlier tight per-segment bounds
+ *    rejected two paid responses over a nine-character overrun.
+ * 4. The narration as a WHOLE fits the time budget with generous headroom.
+ *    This is the check the per-segment bounds were a poor proxy for; a tour
+ *    is too long because of its total, not because of one segment.
  */
-function validate(rawText: string, stopCount: number): Validated {
+function validate(
+  rawText: string,
+  stopCount: number,
+  budget?: { walkingMinutes: number; budgetMin: number },
+): Validated {
   let parsedJson: unknown;
   try {
     parsedJson = JSON.parse(rawText);
@@ -117,6 +173,11 @@ function validate(rawText: string, stopCount: number): Validated {
 
   const lengthError = findLengthViolation(byOrder);
   if (lengthError !== null) return { ok: false, error: lengthError };
+
+  if (budget !== undefined) {
+    const durationError = findTotalDurationViolation(byOrder, budget.walkingMinutes, budget.budgetMin);
+    if (durationError !== null) return { ok: false, error: durationError };
+  }
 
   return { ok: true, output: { segments: byOrder } };
 }
@@ -158,7 +219,11 @@ export async function narrate(
     const result = await deps.llm.complete({ system, userBlocks, maxTokens: MAX_TOKENS });
     totalCostUsd += result.costUsd;
 
-    const validated = validate(result.text, stops.length);
+    const walkingMinutes = route.legs.reduce((s, l) => s + l.durationS, 0) / 60;
+    const validated = validate(result.text, stops.length, {
+      walkingMinutes,
+      budgetMin: request.budgetMin,
+    });
     if (validated.ok) {
       return { output: validated.output, costUsd: totalCostUsd };
     }

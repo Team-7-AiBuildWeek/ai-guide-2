@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Rudnayovo+n%C3%A1mestie&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "2",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "461",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:18:00 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-nm5rx",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2483745971\"",
+      "set-cookie": "WMF-Uniq=QD5_vnXpcfDF2m2sEenc-gOsAAAAAFvd4AFwuEuOsWtWp7t7_7GQVxjFSLVUjlLS;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "0f2e7c18-873c-43e9-8559-9f526548ab08"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":182528,\"ns\":0,\"title\":\"Rudnayovo námestie\",\"extract\":\"Rudnayovo námestie je námestie v Bratislave v mestskej časti Staré Mesto.  Nachádza sa pri Dóme svätého Martina.\\nNámestie je pomenované podľa slovenského kardinála Alexandra Rudnaya (1760 – 1831), uhorského primasa.\\nNa Rudnayovom námestí 4 má sídlo Gašparkovo divadlo.\\n\\n\\n== Galéria ==\\n\\n\\n== Dopravné spojenie ==\\nMost SNP (Nový most)\\n \\n         (stav k 2. septembru 2024)\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Rudnayovo námestie\\n\\n\\n== Externé odkazy ==\\nRudnayovo námestie na mape Bratislavy\"}]}}"
+  }
+}

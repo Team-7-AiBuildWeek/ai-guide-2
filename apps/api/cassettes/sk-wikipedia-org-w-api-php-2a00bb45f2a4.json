@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Kapuc%C3%ADnska+ulica&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:17:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-bbm9x",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"687075077\"",
+      "set-cookie": "WMF-Uniq=CHJBToIxUSG00M4FQRyfoQOsAAAAAFvd51wQWFnVnbcyDDYbIQYlfLl9jLENnUfe;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "da0a38b6-2481-4cb6-beaf-ec00fa096de0"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":137153,\"ns\":0,\"title\":\"Kapucínska ulica\",\"extract\":\"Kapucínska ulica je ulica v Bratislave v historickom centre Starého Mesta. Názov  dostala podľa blízkeho kláštora kapucínov. Kapucínska vznikla postupne zástavbou v priestore medzi vnútorným a vonkajším opevnením stredovekého mesta v priebehu 17. a 18. storočia. Nachádza sa hneď vedľa Župného námestia a cez jej stred vedie električková trať po nadjazde nad Staromestskou ulicou smerom pod Hradný vrch smerom do Karlovej Vsi a Dúbravky. Ulica sa mimoúrovňovo križuje s Klariskou ulicou. \\nJužná strana ulice s domami prevažne z 18. storočia si zachovala svoj pôvodný charakter. Dnes v nich sídlia napríklad Taliansky kultúrny inštitút v Bratislave a Mestská knižnica v Bratislave. Rožný pavlačový dom, na križovatke so Židovskou ulicou bol asanovaný v 20. storočí pri príležitosti výstavby komunikácie Staromestská. \\nNa severnej strane ulice stojí Kostol sv. Štefana s budovou kapucínskeho kláštora a záhrady. Po obvode záhrady bol v polovici 19. storočia podľa projektu Ignáca Feiglera ml. postavený rad jednoposchodových domov, súhrnne nazývaných neskôr ako Kapucínsky bazár. Prízemie domov tvorili židovské obchodíky, na poschodí boli obytné miestnosti majiteľov. Domy Kapucínskeho bazára boli asanované po roku 1965 v súvislosti s výstavbou nadjazdu nad Staromestskou ulicou a rozširovaním Kapucínskej ulice. \\nV hornej časti ulice, na mieste terajšieho nadjazdu, v minulosti stála policajná strážnica, ktorá na noc uzamykala vchod do Židovského geta - Zámockej a Židovskej ulice. Stál tu aj známy hostinec K zlatému krížu (Kapucínska 12). \\nV dolnej časti ulica ústila na Uhoľný trh, dnešné Suché mýto, kde sa nachádza Kostol svätého Jána z Mathy.\\n\\n\\n== Dopravné spojenie ==\\nKapucínska\\n \\nZochova\\n              (stav k 2. septembru 2024)\\n\\n\\n== Galéria ==\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Kapucínska ulica\\n\\n\\n== Externé odkazy ==\\nKapucínska na mape Bratislavy\\n\\n\\n== Zdroj ==\\nArchivované 2015-07-22 na Wayback Machine\\nmestskakniznica.sk\"}]}}"
+  }
+}

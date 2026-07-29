@@ -3,20 +3,19 @@
   "response": {
     "status": 200,
     "headers": {
-      "accept-ranges": "bytes",
-      "age": "2",
+      "age": "0",
       "cache-control": "private, must-revalidate, max-age=0",
       "content-disposition": "inline; filename=api-result.json",
       "content-encoding": "gzip",
       "content-length": "631",
       "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
       "content-type": "application/json; charset=utf-8",
-      "date": "Wed, 29 Jul 2026 07:28:03 GMT",
+      "date": "Wed, 29 Jul 2026 11:15:00 GMT",
       "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
       "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
-      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-dk9cb",
-      "server-timing": "WMF-Uniq;desc=\"we-1-8-account-creation-no-desktop-benefits=treatment;\",co_id;desc=\"1098609961\"",
-      "set-cookie": "WMF-Uniq=gq-ls_bDDaEAA8yeCyzCrAOsAAAAAFvdpN3vjAprCWOwNty3L2Fn8NRAhWr61cMb;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-f2hr4",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=treatment;we-1-8-account-creation-no-desktop-benefits=treatment;\",co_id;desc=\"3681332937\"",
+      "set-cookie": "WMF-Uniq=IrhgG4NRap5oRn8rhUhY6AOsAAAAAFvdaytxIW0NsAcjNq-SYYVVdcNLNgnfXDt4;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
       "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
       "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
       "x-analytics": "",
@@ -25,7 +24,7 @@
       "x-client-ip": "46.229.238.250",
       "x-content-type-options": "nosniff",
       "x-frame-options": "DENY",
-      "x-request-id": "c05179f5-336d-4382-bbcb-7bc72398c387"
+      "x-request-id": "79ab59da-1601-445e-ac03-b14705769eca"
     },
     "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":7276918,\"ns\":0,\"title\":\"Hlavné námestie (Bratislava)\",\"extract\":\"Hlavné námestie (literally \\\"Main Square\\\") is one of the best known squares in Bratislava, Slovakia. It is located in the Old Town and it is often considered to be the center of the city.\\nSome of the main landmarks found in the square are the Old Town Hall and Roland Fountain.\\n\\n\\n== Name ==\\nDuring the Second World War, this square was named in honor of Adolf Hitler. During the communist period (1948–1989), the square was named Námestie 4. apríla (literally  4 April Square, April 4 having been the day when Bratislava was liberated by the Red Army at the end of World War II). Earlier names were Slovak: Hitlerovo namestie (1939–1945), Slovak: Masarykovo namestie, Hungarian: Ferenc József tér (1914),  Hungarian: Fő tér, German: Hauptplatz (1879), German: Franz Joseph-Platz (1850), Latin: Forum civitatis (1668), German: Ring (1434), German: Markcht (1404), Latin: Forum (1373).\\n\\n\\n== Gallery ==\\n\\n\\n== References ==\"}]}}"
   }

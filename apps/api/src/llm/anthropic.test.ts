@@ -69,7 +69,11 @@ function sseFrame(event: string, data: unknown): string {
  * `AnthropicLlmClient` can be exercised end-to-end (request shape in,
  * `finalMessage()` parsing out) without an Anthropic API call.
  */
-function fakeStreamingFetch(replyText: string, usage: { inputTokens: number; outputTokens: number }) {
+function fakeStreamingFetch(
+  replyText: string,
+  usage: { inputTokens: number; outputTokens: number; thinkingTokens?: number },
+  stopReason: 'end_turn' | 'max_tokens' = 'end_turn',
+) {
   const frames = [
     sseFrame('message_start', {
       type: 'message_start',
@@ -109,8 +113,14 @@ function fakeStreamingFetch(replyText: string, usage: { inputTokens: number; out
     sseFrame('content_block_stop', { type: 'content_block_stop', index: 0 }),
     sseFrame('message_delta', {
       type: 'message_delta',
-      delta: { stop_reason: 'end_turn', stop_sequence: null },
-      usage: { output_tokens: usage.outputTokens },
+      delta: { stop_reason: stopReason, stop_sequence: null },
+      usage: {
+        output_tokens: usage.outputTokens,
+        output_tokens_details:
+          usage.thinkingTokens === undefined
+            ? null
+            : { thinking_tokens: usage.thinkingTokens },
+      },
     }),
     sseFrame('message_stop', { type: 'message_stop' }),
   ];
@@ -155,5 +165,57 @@ describe('AnthropicLlmClient', () => {
     expect(requestBody.model).toBe('claude-opus-5');
     expect(requestBody.thinking).toEqual({ type: 'adaptive' });
     expect(requestBody.stream).toBe(true);
+  });
+});
+
+describe('AnthropicLlmClient — truncated responses', () => {
+  // The first live run of this pipeline burned two paid attempts on a
+  // response truncated by max_tokens, because it surfaced downstream as
+  // "Response was not valid JSON: Unterminated string at position 1897".
+  // That message points at the parser; the actual cause was the cap. Real
+  // numbers from that run: 8000-token budget, 7182 spent on thinking.
+  it('throws naming the cap rather than returning truncated text', async () => {
+    const { fetchStub } = fakeStreamingFetch(
+      '{"tourTitle":"Truncated","stops":[{"title":"Mich',
+      { inputTokens: 17_000, outputTokens: 8000, thinkingTokens: 7182 },
+      'max_tokens',
+    );
+    const client = new AnthropicLlmClient({ apiKey: 'sk-fake-not-a-real-key', fetch: fetchStub });
+
+    await expect(
+      client.complete({ system: 'sys', userBlocks: [{ text: 'x' }], maxTokens: 8000 }),
+    ).rejects.toThrow(/maxTokens/i);
+  });
+
+  it('explains that thinking shares the cap, and never quotes a bogus zero', async () => {
+    // The SDK does not merge output_tokens_details into the final message, so
+    // any thinking-token count read here would be 0 even when thinking ate
+    // the budget. The message must therefore describe the mechanism rather
+    // than report a number that would be actively misleading.
+    const { fetchStub } = fakeStreamingFetch(
+      '{"partial',
+      { inputTokens: 100, outputTokens: 8000, thinkingTokens: 7182 },
+      'max_tokens',
+    );
+    const client = new AnthropicLlmClient({ apiKey: 'sk-fake-not-a-real-key', fetch: fetchStub });
+
+    const err = await client
+      .complete({ system: 'sys', userBlocks: [{ text: 'x' }], maxTokens: 8000 })
+      .then(() => null, (e: Error) => e);
+
+    expect(err?.message).toMatch(/thinking AND output together/i);
+    expect(err?.message).not.toMatch(/0 were thinking/);
+  });
+
+  it('still returns normally when the model stopped of its own accord', async () => {
+    const { fetchStub } = fakeStreamingFetch('{"ok":true}', {
+      inputTokens: 10,
+      outputTokens: 20,
+      thinkingTokens: 5,
+    });
+    const client = new AnthropicLlmClient({ apiKey: 'sk-fake-not-a-real-key', fetch: fetchStub });
+
+    const res = await client.complete({ system: 's', userBlocks: [{ text: 'x' }], maxTokens: 8000 });
+    expect(res.text).toBe('{"ok":true}');
   });
 });

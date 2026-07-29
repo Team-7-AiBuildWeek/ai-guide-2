@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Pansk%C3%A1+ulica+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:20:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-spmzk",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2407458691\"",
+      "set-cookie": "WMF-Uniq=iRy0Ye27OQ4h2qLcq_zsaAOsAAAAAFvdZVWDuGfAhwQRkkms7Fe4JQc3VThkCp_q;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "b8c528b7-bb9f-4d1d-af99-19f37ec32092"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":130342,\"ns\":0,\"title\":\"Panská ulica (Bratislava)\",\"extract\":\"Panská ulica (hist. nem. Herrengasse a neskôr Szilágy-Dezsőgasse, maď. Szilágy Dezső-utca) je ulica v Starom Meste v Bratislave a súčasť centrálnej pešej zóny. Nachádza sa medzi ulicami Laurinská a spojnicou ulíc Ventúrska a Strakova.\\nPôvodná ulica vznikla za mestskými hradbami, pred ktorými sa nachádzala vodná priekopa. Rozprestierala sa od Laurinskej brány po Vydrickú bránu, prakticky cez celú šírku vtedajšieho mesta. V súčasnosti je ohraničená vstupom na Laurinskú bránu pri lekárni pod Manderlou a na druhej strane pamätníkom obetiam holokaustu.\\nNeskôr však bola ulica rozdelená na dve, na dnešnú Panskú a Laurinskú. Názov je odvodený od slova \\\"pán\\\", teda to bola ulica pánov, pretože si tu grófi, šľachta a mocipáni stavali svoje mestské paláce, ktorých sa tu nachádza veľké množstvo.\\nZa socializmu niesla názov Nálepkova, na počesť kapitána Jána Nálepku (1912-1943), hrdinu druhej svetovej vojny.\\nUlica je bohatá na historické budovy, z ktorých mnohé sú kultúrne pamiatky, medzi najvýznamnejšie patrí Pálffyho palác, Balassov palác, Esterházyho palác a Csákyho palác.\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Panská ulica (Bratislava)\"}]}}"
+  }
+}

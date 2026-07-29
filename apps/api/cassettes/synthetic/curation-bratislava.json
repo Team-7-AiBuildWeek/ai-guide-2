@@ -1,105 +1,174 @@
 {
-  "_synthetic": true,
-  "_comment": "Hand-authored placeholder for a recorded claude-opus-5 curation response. It was never returned by the live API — no Anthropic call was made to produce it. Every wikidataQid below is checked against apps/api/cassettes (the real recorded discovery cassette) by curation/index.test.ts, and every consecutive standingPoint pair is checked to be >=100m apart with haversineM from @ai-guide/shared. Replace this file with a real recording (CASSETTE_MODE=record) once budget is approved for a live curation call; until then it exists only to exercise curate()'s parsing and validation paths in tests.",
-  "tourTitle": "Bratislava's Castle Hill to Old Town",
+  "_synthetic": false,
+  "_comment": "Recorded from claude-opus-5 on 2026-07-29T11:26:50.680Z — real model output, not hand-authored.",
+  "tourTitle": "Baroque Bratislava: Palaces, Cloisters and Quiet Lanes",
   "stops": [
     {
       "wikidataQids": [
-        "Q593311"
+        "Q1717975",
+        "Q11778565",
+        "Q12768896",
+        "Q12775935",
+        "Q12773339",
+        "Q12762985"
       ],
       "standingPoint": {
-        "lat": 48.142222222222,
-        "lng": 17.1
+        "lat": 48.145,
+        "lng": 17.10675
       },
-      "title": "Bratislava Castle",
-      "why": "The whitewashed fortress on the hill is the city's most recognisable silhouette and the natural place to start: it overlooks the Old Town the rest of the walk covers, and its courtyard sets up the Habsburg-era history that recurs at nearly every later stop.",
-      "order": 0
-    },
-    {
-      "wikidataQids": [
-        "Q239560"
-      ],
-      "standingPoint": {
-        "lat": 48.141944444444,
-        "lng": 17.104722222222
-      },
-      "title": "St Martin's Cathedral",
-      "why": "Ten Hungarian kings and queens were crowned here, including Maria Theresa. The coronation route the walk now follows toward the Old Town was the same one the procession took.",
+      "title": "Michael's Gate and Michalská Street",
+      "why": "Gather under the last surviving city gate, whose Gothic tower was given its bulbous Baroque onion cap in the 1750s. From here Michalská runs south lined with noble town palaces, including the Palace of the Hungarian Royal Chamber where the Diet met, the Segner house and the tiny walled-in St Catherine's Chapel; the narrow Baštová lane beside the ramparts is the quietest corner in the old town.",
       "order": 1
     },
     {
       "wikidataQids": [
-        "Q481659"
+        "Q18552941",
+        "Q21490759"
       ],
       "standingPoint": {
-        "lat": 48.1425,
-        "lng": 17.1064
+        "lat": 48.14756,
+        "lng": 17.10563
       },
-      "title": "Universitas Istropolitana",
-      "why": "Bratislava's short-lived 15th-century university, founded by Matthias Corvinus. Its modest surviving building is easy to miss on the way into the Old Town, but it explains why the city briefly rivalled Vienna as a seat of learning.",
+      "title": "Great Evangelical Church, Panenská",
+      "why": "A short climb outside the walls to a hushed Lutheran quarter. The Great Evangelical Church (1774-76) is austere late Baroque, built under Josephine rules that forbade towers and street doors - a fine lesson in how faith shaped facades. The neighbouring Lyceum courtyard is usually empty.",
       "order": 2
     },
     {
       "wikidataQids": [
-        "Q1717975"
+        "Q12782064",
+        "Q12769588",
+        "Q24091573",
+        "Q13421732",
+        "Q12769121"
       ],
       "standingPoint": {
-        "lat": 48.1451,
-        "lng": 17.1068
+        "lat": 48.1455,
+        "lng": 17.1053
       },
-      "title": "Michael's Gate",
-      "why": "The sole surviving gate of the medieval fortifications, and still the Old Town's northern threshold. Passing under its tower is the clearest way to feel the transition from the modern city into the walled centre.",
+      "title": "Župné námestie and the Capuchin Church",
+      "why": "The plain Baroque Capuchin church of St Stephen with its Marian plague column in front - votive Baroque at its most modest. The square sits just off the traffic, and Kapucínska and Klariská lead away into the stillest streets of the historic core.",
       "order": 3
     },
     {
       "wikidataQids": [
-        "Q1450292"
+        "Q1744456",
+        "Q13425072",
+        "Q12774507"
       ],
       "standingPoint": {
-        "lat": 48.14490278,
-        "lng": 17.10831944
+        "lat": 48.1433,
+        "lng": 17.10525
       },
-      "title": "Franciscan Church",
-      "why": "One of the oldest sacred buildings in the city, tucked just off the main pedestrian street. Its plain Gothic exterior is a deliberate contrast with the Baroque façades the walk passes next.",
+      "title": "Kapitulská and the Clarissine Convent",
+      "why": "The canons' street: almost car-free, walled gardens, the Renaissance Emericanum college and the Provost's Palace with its St Elizabeth group carved on the spot. Beside it the Clarissine church, whose Gothic shell hides the Baroque and Rococo refitting of the convent - the quietest stretch of the walk.",
       "order": 4
     },
     {
       "wikidataQids": [
-        "Q938516"
+        "Q4177964"
       ],
       "standingPoint": {
-        "lat": 48.14396194,
-        "lng": 17.10867389
+        "lat": 48.14306,
+        "lng": 17.10333
       },
-      "title": "Primate's Palace",
-      "why": "Napoleon and Emperor Francis II signed the Peace of Pressburg in the Hall of Mirrors here in 1805. The neoclassical façade, with its cast-iron cardinal's-hat roof ornament, is worth pausing under before descending toward the river.",
+      "title": "St Nicholas Church on the Castle Road",
+      "why": "A tiny whitewashed church on the old road up the hill, standing above the vanished Jewish quarter. We keep to the terrace here rather than climbing to the castle, and look out over rooftops with almost nobody around.",
       "order": 5
+    },
+    {
+      "wikidataQids": [
+        "Q239560",
+        "Q12775526",
+        "Q1589718",
+        "Q19724894",
+        "Q13371022"
+      ],
+      "standingPoint": {
+        "lat": 48.14195,
+        "lng": 17.1049
+      },
+      "title": "St Martin's Cathedral and the House of the Good Shepherd",
+      "why": "The coronation church of Hungarian kings, with its Baroque St Martin equestrian group by Georg Raphael Donner inside. Across Rudnayovo square stands the House of the Good Shepherd, the narrowest and most delicate Rococo house in the city, plus the Csáky Palace and the old Salvator pharmacy.",
+      "order": 6
+    },
+    {
+      "wikidataQids": [
+        "Q9368398",
+        "Q873832",
+        "Q2047232",
+        "Q12773330",
+        "Q12765427",
+        "Q481659",
+        "Q13421959"
+      ],
+      "standingPoint": {
+        "lat": 48.1426,
+        "lng": 17.1065
+      },
+      "title": "Ventúrska Street: the palace row",
+      "why": "One paved lane, four aristocratic palaces: Pálffy, Zichy, the de Pauli Palace with its garden pavilion where the child Liszt performed, and the late-Baroque Erdődy Palace at the corner. The medieval Universitas Istropolitana courtyard is a step away and rarely busy.",
+      "order": 7
     },
     {
       "wikidataQids": [
         "Q949192",
         "Q4178866",
-        "Q439356"
+        "Q2047055",
+        "Q701982",
+        "Q637790",
+        "Q439356",
+        "Q1512466",
+        "Q6188001",
+        "Q12771076",
+        "Q12773329",
+        "Q12024552",
+        "Q4177820"
       ],
       "standingPoint": {
-        "lat": 48.142985,
-        "lng": 17.10837
+        "lat": 48.14333,
+        "lng": 17.10833
       },
-      "title": "Hlavné námestie",
-      "why": "The Old Town's main square, the Roland Fountain at its centre and the Old Town Hall on its north side are metres apart and heard from the same spot — this is the natural closing stop, where the walk's threads (market square, town governance, coronation-era fountain) come together.",
-      "order": 6
+      "title": "Hlavné námestie at the Roland Fountain",
+      "why": "The main square, best read from the fountain: the Old Town Hall tower, the Jesuit church with its Marian column, the Rococo Kutscherfeld Palace (smallest in the city), Jesenák and Palugyay houses, and the Vice-Governor's Palace. A single sweep of Baroque and Rococo facades around one open space.",
+      "order": 8
     },
     {
       "wikidataQids": [
-        "Q1639599"
+        "Q12773371",
+        "Q11034158",
+        "Q12768886",
+        "Q662825",
+        "Q1639599",
+        "Q12165965",
+        "Q12766874",
+        "Q12769095"
       ],
       "standingPoint": {
-        "lat": 48.14176389,
-        "lng": 17.10826389
+        "lat": 48.14215,
+        "lng": 17.1085
       },
-      "title": "Hviezdoslavovo námestie",
-      "why": "A long, leafy square running down toward the Danube and the National Theatre, named for the Slovak poet Pavol Országh Hviezdoslav. It gives the walk a breather between the dense monument clusters on either side.",
-      "order": 7
+      "title": "Panská Street and Hviezdoslav Square",
+      "why": "Panská, the old 'Lords' Street', keeps the Balassa Palace and the pocket-sized Baroque Corpus Christi chapel wedged between houses; the Pálffy Palace stands at the corner. We finish the leg under the plane trees of Hviezdoslav Square by the Ganymede fountain and the old theatre - shady and calm at the edges.",
+      "order": 9
+    },
+    {
+      "wikidataQids": [
+        "Q1450292",
+        "Q752582",
+        "Q913415",
+        "Q12766073",
+        "Q13425267",
+        "Q938516",
+        "Q4597483",
+        "Q12772630"
+      ],
+      "standingPoint": {
+        "lat": 48.14435,
+        "lng": 17.1087
+      },
+      "title": "Franciscan and Primate's Squares",
+      "why": "The finale for a Baroque eye: Mirbach Palace, the city's finest Baroque-Rococo house with its original panelled rooms, the oldest church in town beside it, the Ursuline Loreto church, and the pink Primate's Palace whose enclosed courtyard with the St George fountain is the calmest place to end.",
+      "order": 10
     }
   ]
 }

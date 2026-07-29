@@ -157,11 +157,12 @@ describe.each(repositories)('%s repository', (name, make) => {
   });
 
   it.skipIf(repo === null)(
-    'a tour round-trips with all 17 segments, preserving order, poiIds, null intro/outro triggers, and triggerRadiusM',
+    'a tour round-trips with all of its segments, preserving order, poiIds, null intro/outro triggers, and triggerRadiusM',
     async () => {
       const r = repo!;
       const fixtureRaw = await readFile(fixturePath, 'utf8');
       const fixture = JSON.parse(fixtureRaw) as { tour: Tour };
+      const expectedSegmentCount = fixture.tour.segments.length;
 
       // tours.id is a real `uuid` column (unlike segments.id, which is
       // `text` for exactly this reason — see schema.sql's comment), so the
@@ -186,7 +187,7 @@ describe.each(repositories)('%s repository', (name, make) => {
       expect(tour.language).toBe(testTour.language);
       expect(tour.persona).toBe(testTour.persona);
       expect(tour.routeGeoJson).toEqual(testTour.routeGeoJson);
-      expect(tour.segments).toHaveLength(17);
+      expect(tour.segments).toHaveLength(expectedSegmentCount);
       expect(tour.segments.map((s) => s.order)).toEqual(testTour.segments.map((s) => s.order));
 
       for (let i = 0; i < testTour.segments.length; i++) {

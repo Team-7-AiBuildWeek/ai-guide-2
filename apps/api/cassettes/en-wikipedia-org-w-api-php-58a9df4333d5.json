@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Johann+P%C3%A1lffy+Palace&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "455",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:15:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-twdss",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=control;we-1-8-account-creation-no-desktop-benefits=treatment;\",co_id;desc=\"1513671997\"",
+      "set-cookie": "WMF-Uniq=4WKRbJcjszXdGS5p0YTOYQOsAAAAAFvdtqVJH3mKTVUncMgjy46-1ptnTpMs9aE3;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "c99ea3e7-a7b6-41dc-baf3-5e784660a326"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":11379770,\"ns\":0,\"title\":\"Johann Pálffy Palace\",\"extract\":\"Johann Pálffy Palace (Slovak: Pálffyho palác or Pálfiho palác) is a late Classicism-style building in the Old Town, Bratislava, Slovakia, on the Panská street, near the Hviezdoslav Square. The palace is standing on the site of a former building, which was until the mid-1850s the seat of Pozsony county. After the seat moved elsewhere, it was rebuilt in late Classicist style by the Pálffy family, who were former hereditary chiefs of the Pozsony county.\\nAfter its reconstruction in the 1980s, it currently houses three permanent exhibitions of the Bratislava City Gallery and temporary exhibitions.\\n\\n\\n== References ==\"}]}}"
+  }
+}

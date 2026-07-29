@@ -103,7 +103,23 @@ export function distanceToLineStringM(p: LatLng, line: LineString): number {
  * coordinate onto the route and taking cumulative-distance-to-there is the
  * only fraction that actually lands within the stop's trigger radius.
  */
-export function fractionAlongLineString(p: LatLng, line: LineString): number {
+export function fractionAlongLineString(
+  p: LatLng,
+  line: LineString,
+  /**
+   * Ignore everything before this fraction of the route.
+   *
+   * A route that crosses itself has more than one closest point, and the
+   * nearest overall may belong to a different pass. A caller walking stops in
+   * order knows which pass it means and can say so: pass the previous stop's
+   * fraction and the search is confined to what comes after it.
+   *
+   * Without this, the real Bratislava tour placed its first stop at fraction
+   * 0.48 instead of 0, because the route returns within a metre of Michalská
+   * brána long after leaving it.
+   */
+  searchFromFraction = 0,
+): number {
   const coords = line.coordinates;
   if (coords.length < 2) return 0;
 
@@ -116,16 +132,24 @@ export function fractionAlongLineString(p: LatLng, line: LineString): number {
   const totalM = cumulativeM[cumulativeM.length - 1];
   if (totalM === 0) return 0;
 
+  const minAlongM = Math.max(0, Math.min(1, searchFromFraction)) * totalM;
+
   let bestDistanceM = Infinity;
-  let bestAlongM = 0;
+  let bestAlongM = minAlongM;
   for (let i = 0; i < points.length - 1; i++) {
     const a = points[i];
     const b = points[i + 1];
     const segLenM = haversineM(a, b);
+    // Skip segments that end before the search window opens.
+    if (cumulativeM[i] + segLenM < minAlongM) continue;
+
     const { distanceM, t } = closestPointOnSegment(p, a, b);
+    const alongM = cumulativeM[i] + t * segLenM;
+    if (alongM < minAlongM) continue;
+
     if (distanceM < bestDistanceM) {
       bestDistanceM = distanceM;
-      bestAlongM = cumulativeM[i] + t * segLenM;
+      bestAlongM = alongM;
     }
   }
   return bestAlongM / totalM;

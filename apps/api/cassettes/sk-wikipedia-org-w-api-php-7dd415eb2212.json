@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Ba%C5%A1tov%C3%A1+ulica+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "1095",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:16:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-s5qbx",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"3848818874\"",
+      "set-cookie": "WMF-Uniq=bXWNkL08eKS7HHY8xjEN9QOsAAAAAFvd_ZutBxm_s3ebhM0iVqUtN6VYpjqKkYYC;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "0ac47048-2638-4571-8a19-7a1facb713c2"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":130551,\"ns\":0,\"title\":\"Baštová ulica (Bratislava)\",\"extract\":\"Baštová ulica je úzka ulica v Starom Meste v Bratislave v historickom centre mesta. Nachádza sa medzi Kapucínskou, Klariskou a Michalskou ulicou. Bola budovaná pozdĺž mestských hradieb.\\n\\n\\n== Pôvodné pomenovania ==\\nJej prvé pomenovanie je z roku 1440, no vystriedala niekoľko názvov. Postupne sa volala v 1440 Schlosser-Gasse (Zámočnícka), v 1676 platea Seraria, v 1740 Henker-Gassl (Katova ul.), v 1742 Häncker-gässl, v 1757 Freymanns-Gassel, v 1779 beym Freymann, v 1792 Zwinger Gassel (Baštová), v 1832 Zwingergässchen, v rokoch 1848 - 1850 na Halácsyho pláne Zwinger Gässl, v roku 1862 Basteigasse, v roku 1879 Zwingergasse, Kekész utca a od roku 1921 jej zostal súčasný názov Baštová, ako výsledok poslovenčenia názvu.\\n\\n\\n== História ==\\nPôvodne bola obývaná najmä židovskou časťou obyvateľstva. Keď Židia v čase tureckých nájazdov ušli z mesta, mesto im až do roku 1848 zakázalo pobyt v meste. V roku 1760 bola na ulici vybudovaná studňa, v roku 1768 kanalizácia, v roku 1804 vodovodné potrubie. V roku 1880 mala ulica 10 domov a približne do súčasnej podoby sa dostala v roku 1938 regulačnou zastavovacou úpravou.\\n\\n\\n== Zaujímavosti ==\\nBaštová ulica je považovaná za najužšiu ulicu v Bratislave. Zaujímavá je aj tým, že v dome číslo 7 býval kedysi mestský kat.\\n\\n\\n== Významné budovy ==\\nNa ulici sa nachádzajú galérie (Nova, Open Gallery), reštaurácia (Michalská brána) a sídla rôznych spoločností (Nadácia otvorenej spoločnosti) a hotel (Tower Studio Apartment).\\n\\n\\n== Galéria ==\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Baštová ulica (Bratislava)\\n\\n\\n== Externé odkazy ==\\nBaštová ulica na mape Bratislavy\"}]}}"
+  }
+}

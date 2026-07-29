@@ -240,12 +240,20 @@ describe('route — recorded Bratislava cassette', () => {
     const totalDistanceM = result.legs.reduce((s, l) => s + l.distanceM, 0);
     const totalWalkingMin = result.legs.reduce((s, l) => s + l.durationS, 0) / 60;
 
-    // A walking tour of Bratislava's old town should be roughly 2-4km and
-    // 30-60 minutes of *walking* time (before dwell/narration is added).
+    // A walking tour of Bratislava's old town should be a plausible walk,
+    // not a road trip or a trip round the block. The real recorded curation
+    // cassette (10 stops, replacing the old 8-stop hand-authored fixture)
+    // produces a longer route than before — about 5.2km / 62 minutes of
+    // walking, versus the old fixture's ~2km — so the upper bounds here are
+    // widened accordingly. This is still a plausibility check, not a pin to
+    // the exact recorded numbers: it should keep passing if the cassette is
+    // re-recorded with a similar-sized tour, and still catch a route that's
+    // absurdly short (a bug collapsing stops) or absurdly long (a bug
+    // sending Mapbox the wrong waypoints).
     expect(totalDistanceM).toBeGreaterThan(1500);
-    expect(totalDistanceM).toBeLessThan(5000);
+    expect(totalDistanceM).toBeLessThan(8000);
     expect(totalWalkingMin).toBeGreaterThan(10);
-    expect(totalWalkingMin).toBeLessThan(70);
+    expect(totalWalkingMin).toBeLessThan(90);
 
     expect(result.legs).toHaveLength(cassette.stops.length - 1);
     expect(result.triggerRadiiM).toHaveLength(cassette.stops.length);

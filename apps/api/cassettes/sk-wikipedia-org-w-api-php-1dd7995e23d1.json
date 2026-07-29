@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Vent%C3%BArska+ulica&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "986",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:18:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-v4wvg",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"3050746058\"",
+      "set-cookie": "WMF-Uniq=cTeSQB_7scmfEGSmJnMXQAOsAAAAAFvdIURoe0Z4e0Di_eZ7A8hscqNwubsoWHXR;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "4c0e6bb7-d350-4e0e-a091-1bbf647a22fc"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":76927,\"ns\":0,\"title\":\"Ventúrska ulica\",\"extract\":\"Ventúrska (nem. Venturgasse, maď. Ventur-utca) je ulica v bratislavskom Starom Meste v predĺžení Michalskej ulice, siaha po Strakovu a Panskú ulicu pri Hviezdoslavovom námestí a Moste SNP.\\nPočas socializmu mala názov Jiráskova podľa českého spisovateľa Aloisa Jiráska (1851 – 1930), potom sa vrátila k svojmu pôvodnému názvu, pričom meno Jiráskova získala niekdajšia Mičurinova v Petržalke. Pôvodný názov Ventúrska pochádza podľa bohatej rodiny Bonaventura di Salto, ktorá zohrávala dôležitú úlohu v 15. storočí.\\n\\n\\n== Významné objekty ==\\nNa Ventúrskej sa nachádza veľa významných historických budov, napríklad Erdődyho palác z konca 18. storočia, Pálffyho palác, Palác Leopolda de Pauli alebo Zičiho palác. V dome na Ventúrskej 5 sa kedysi tlačili noviny Preßburger Zeitung. V kúriovom dome na tejto ulici sa v roku 1833 narodil veľkovojvoda Jozef Karol Ľudovít Habsburský. V dome č. 7 sídlila v 15. storočí mestská mincovňa, keďže Bratislava získala v roku 1430 právo raziť mince. Počas vlády Mateja Korvína v budove sídlila Academia Istropolitana, založená v roku 1465 Jánom Vitézom, ktorá svoju činnosť začala v roku 1467 po schválení pápežom Pavlom II.\\n\\n\\n== Blízke ulice a námestia ==\\nSedlárska\\nStrakova\\nFarská\\nPanská\\nPrepoštská ulica\\nZelená\\nHlavné námestie\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Ventúrska ulica\\n\\n\\n== Externé odkazy ==\\nVentúrska na mape Bratislavy\"}]}}"
+  }
+}

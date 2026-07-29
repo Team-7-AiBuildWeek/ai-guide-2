@@ -1,4 +1,5 @@
 import type { GenerateRequest, Poi } from '@ai-guide/shared';
+import { dwellMinutesPerStop, walkingBudgetM } from '../budget.ts';
 
 /**
  * Everything the model needs except the candidate list: task framing, the
@@ -30,7 +31,25 @@ ones. Two stops close together on the ground collide even if they are far
 apart in the tour, because the phone triggers narration by proximity alone.
 If two places are within 100 metres of each other, merge them into a single
 stop listing both QIDs.
-Target walking time: ${req.budgetMin} minutes.
+
+BUDGET. The traveller asked for ${req.budgetMin} minutes in total. That time is
+spent two ways, and standing still is most of it:
+
+  - standing at each stop, listening: about ${dwellMinutesPerStop().toFixed(1)} minutes per stop
+  - walking between stops: whatever is left
+
+For 10 stops that leaves roughly ${walkingBudgetM(req.budgetMin, 10)} metres of walking IN TOTAL,
+measured along the streets, for the whole route from first stop to last.
+
+Check this against the coordinates as you choose. Add up the distances between
+consecutive stops you are considering; real streets run 20-40% longer than the
+straight line, so keep the straight-line total comfortably under that figure.
+Choosing places that are individually excellent but spread across the city
+produces a walk far longer than asked for, which is worse than a shorter tour
+of nearer places.
+
+Prefer fewer stops over a longer walk. 8 well-chosen stops within the distance
+budget beat 12 that overrun it.
 
 Reply with JSON only, matching:
 {"tourTitle": string, "stops": [{"wikidataQids": string[],

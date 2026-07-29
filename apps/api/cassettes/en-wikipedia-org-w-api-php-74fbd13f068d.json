@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Miestodr%C5%BEite%C4%BEsk%C3%BD+pal%C3%A1c&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "435",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:15:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-hm8fx",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=control;we-1-8-account-creation-no-desktop-benefits=treatment;\",co_id;desc=\"2894579024\"",
+      "set-cookie": "WMF-Uniq=qlKsXWEP1lj3iNZ9b8RaMwOsAAAAAFvdrh3hDjYZ-N8k7VXZ_7dMiLJOhef-HIgc;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "999032e0-d6a0-4751-8d22-e18473da573d"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":12026100,\"ns\":0,\"title\":\"Miestodržiteľský palác\",\"extract\":\"Miestodržiteľský palác (Vice Governor's palace in Bratislava) is an old and historically important building, located in Bratislava, the capital of Slovakia, in the Main Square, Old Town.\\nIt was owned by the city of Bratislava until it was bought by the state in the 18th century for the purpose of housing The Vice Governor's Council. After World War II, the building was used by many institutions, until the Velvet Revolution in 1989.\\nCurrently, it is owned by The Slovak Republic Government office and serves as one of many buildings used to host special events.\"}]}}"
+  }
+}

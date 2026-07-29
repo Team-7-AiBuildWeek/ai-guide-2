@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=%C5%BDupn%C3%A9+n%C3%A1mestie+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "676",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:17:00 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-nlzwp",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1292307883\"",
+      "set-cookie": "WMF-Uniq=lnjjabV1p74yyYIoNWRMYgOsAAAAAFvd0kMA2rewo2Cz-cEUzVjqtH-2cCxU7QSF;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "bfee4d28-e557-4062-8a4a-d5b25bffa116"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":137146,\"ns\":0,\"title\":\"Župné námestie (Bratislava)\",\"extract\":\"Župné námestie (v rokoch 1946 – 1991 Októbrové námestie) je námestie v Bratislave v mestskej časti Staré Mesto.\\nNachádza sa v blízkosti Kapucínskej ulice, Námestia SNP a Obchodnej ulice. V roku 2006 bolo kompletne zrekonštruované spolu s ostatnými ulicami v historickom centre a pri tejto príležitosti tu bola objavená stará studňa, ktorá bola tiež zrekonštruovaná a nasvietená. Na námestí sa nachádza známy kostol Trinitárov.\\nPopri námestí vedie hlavná električková trať spájajúca okrajové časti mesta, inak sa námestie nachádza v tzv. mäkkej pešej zóne. Na Župnom námestí stojí aj druhá, staršia budova Národnej rady SR.\\n\\n\\n== Dopravné spojenie ==\\nZochova\\n              \\nKapucínska\\n \\nPoštová\\n  (stav k 2. septembru 2024)\\n\\n\\n== Galéria ==\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Župné námestie (Bratislava)\\n\\n\\n== Externé odkazy ==\\nŽupné námestie na mape Bratislavy\"}]}}"
+  }
+}

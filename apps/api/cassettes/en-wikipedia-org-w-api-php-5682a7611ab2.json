@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Pharmacy+Salvator&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:14:35 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.canary-7f44bf7669-tn5sj",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"870925065\"",
+      "set-cookie": "WMF-Uniq=6rfY4zMCq7mRbL53vzfcaQOsAAAAAFvdd6sWitVsy7eH3h_OlJA7P7KwOKuT5Y0L;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "e117b3c5-84c7-4059-afb7-d4560888d206"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":35252690,\"ns\":0,\"title\":\"Pharmacy Salvator\",\"extract\":\"Pharmacy Salvator (Slovak: Lekáreň u Salvátora) is a neo-Renaissance building and former pharmacy in the Old Town of Bratislava, Slovakia constructed by pharmacist Rudolf Adler in 1904.\\nThe building's facade features a stone statue of Christ the Saviour by sculptor Alojz Rigele. The ground floor is abandoned and the upper floors contain 10 flats, partially occupied by the Slovak National Theatre employees. Since 1963 the building is a culturally protected monument and it is one of the more striking examples of neo-renaissance architecture in Bratislava. Pharmacy Salvator is located across the street from the monumental St. Martin's Cathedral and it is part of most guided tours of the city.\\nIn the period from 1904 to 1995, the building housed a baroque cabinet of the rarest Jesuit pharmacy dating from 1727. These objects included a huge marble pharmaceutical desk supported by six lions, an antique cash register, gas chandelier, a set of pharmaceutical containers and various other furniture. This cabinet is unique not only for its rich Baroque decoration but it is also interesting for its engaging story. During its more than 300 years of existence, it has been moved four times. Additionally, it has been a church, private and national property, and about half of its life is closely connected with the Jesuit order.\\n\\n\\n== History of the pharmacy ==\\nThe antique apothecary cabinet of the former Jesuit pharmacy was made around 1727 for the needs of the residence of St. Martin in Pressburg (today's Bratislava). Some of its parts date back to 1658 and were probably part of a pharmacy. The pharmacy had been established and donated that year to the Jesuits by Archbishop Juraj Lippay. \\nIn 1727, an official examination of all pharmacies was carried out and the Jesuits were given the right to operate the pharmacy and sell medicines. That year, a substantial part of the baroque furniture of the pharmacy was made. After the abolition of the Jesuit order, the cabinet was sold in the form of an auction and in 1775 the pharmacist Karol Sessel became its first private owner. Subsequently, the pharmacy had several owners from 1819 to 1884. In 1833 it was moved to the palace of Count Csáky. Since 1884, the pharmacy was owned by Dr. Rudolf Adler who had St. Salvátor's house built on Panská 35 in Bratislava where in 1904 he moved this pharmacy to the ground floor. The office was similar to the original room of the Jesuit residence and was artistically modified with ceiling stucco and four allegorical paintings by local amateur painters J. Stztankovics and R. Adler, the daughter of the pharmacist. During this period, modifications were made to the pharmacy's cabinet, it was supplemented by some elements such as hours of Viennese production, modified friezes on the front of the cabinet and glazing of part of the showcases.    \\nAfter the death of Dr. Rudolf Adler in 1906, the pharmacy fell into the hands of tenants. In 1950, it became public property and operated as a pharmacy until 1995. In that year, the pharmacy's antique cabinet fell into private hands and was dismantled and transported outside Bratislava. For the next 15 years, the cabinet was hidden from the public and there was no information about it until 2010 when it was bought by a private collector and pharmacist PharmDr. Erik Kovács. He had the cabinet completely restored and built a modern building in Nové Mesto nad Váhom for the purpose of its installation. In the new building there is a space for the pharmacy which is a copy of the original pharmacy in the house of St. Salvator, including a copy of the original stucco ceiling and tiles. In 2018, PharmDr. Kovács placed the furniture of the baroque pharmacy into the new premises and established the Museum of Pharmacy at St. Salvator's there and thus made it available to the public again. In addition to the baroque cabinet, the Museum houses an extensive collection of pharmaceutical artifacts dating back to the 16th century.\\n\\nThe city of Bratislava, after the acquisition of exclusive ownership rights on the building of St. Salvator's Pharmacy, expressed an eminent interest in relocating the baroque cabinet back to its original premises. The pharmacy was reopened on 1 July 2024.\\n\\n\\n== See also ==\\nRed Crayfish Pharmacy\\nOld Town, Bratislava\\nTourism in Slovakia\\n\\n\\n== References ==\"}]}}"
+  }
+}

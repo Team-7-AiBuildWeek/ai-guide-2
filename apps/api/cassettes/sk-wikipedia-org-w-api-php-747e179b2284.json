@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Dom+U+dobr%C3%A9ho+pastiera&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "616",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:18:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-4rdt6",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1655130810\"",
+      "set-cookie": "WMF-Uniq=Ng5e2lrjVfAkK6T6j46zkAOsAAAAAFvdNJe0B9ahXwOdv3EkmyYg0OXEQwJoLMhL;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "fba4aeb0-99fa-49f7-8681-21e7177a2b19"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":129998,\"ns\":0,\"title\":\"Dom U dobrého pastiera\",\"extract\":\"Dom U dobrého pastiera je meštiansky rokokový dom z 2. polovice 18. storočia na Židovskej ulici číslo 1 v Bratislave. Je to jedna z najkrajších rokokových stavieb v Bratislave[chýba zdroj].\\nDom bol postavený pre bratislavského obchodníka v rokoch 1760-1765. Patrí k niekoľkým zachovaným pôvodným budovám bratislavského podhradia. V roku 1975 bol zrekonštruovaný a Múzeum mesta Bratislavy v ňom otvorilo unikátnu expozíciu historických hodín, kde sú vystavené rôzne typy hodín z obdobia od 17. do začiatku 20. storočia, no zameriava sa najmä na hodiny z 18. a 19. storočia vyrobené v dielňach bratislavských majstrov.\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Dom U dobrého pastiera\\n\\n\\n== Externé odkazy ==\\n\\nMúzeum mesta Bratislavy - muzeum.bratislava.sk Archivované 2013-12-24 na Wayback Machine\"}]}}"
+  }
+}

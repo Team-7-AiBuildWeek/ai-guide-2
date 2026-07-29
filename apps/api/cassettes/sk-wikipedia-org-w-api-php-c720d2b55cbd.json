@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Prepo%C5%A1tsk%C3%BD+pal%C3%A1c+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "416",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:17:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-8tmp9",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1812746154\"",
+      "set-cookie": "WMF-Uniq=u5jKNi2n7G3HNCTZatwtGAOsAAAAAFvdf_MIwqTY6ap23a5g5Th2qVhvnowYv3eh;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "b779cf30-e97a-4516-b436-c3cc18f5e334"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":208113,\"ns\":0,\"title\":\"Prepoštský palác (Bratislava)\",\"extract\":\"Prepoštský palác je dom v Bratislave v Starom Meste na Kapitulskej ulici. Na nádvorí paláca je súsošie sv. Alžbety z roku 1907, ktoré priamo na mieste vytesal z kameňa sochár Alojz Rigele. Palác aj so súsoším patrí medzi národné kultúrne pamiatky.\\n\\n\\n== Dejiny ==\\nBudova v barokovom štýle bola postavená v roku 1632. V súčasnosti tu sídli Teologická fakulta Univerzity Komenského v Bratislave.\\n\\n\\n== Referencie ==\"}]}}"
+  }
+}

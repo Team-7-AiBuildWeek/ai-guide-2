@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Zi%C4%8Diho+pal%C3%A1c&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "411",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:18:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-5zzpk",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2498501722\"",
+      "set-cookie": "WMF-Uniq=P-CFJAhtgWzlytZpxpyCBQOsAAAAAFvdy4RVtoYctr0vXN3uWnjrpQqBLKvLfGQr;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "7b02e224-042c-402f-9245-6ec77be154e0"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":130190,\"ns\":0,\"title\":\"Zičiho palác\",\"extract\":\"Zičiho palác (staršie: Zichyho palác) je palác na Ventúrskej ulici číslo 9 v Bratislave. Bol dokončený v roku 1775 pre grófa Františka Zičiho. Vyniká elegantnou prísne klasicistickou fasádou, jeho vnútro je pôvodne gotické. Palác bol v osemdesiatych rokoch 20. storočia rekonštruovaný. V súčasnosti sa tu konajú svadobné obrady a koncerty.\\nPalác má rozľahlé nádvorie, v strede je fontána a socha leva s otvorenými ústami.\"}]}}"
+  }
+}

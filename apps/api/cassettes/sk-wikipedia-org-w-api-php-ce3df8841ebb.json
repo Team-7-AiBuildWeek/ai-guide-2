@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Chr%C3%A1m+sv%C3%A4t%C3%A9ho+Mikul%C3%A1%C5%A1a+%28Star%C3%A9+Mesto%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "1119",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:17:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.canary-7f44bf7669-th42j",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1484181142\"",
+      "set-cookie": "WMF-Uniq=WV4Ows8snSvzXaftTbcdqwOsAAAAAFvdbaJsZ3OOYPqBsIDCJzKqxrn6cy8sEheY;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "be16d8c5-b0d1-45df-b362-f57330cc6a2b"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":34770,\"ns\":0,\"title\":\"Chrám svätého Mikuláša (Staré Mesto)\",\"extract\":\"Chrám svätého Mikuláša je ranobaroková sakrálna stavba postavená na mieste pôvodného gotického kostola pod hradným kopcom Bratislavského hradu. \\nUž v stredoveku stál na Podhradí jednoloďový gotický kostol rovnakého zasvätenia. Približne v roku 1550 ho z obavy pred tureckým nebezpečenstvom zrúcali. Roku 1661 ho dala znova postaviť Františka Khuen, vdova po palatínovi Pavlovi Pálffym.\\nStavba kostola je pomerne jednoduchá. Ide o jednoloďový priestor postavený v západno-východnej orientácii s polygonálne uzavretým presbytériom. Hlavná fasáda je ukončená štítom, z ktorého vyrastá štvorhranná drevená vežička so zvonicou. V strede južnej fasády je kamenný portál, doplnený rozoklaným tympanónom, do ktorého kamenársky majster umiestnil precízne vypracovaný reliéf erbov manželov Pálffyovcov. Nad portálom je nika so sochou patróna kostola. \\nV interiéri je v presbytériu umiestnený hlavný oltár s obrazom sv. Mikuláša, ktorý sa zachoval z pôvodného vybavenia kostola. Kazateľnica je dielom Petra Brandenthala z 18. storočia.\\nPôvodne slúžil veriacim rímskokatolíckej cirkvi a patril do farnosti Dómu sv. Martina. Vzhľadom ku klesajúcemu počtu veriacich v tejto lokalite ho rímskokatolícka cirkev prestala používať a dala ho do užívania gréckokatolíckej cirkvi. V roku 1945 na konci Druhej svetovej vojny chrám zhorel. V rokoch 1945 – 1950 ho gréckokatolícka farnosť zrekonštruovala. Po násilnej likvidácii gréckokatolíckej cirkvi v roku 1950 chrám prevzala pravoslávna cirkev, ktorá ho aj v súčasnosti používa.\\nV roku 2022 sa chráme slúžia pravidelné bohoslužby a je v príprave projekt rekonštrukcie.\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Chrám svätého Mikuláša (Staré Mesto)\"}]}}"
+  }
+}

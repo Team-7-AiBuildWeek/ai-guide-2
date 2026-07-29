@@ -222,10 +222,16 @@ describe('narrate', () => {
 });
 
 describe('narration-bratislava-sk synthetic cassette', () => {
-  it('is marked as synthetic, not a real recording', async () => {
+  it('records its provenance honestly as a real recording, not a hand-authored placeholder', async () => {
     const raw = await readFile(join(cassetteDir, 'synthetic', 'narration-bratislava-sk.json'), 'utf8');
     const cassette = JSON.parse(raw);
-    expect(cassette._synthetic).toBe(true);
+    // This cassette lives under a `synthetic/` directory for historical
+    // reasons, but its content is real recorded model output. `_synthetic`
+    // and `_comment` are the provenance record — this test would fail if
+    // someone silently swapped in a hand-authored placeholder that claimed
+    // to be real without actually saying so.
+    expect(cassette._synthetic).toBe(false);
+    expect(cassette._comment).toMatch(/record/i);
   });
 
   it('is structurally valid for the 8 stops in the synthetic curation cassette', async () => {

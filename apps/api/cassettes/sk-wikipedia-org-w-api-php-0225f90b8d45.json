@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Jesen%C3%A1kov+pal%C3%A1c+%28Hlavn%C3%A9+n%C3%A1mestie%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "2",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "438",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:20:00 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-h42c4",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"151497001\"",
+      "set-cookie": "WMF-Uniq=DvO2xvW4GZAFH3S_ePBWHwOsAAAAAFvdn3Ua1AYyZbYOIpttfklxpb8REpscaoX9;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "cff431fc-2ca0-4d81-8048-3846c35414ee"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":204958,\"ns\":0,\"title\":\"Jesenákov palác (Hlavné námestie)\",\"extract\":\"Jesenákov palác je trojkrídlový barokový palác v Bratislave, postavený pre baróna Jána Jesenáka na základoch staršieho stredovekého domu. Na nároží je kamenná kartuša s erbom pôvodného majiteľa. Dom mal smerom do námestia oporné piliere, ktoré odstránili koncom 19. storočia. V pilieroch našli druhotne použité románske hlavice.\\nDnes sa v budove na strane Hlavného námestia nachádza veľvyslanectvo Gréckej republiky, na strane Sedlárskej ulice známa cukráreň Mayer.\"}]}}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Kaplnka+sv%C3%A4tej+Katar%C3%ADny+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "793",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:16:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-77n8f",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1338174388\"",
+      "set-cookie": "WMF-Uniq=6y2P5VA6z9REn19HRipYzgOsAAAAAFvdfHUlBRl58bFw1EGTupUKMh0fkMn97kxU;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "988ab0e3-ddc6-4dee-8af1-54255542bf72"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":34610,\"ns\":0,\"title\":\"Kaplnka svätej Kataríny (Bratislava)\",\"extract\":\"Kaplnka sv. Kataríny z roku 1311, sa nachádza v mestskej časti Bratislava-Staré Mesto, na Michalskej ulici. Situovaná je v zástavbe ostatných domov. Kaplnka sv. Kataríny je najstaršia gotická kaplnka v Bratislave. Jej výstavbu začal v roku 1311 cisterciánsky mních František z Columby. Dostavaná bola v roku 1325, keď ju vysvätil Ondrej, biskup zo Stoličného Belehradu.\\nFasádu do dnešnej klasicistickej podoby upravil v roku 1840 architekt Ignác Feigler st.\\nV roku 2007 prebehla komplexná rekonštrukcia kaplnky. Rekonštrukciou sa v maximálnej možnej miere vrátil pôvodný gotický výraz. Počas obnovy bolo za kamenným epitafom objavené pôvodné pastofórium, ktoré zostalo odkryté a kamenný epitaf bol umiestnený na iné miesto. Rekonštrukcia v roku 2008 získala cenu Kultúrna pamiatka roku 2007, ktorú udeľuje Ministerstvo kultúry SR. \\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Kaplnka svätej Kataríny (Bratislava)\\n\\n\\n== Zdroj ==\\n Kaplnka sv. Kataríny je pamiatkou roka.  SME (Bratislava: Petit Press), 6.11.2008.  Dostupné online [cit. 2013-03-20]. ISSN 1335-4418.\"}]}}"
+  }
+}

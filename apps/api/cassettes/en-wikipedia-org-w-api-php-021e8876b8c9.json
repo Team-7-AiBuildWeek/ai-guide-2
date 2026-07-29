@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Kapuc%C3%ADnska+Street&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "1",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "537",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:14:34 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-qkkf8",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"3067548503\"",
+      "set-cookie": "WMF-Uniq=zgCLUKvlVz30A3lkqe1CbwOsAAAAAFvdN4b3XGE7DRi68ez5YQDrNe-JqjuWQQEG;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "e71723cd-22e8-4eda-a261-130f580e5c1e"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":63708772,\"ns\":0,\"title\":\"Kapucínska Street\",\"extract\":\"Kapucínska Street (Capuchin Street) is a street in Bratislava, Slovakia in the historic center of the Old Town.\\n\\n\\n== Background ==\\nLocated in the historic center of the Old Town., the street sits next to the Župní náměstí (County square) and through its center there is a tram line leading to the overpass above Staromestská direction below Hradní vrch towards the boroughs of Karlova Ves and Dúbravka.\\nIn 2006, it underwent a complete refurbishment of the surface, and an old well was discovered nearby and was reconstructed on this occasion. On Kapucínska there is an old Capuchin church Church of St Stephen the King, Bratislava and a municipal library.\\n\\n\\n== Gallery ==\\n\\n\\n== References ==\\n\\n\\n== External links ==\\n\\n\\\"Kapucínska Street on Bratislava map\\\" (in Czech).\"}]}}"
+  }
+}

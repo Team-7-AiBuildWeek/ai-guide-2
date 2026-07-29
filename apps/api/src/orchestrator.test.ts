@@ -122,6 +122,17 @@ function validNarrationResponseText(): string {
 // per-test timeout.
 const CASSETTE_TEST_TIMEOUT_MS = 20_000;
 
+// The real recorded curation cassette has 10 stops whose combined QIDs
+// (several stops list many co-located landmarks under one standing point)
+// resolve to dozens of distinct Wikipedia titles — versus a handful for the
+// old 8-stop, one-QID-per-stop placeholder fixture. `fetchStopExtracts`
+// fetches those sequentially with a courtesy delay between requests (see
+// extracts.ts), so one full pass now legitimately takes on the order of
+// 15+ seconds. A test that runs the *whole pipeline twice* (a failure, then
+// a retry that resumes from narration) pays that cost twice and can exceed
+// `CASSETTE_TEST_TIMEOUT_MS`, even though nothing is hanging or looping.
+const NARRATION_RETRY_TEST_TIMEOUT_MS = 60_000;
+
 describe('runPipeline — happy path (recorded Bratislava cassettes)', () => {
   it(
     'runs discovery, curation, routing and narration end-to-end and marks the job done with a tourId',
@@ -242,7 +253,7 @@ describe('runPipeline — retry resumes from the failed stage', () => {
       expect(llm.curationCalls).toBe(1);
       expect(llm.narrationCalls).toBe(3);
     },
-    CASSETTE_TEST_TIMEOUT_MS,
+    NARRATION_RETRY_TEST_TIMEOUT_MS,
   );
 });
 
@@ -301,19 +312,30 @@ describe('runPipeline — over-budget routing', () => {
     );
 
     let mapboxCalls = 0;
-    // A hugely over-long route no matter the stops — every call reports the
-    // same enormous duration, so if the orchestrator looped it would show up
-    // as more than 2 mapbox calls.
+    // Over-long no matter the stops — every call reports the same duration,
+    // so if the orchestrator looped it would show up as more than 2 mapbox
+    // calls. 110 minutes of walking against a 90-minute budget (plus dwell)
+    // clears the routing stage's overBudget threshold (estimatedMin >
+    // budgetMin * 1.15) on both calls, proving the "still over after the one
+    // allowed re-curation" path — but deliberately not so long that it also
+    // trips narration's own much looser total-duration guard (speaking +
+    // walking > budgetMin * 1.5), which the earlier ~833-minute mock did:
+    // that made every narration attempt fail regardless of curation, so the
+    // job could never reach 'done' and this test could never have passed.
+    const TOTAL_WALKING_DURATION_S = 6600; // 110 minutes
     const fetchImpl: typeof fetch = (async () => {
       mapboxCalls++;
       const body = {
         code: 'Ok',
         routes: [
           {
-            distance: 50000,
-            duration: 50000,
+            distance: 5000,
+            duration: TOTAL_WALKING_DURATION_S,
             geometry: { type: 'LineString', coordinates: [[17.1, 48.14], [17.11, 48.15]] },
-            legs: Array.from({ length: stops.length - 1 }, () => ({ distance: 5000 / (stops.length - 1), duration: 50000 / (stops.length - 1) })),
+            legs: Array.from({ length: stops.length - 1 }, () => ({
+              distance: 5000 / (stops.length - 1),
+              duration: TOTAL_WALKING_DURATION_S / (stops.length - 1),
+            })),
           },
         ],
       };

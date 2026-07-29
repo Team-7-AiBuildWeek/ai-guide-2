@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Mari%C3%A1nsky+st%C4%BAp+na+%C5%BDupnom+n%C3%A1mest%C3%AD&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:17:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-vr4hm",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2741859559\"",
+      "set-cookie": "WMF-Uniq=VLZgz-w8sUVHUoHWLrar5QOsAAAAAFvd6jHJkX9B2PDFyBngCeziL97fRdeXvAJd;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "44b071b8-586f-47d0-bf42-396df6d72b96"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":573355,\"ns\":0,\"title\":\"Mariánsky stĺp na Župnom námestí\",\"extract\":\"Mariánsky morový stĺp je morový stĺp na Župnom námestí \\nza v  Bratislave. Nachádza sa pred Kostolom svätého Štefana (Kapucínskym kostolom). Predzáhradka má štvorcový pôdorys so štvrťkruhovými výrezmi v rohoch. Stĺp s nápismi je štvorcový, na jeho rohoch stoja 4 postavy okrídlených anjelikov, ktorí držia elipsovité štíty s nápismi, približne v 2 metroch začína korintský stĺp s kruhovým pôdorysom, na jeho vrchole stojí žena s dieťaťom v náručí na polmesiaci, ktorý je na zemeguli ovinutej hadom, žena má nad hlavou 11 hviezd na kovovej obruči.\\nPodľa rímskych číslic z jedného z nápisov aMICta soLe LVna sVb peDIbVs eIVs bol postavený v r. 1723, desať rokov po vypuknutí moru v Bratislave. Stĺp stál pôvodne bližšie ku vchodu do Župného domu (pôvodne sídlo trinitárov, v súčasnosti sídlo Slovenského parlamentu  do vzniku Slovenskej republiky a postavení novej budoy Národnej rady vedľa Bratislavského hradu, v ktorej bola prijatá Deklarácia nezávislosti).\\n\\n\\n== Nápisy ==\\n1. Tvárou ku vchodu do kostola z ľavej strany\\nvľavo hore zle čitateľné vročenie arabskými číslami 1884, 1869 (možno roky reštaurovania)\\nvpravo hore MACULA NON EST IN TE (poškvrny v tebe niet)\\nApoc. Cap 12 Vers 1: aMICta soLe LVna sVb peDIbVs eIVs - amicta sole et luna sub pedibus eius (odetá slnkom, pod jej nohami mesiac)\\n\\n2. Tvárou ku vchodu do kostola z pravej strany\\nApoc. Cap 12 Vers 1 IN CAPITE EIUS CORONA STELLARUm DUODECIM (na jej hlave veniec z dvanástich hviezd)\\n\\n3. Chrbtom ku vchodu do kostola z pravej strany\\nhore vľavo na erbe: IPSA COMPRIMET CAPUT TUUM, Genes. Cap 3, 15 (ona ti rozšliape hlavu)\\n\\nHore vpravo na erbe: VENI PRO TE SED ET PRO OM(nibus) (prišiel som pre teba a pre všetkých)\\nApoc. cap 12 Vers 1 RESPEXIT HUMILITATEM ANCILLAE SUAE (zhliadol na poníženosť svojej služobnice)\\n4. Chrbtom ku vchodu do kostola z ľavej strany\\nLuc Cap 1 Vers 48 SIGNUM MAGNUM APPARVIT IN COELO (Veľké znamenie sa ukázalo na nebi)\\n\\nNápisy na odkazy z biblie nekorešpondujú s napísaným textom na stlpev 3. a 4. pohľade.\\n\\n\\n== Zdroj ==\\nZjv 12,1 Žena a drak. Potom sa na nebi ukázalo veľké znamenie: Žena odetá slnkom, pod jej nohami mesiac a na jej hlave veniec z dvanástich hviezd.\\nGen 3,15 Nepriateľstvo ustanovujem medzi tebou a ženou, medzi tvojím potomstvom a jej potomstvom, ono ti rozšliape hlavu a ty mu zraníš pätu.“\\nLk 1, 48 lebo zhliadol na poníženosť svojej služobnice. Hľa, od tejto chvíle blahoslaviť ma budú všetky pokolenia,\\n\\n\\n== Referencie ==\\n\\n\\n== Externé odkazy ==\\n\\nObrázok[nefunkčný odkaz]\"}]}}"
+  }
+}

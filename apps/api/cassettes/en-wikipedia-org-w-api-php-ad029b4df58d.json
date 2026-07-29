@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Clarissine+Church+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:14:34 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-jj6cc",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=treatment;we-1-8-account-creation-no-desktop-benefits=treatment;\",co_id;desc=\"3366266239\"",
+      "set-cookie": "WMF-Uniq=wf6RJ1dyDVTVaurcfM3wXQOsAAAAAFvdW7sIQSN9eyq4rVfQAeIGC_LXgbCk9Bf_;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "355ad434-5e55-41d0-ba77-85e1eac9bf51"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":38992838,\"ns\":0,\"title\":\"Clarissine Church (Bratislava)\",\"extract\":\"The Clarissine Church (Slovak: Kostol Povýšenia svätého Kríža, known as Kostol klarisiek, Hungarian: Klarissza templom és zárda) is a Gothic church, part of a complex of medieval buildings forming the former Convent of Poor Clares in the Old Town of Bratislava, the capital of Slovakia. The former Catholic church is owned by the city of Bratislava and it is used for cultural events. The church is a notable example of Gothic architecture in Slovakia.\\n\\n\\n== History and appearance ==\\nThe nuns of the Poor Clares order came to Bratislava in 1297 and built a church and a convent with the support of the king. The pentagonal tower was completed in the 15th century. In 1782, the convent was dissolved, and the church became the seat of a legal academy and school. It is currently used as a concert and exhibition hall.\\nThe Order of Poor Clares was expelled from the Kingdom of Hungary in 1782 by the decree of Joseph II, Holy Roman Emperor. There are also Clarissine churches in Bamberg, Brixen, and Nuremberg.\\nDuring the complex's time as a school, Jozef Murgaš and Béla Bartók studied there.\\n\\n\\n== See also ==\\nHistory of Bratislava\\n\\n\\n== References ==\"}]}}"
+  }
+}

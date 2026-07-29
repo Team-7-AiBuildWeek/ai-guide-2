@@ -28,12 +28,60 @@ execution workspace is deleted once the work lands.
 - **150 real Bratislava POIs** from Wikidata/Wikipedia/OSM, ranked by
   notability, with the landmarks a guidebook would pick at the top.
 
-## Not done — do not assume otherwise
+## L1 — done. What first contact with Opus 5 cost and taught
 
-- **No paid Anthropic call has ever been made.** Curation and narration run
-  from *hand-authored synthetic cassettes*. The prompts have never been seen
-  by Opus 5, the response shapes are assumed rather than observed, and the
-  quality of generated narration is completely unknown.
+**Total spend: $2.21.** Estimated $0.46. The gap is entirely thinking tokens.
+
+| | |
+|---|---|
+| 2 curation attempts, truncated | $0.40 wasted |
+| Curation, succeeded (157s) | $0.32 |
+| 2 narration attempts, rejected on a 9-character overrun | $0.88 wasted |
+| Narration, succeeded (345s) | $0.44 |
+
+Three of my own design errors, none findable without paying:
+
+1. **`max_tokens = 8000` was unachievable.** It caps thinking AND output
+   together; adaptive thinking took 7182 of it, leaving 818 for JSON that
+   needed ~1500. Raised to 32000. `max_tokens` is a ceiling, not a
+   reservation — headroom is free.
+2. **Per-segment length bounds were the wrong control.** 400–1400 characters
+   rejected two paid responses over **nine characters**, and every one of the
+   ten real stop scripts exceeded 1400 — the bound was unachievable while
+   saying anything substantive. Bounds widened to catch only broken segments;
+   the real check is now total narration duration against the budget.
+3. **Curation cannot reason about a time budget.** Given "60 minutes" and
+   coordinates, it produced a 5.2 km, 78-minute walk. It was never told
+   walking speed or dwell time. It now receives an explicit distance budget
+   in metres, derived from routing's own constants. **Unverified live.**
+
+**What the model did well**, and better than the hand-authored fixture:
+grouped 12 QIDs into one Hlavné námestie stop; kept every pair ≥117 m apart;
+honoured "I've already seen the castle" by omitting the single most notable
+POI in the set, and again in the prose (*"Hrad necháme na pokoji"*).
+
+**Latency is 3–6 minutes per stage, not "about a minute".** The durable-job
+architecture is load-bearing, not merely prudent. Any UI copy promising a
+minute is wrong.
+
+## Known limitation: walk cues on self-intersecting routes
+
+Every segment fires exactly once. Strict tour order does not hold: the real
+route crosses itself twice, and a cue's 25%-along point can sit nearer a
+later part of the route than its own leg.
+
+Three fixes already landed (order tie-break, cues waiting for their stop,
+monotonic stop projection) and the residue is not closable that way. The
+premise is wrong — proximity is a proxy for progress, and on a self-crossing
+route it is not one.
+
+**The answer is that walk cues should not be GPS-triggered at all.** Fire
+them on departure from a stop's radius. That removes the cue radius, the
+projection, and the whole failure class. Plan 2b.
+
+Marked `it.fails` in `assembledTour.test.ts` with the full diagnosis.
+
+## Not done — do not assume otherwise
 - **`fly deploy` has never been run.** Fly's networking, TLS and cold-start
   behaviour are untested.
 - **Still never run on a real phone.** Narration has never been confirmed

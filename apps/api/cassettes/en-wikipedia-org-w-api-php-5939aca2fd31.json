@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Primate%27s+Square&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "763",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:16:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-w2tpk",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-account-creation-no-desktop-benefits=control;\",co_id;desc=\"371433335\"",
+      "set-cookie": "WMF-Uniq=U91eu2qOF73SzWeg5XARDgOsAAAAAFvd-DKN8Y818pjd7EwC6ce1E1rZiWdp54J3;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "0176a3f6-2431-4b80-8b0e-8bb8918f398d"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":19186040,\"ns\":0,\"title\":\"Primate's Square\",\"extract\":\"Primate's Square (Slovak: Primaciálne námestie) is a square situated in the middle of the Old Town of Bratislava, the capital of Slovakia. It is located between Slovak National Uprising Square and Main Square.\\nIt is named after the Primate's Palace which stands on the southern side of the square. A Tourist Information Visitors Centre and Municipality of Bratislava are also found on the square. A narrow passage leads off from the northwest corner and down the side of the Jesuit Church to Main Square and the Old Town Hall.\\n\\n\\n== Name ==\\nIn the past the square was named Jatočné Square, Obilné Square, Jánovo Square (meaning John's Square, after the baroque sculpture of Saint John of Nepomuk that used to stand next to the Old Town Hall). Later, it was called Batthyányho Square (meaning Batthyány's Square, after Cardinal Joseph Batthyány who had the Primate's Palace built in 1787).\\n\\n\\n== Description ==\\nThe center of the square features a linden tree planted in 1896 during the country's Millennium Celebrations. There are several buildings around the square:\\n\\nPrimate's Palace\\nOld Town Hall\\nNew Town Hall - built in 1948 at the place of a three-story-high building of the Jesuit Cloister from the end of the 16th century.\\n\\n\\n== See also ==\\nHistory of Bratislava\\n\\n\\n== References ==\\n\\n\\n== Sources ==\\nPanoramic World Travel Information\"}]}}"
+  }
+}

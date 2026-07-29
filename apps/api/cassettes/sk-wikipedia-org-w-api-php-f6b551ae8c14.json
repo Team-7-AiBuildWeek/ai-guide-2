@@ -10,12 +10,12 @@
       "content-encoding": "gzip",
       "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
       "content-type": "application/json; charset=utf-8",
-      "date": "Wed, 29 Jul 2026 07:29:03 GMT",
+      "date": "Wed, 29 Jul 2026 11:19:01 GMT",
       "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
       "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
-      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-r62lw",
-      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2277169161\"",
-      "set-cookie": "WMF-Uniq=_KPoKCtXBZydriHCucjVUwOsAAAAAFvdPl7S8XH9COj6QuW0z1YRzG1gMGlgr6Uh;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-hwgkq",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1689516701\"",
+      "set-cookie": "WMF-Uniq=TnAeEMdW1SoTVuI5ZmYkaQOsAAAAAFvdFM1gXLSXVkRMmR-hsHDVRViCfnUo6bW0;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
       "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
       "transfer-encoding": "chunked",
       "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
@@ -25,7 +25,7 @@
       "x-client-ip": "46.229.238.250",
       "x-content-type-options": "nosniff",
       "x-frame-options": "DENY",
-      "x-request-id": "88c7436a-f582-4022-9be9-279290ecd09e"
+      "x-request-id": "21b2f6db-14c2-4d51-ab93-54f499ed8385"
     },
     "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":31018,\"ns\":0,\"title\":\"Hlavné námestie (Bratislava)\",\"extract\":\"Hlavné námestie je námestie v  \\nBratislave v mestskej časti Staré Mesto.. Je centrálnym námestím tejto mestskej časti a jedným z najznámejších bratislavských námestí.  \\n\\n\\n== Poloha ==\\nHlavné námestie sa nachádza v strede historického centra Bratislavy. Má takmer štvorcový pôdorys.\\nNa severe hraničí s Františkánskym námestím. Ústia doňho ulice Kostolná, Radničná, Rybárska brána, Zelená a Sedlárska. Zo severovýchodu je ohraničené Starou radnicou, zo zvyšných strán prevažne palácmi. \\n\\n\\n== História ==\\nJednou z teórií je, že v 12. storočí mala Bratislava jedno veľké centrálne námestie, ktoré sa neskoršou výstavbou rozdelilo na dve samostatné námestia (dnešné Františkánske a Hlavné námestie). Prvý záznam o pomenovaní Hlavného námestia je z roku 1373, keď sa nazývalo Forum, teda Trh. Tento názov sa v rôznych podobách (Marcht, Ring) zachoval až do 18. storočia Bolo teda miestom, kde sa usporadúvali trhy, zábavy, verejné popravy aj korunovačné pochody. V roku 1572 bola na námestí postavená Maximiliánova fontána, ktorá vyriešila problém s nedostatkom pitnej vody. Jeho dnešné pomenovanie sa spomína v listine z roku 1783 v nemeckej podobe Hauptplatz. Následne sa jeho názov zmenil s každým novým režimom - v roku 1850 bolo nazvané na počesť cisára Františka Jozefa I. Franz Joseph Platz, po vzniku Prvej česko-slovenskej republiky ho pomenovali Masarykovo námestie a počas Slovenského štátu Hitlerovo námestie. Po vojne sa nakrátko vrátilo k predvojnovému pomenovaniu, až kým ho v roku 1953 nepremenovali na Námestie 4. apríla podľa dátumu oslobodenia mesta Červenou armádou. Po Nežnej revolúcii sa rozhodlo o navrátení historického názvu. Odvtedy prešlo dvakrát rekonštrukciou - v deväťdesiatych rokoch z neho odstránili zeleň a vydláždili ho kamennou dlažbou, čím sa snažili námestiu vrátiť stredoveký charakter. Takisto na ňom boli umiestnené dve sochy vojakov, pri ktorých sa s obľubou fotia turisti. Dlažba bola v rokoch 2005 - 2006 vymenená, odvtedy zostáva námestie bez väčšej zmeny. \\n\\n\\n== Významné objekty ==\\nHlavné námestie je mimoriadne bohaté na historické a kultúrne pamiatky, nachádza sa tu niekoľko palácov. Najvýznamnejším objektom námestia je historická budova Stará radnica, v jednotlivých objektoch sídli veľvyslanectvo Japonska, Grécka a Francúzska. \\nStojí tu Budova Eskontnej banky, Paluďaiov palác, Aponiho palác tvoriaci časť Starej radnice, Miestodržiteľský palác a Kutscherfeldov palác.\\n\\n\\n== Súčasnosť ==\\nNa hlavnom námestí sa od konca 20. storočia každoročne konajú koncerty pri príležitosti silvestrovských osláv a iné kultúrne podujatia, vianočné a veľkonočné a iné trhy.\\n\\n\\n== Dopravné spojenie ==\\nJesenského\\n  (stav k 2. septembru 2024)\\n\\n\\n== Galéria ==\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Hlavné námestie (Bratislava)\\n\\n\\n== Externé odkazy ==\\nHlavné námestie na mape Bratislavy\"}]}}"
   }

@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Kaffee+Mayer&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "710",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:19:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-4xs4l",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"3667672772\"",
+      "set-cookie": "WMF-Uniq=DdxhJN3i8oOaMKxjv8GMeQOsAAAAAFvdnbPKZgINFWu0ZlwZRkkvvb6vIF-luiyr;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "6cb95f0e-49ff-4317-a7d7-8fe5dfb1e7d9"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":298853,\"ns\":0,\"title\":\"Kaffee Mayer\",\"extract\":\"Kaffee Mayer je stará tradičná kaviareň a cukráreň v Bratislave. Je umiestnená na rohu Hlavného námestia a ulice Sedlárska, adresa je Hlavné námestie 4. Založil ju Julius Mayer v roku 1873.\\nPatrí medzi najznámejšie kaviarne v meste tak u obyvateľov, ako aj u turistov a funguje od doby založenia, podobne ako mnoho viedenských kaviarní. Okrem kaviarne a cukrárne sa tu vyrába aj slovenské a viedenské pečivo. V rovnakej budove sídli aj grécke veľvyslanectvo. Kaviareň nefungovala počas socializmu, až do roku 1993, kedy bola opäť otvorená.\\nMedzi pravidelných zákazníkov patril aj Schöne Náci. Tridsať rokov po jeho smrti ho pripomína socha v životnej veľkosti pred kaviarňou na Sedlárskej.\\n\\n\\n== Zdroj ==\\nTento článok je čiastočný alebo úplný preklad článku Café Mayer na nemeckej Wikipédii.\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Kaffee Mayer\\n\\n\\n== Externé odkazy ==\\nDomovská stránka\"}]}}"
+  }
+}

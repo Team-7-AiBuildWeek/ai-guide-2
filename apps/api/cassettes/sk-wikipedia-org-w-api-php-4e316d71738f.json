@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Kernov+dom&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "501",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:21:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-lg8xw",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2810403828\"",
+      "set-cookie": "WMF-Uniq=eUwGlzCPhOvAa3UDgvjsFwOsAAAAAFvdFIGDMbpCIFOE-IIhANlmYP8d51DqZ-di;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "774396b5-8cfc-4248-8b32-85044d4ba94f"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":130418,\"ns\":0,\"title\":\"Kernov dom\",\"extract\":\"Kernov dom je historická budova v Starom Meste v Bratislave. Je to rohový dom, ktorý sa nachádza na Hviezdoslavovom námestí 26 a na Rybnej bráne 8.\\n\\n\\n== Dejiny ==\\nPôvodne bol súčasťou mestských hradieb, neskôr meštiansky dom. Pôvodne tu stál dvojpodlažný dom z 13. storočia, ktorý bol súčasťou hradbového opevnenia. Koncom 18. storočia bol asanovaný pri búraní hradieb. Na jeho mieste bol postavený v roku 1845 nový štvorpodlažný dom v štýle meštianskeho empíru. Jeho staviteľom bol Ignác Feigler starší. Od tohto času je známy ako Kernov dom.\\nV rokoch 2003 až 2005 bol kompletne zrekonštruovaný.\"}]}}"
+  }
+}

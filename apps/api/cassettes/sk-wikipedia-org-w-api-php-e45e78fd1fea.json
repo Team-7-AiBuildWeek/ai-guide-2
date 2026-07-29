@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Ganymedova+font%C3%A1na&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "1295",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:20:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-fr499",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"3780584221\"",
+      "set-cookie": "WMF-Uniq=CI5CtjnkPIFjQSWP6Qw51AOsAAAAAFvdmnhtFNqr5kyDab8szxV2QxkQ-Nx9TONj;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "50b2cd36-57db-437a-8fc4-86f2f160e30b"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":339788,\"ns\":0,\"title\":\"Ganymedova fontána\",\"extract\":\"Ganymedova fontána je neobaroková fontána nachádzajúca sa na Hviezdoslavovom námestí v Bratislave.\\nV roku 1886 dokončili stavbu monumentálnej budovy Mestského divadla. Priestor pred hlavným vchodom do divadla vyplnila umelecky riešená fontána od bratislavského sochára Viktora Tilgnera. Jej objednávateľom bola Prvá bratislavská sporiteľňa (maď. Első Pozsonyi takarékpénztár), ktorá hotovú fontánu darovala v roku 1888 mestu.\\nPri jej realizácii sa umelec plne podriadil existencii stavby divadla a svoju fontánu preto stvárnil tak, aby svojím vzhľadom monumentalitu budovy dopĺňala.\\nNámetom fontány sa stal antický mýtus o chlapcovi Ganymedovi, ktorý bol unesený do sídla bohov na Olympe Diom premeneným na orla. \\nSocha orla so sediacim chlapcom krásne doplňuje vztýčená ruka nesúca misku z ktorej striekala voda rovným prúdom späť do nádoby pretekajúca po jej obvode. Tento najvyšší vizuálny efekt fontány sa po poslednej rekonštrukcii žiaľ nezachoval.\\nPri stvárnení architektonickej časti fontány sa autor nechal inšpirovať fontánami v parku Vily d'Este v Tivoli. V detailoch nadväzoval na donnerovskú tradíciu, ktorú skĺbil z bratislavskými reáliami.  \\nKrásnym príkladom tejto symbiózy sa stali postavičky detí na sokli fontány, držiacich v rukách štyri druhy najhojnejších dunajských rýb. Po obvode veľkej kamennej misy umiestnil Tilgner tri dvojice vodných zvierat typických pre dunajskú oblasť: vodné korytnačky, žaby a raky. \\nFigurálne časti fontány podľa Tilgnerových modelov odliala do bronzu kovolejárska firma Beschorner v Budapešti.\\nGanymedova fontána sa stala prvou verejnou fontánou v Bratislave s výlučne okrasnou funkciou, ktorá neslúžila na čerpanie vody či ako zdroj pitnej vody pre obyvateľov okolitých domov. Od doby svojho vzniku tvorí fontána jednotný architektonický celok s budovou niekdajšieho Mestského divadla.\\n\\n\\n== Zdroje ==\\n\\nB. Bublincová, Št. Holčík, Bratislavské fontány, Tatran, Bratislava, 1990, ISBN 80-222-0175-8\\nČlánok na www.bratislavskenoviny.sk\"}]}}"
+  }
+}

@@ -133,7 +133,7 @@ export const DWELL_SECONDS = 60;
  * per stop once real scripts exist, using the exported `speakingSeconds`
  * directly rather than re-deriving the estimate.
  */
-const NOMINAL_STOP_SCRIPT_CHARS = 600;
+export const NOMINAL_STOP_SCRIPT_CHARS = 600;
 const NOMINAL_SPEAKING_ALLOWANCE_S = speakingSeconds('x'.repeat(NOMINAL_STOP_SCRIPT_CHARS));
 
 const BUDGET_OVERRUN_FACTOR = 1.15;
@@ -174,9 +174,29 @@ export async function route(
   // Anchoring both ends of the interpolation to the stops' own projected
   // positions on `mapboxRoute.geometry` makes the cue's position agree with
   // where those stops actually are on the line, by construction.
+  // Stop fractions must be non-decreasing, because the walker visits the
+  // stops in order. Projecting each standing point onto the WHOLE polyline
+  // independently does not guarantee that, and on a route that crosses itself
+  // it is actively wrong: the real Bratislava tour leaves through Michalská
+  // brána and returns past it later, and Mapbox snapped the route's first
+  // coordinate a few metres off the standing point while the return pass runs
+  // within one metre of it. Stop 1 therefore projected to fraction 0.48
+  // instead of 0, its leg was computed backwards, and its departure cue landed
+  // a third of the way through the tour — firing sixth instead of second.
+  //
+  // Searching only the part of the route after the previous stop removes the
+  // ambiguity entirely: there is only one "this time round" left to find.
+  const stopFractions: number[] = [];
+  let searchFrom = 0;
+  for (const stop of byOrder) {
+    const f = Math.max(searchFrom, fractionAlongLineString(stop.standingPoint, mapboxRoute.geometry, searchFrom));
+    stopFractions.push(f);
+    searchFrom = f;
+  }
+
   const walkCuePoints: LatLng[] = legs.map((_leg, i) => {
-    const startFraction = fractionAlongLineString(byOrder[i].standingPoint, mapboxRoute.geometry);
-    const endFraction = fractionAlongLineString(byOrder[i + 1].standingPoint, mapboxRoute.geometry);
+    const startFraction = stopFractions[i];
+    const endFraction = stopFractions[i + 1];
     const cueFraction = startFraction + WALK_CUE_FRACTION * (endFraction - startFraction);
     return walkCuePoint(mapboxRoute.geometry, cueFraction);
   });

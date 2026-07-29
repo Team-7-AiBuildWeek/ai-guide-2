@@ -1,10 +1,30 @@
 import type { CuratedStop, GenerateRequest } from '@ai-guide/shared';
 import type { RouteResult } from '../routing/index.ts';
 
-export const MIN_STOP_SCRIPT_CHARS = 400;
-export const MAX_STOP_SCRIPT_CHARS = 1400;
-export const MIN_WALK_SCRIPT_CHARS = 120;
-export const MAX_WALK_SCRIPT_CHARS = 350;
+/**
+ * Targets given to the model in the prompt. Guidance, not a gate.
+ */
+export const TARGET_STOP_SCRIPT_CHARS = { min: 400, max: 1400 };
+export const TARGET_WALK_SCRIPT_CHARS = { min: 120, max: 350 };
+
+/**
+ * Hard bounds that actually reject a response. Deliberately far wider than
+ * the targets above.
+ *
+ * The first live narration run failed BOTH paid attempts — about $0.88 — on a
+ * stop script of 1409 characters against a 1400 limit. Nine characters. The
+ * bound exists to stop a runaway script turning a 45-minute tour into 90
+ * minutes; it was instead enforcing a rounding error, and a 0.6% overrun does
+ * not turn a good tour into a bad one.
+ *
+ * What matters is the total, so the total is checked separately — see
+ * `estimatedNarrationMinutes` in index.ts. These bounds now only catch a
+ * segment that is obviously broken: empty, a stub, or several times too long.
+ */
+export const MIN_STOP_SCRIPT_CHARS = 200;
+export const MAX_STOP_SCRIPT_CHARS = 3000;
+export const MIN_WALK_SCRIPT_CHARS = 60;
+export const MAX_WALK_SCRIPT_CHARS = 800;
 
 /**
  * Everything the model needs except the per-stop source material: task
@@ -61,11 +81,13 @@ Content rules:
 - Ground every claim ONLY in the supplied source material. Do not add facts
   from memory, even ones you are confident are true — the source material is
   the only thing this script may draw on.
-- Stop scripts must be ${MIN_STOP_SCRIPT_CHARS}-${MAX_STOP_SCRIPT_CHARS}
-  characters. Walk-cue scripts must be ${MIN_WALK_SCRIPT_CHARS}-${MAX_WALK_SCRIPT_CHARS}
-  characters. A stop script several times the target length turns a short
-  tour into a long one — treat the length targets as a hard constraint, not a
-  suggestion.
+- Aim for ${TARGET_STOP_SCRIPT_CHARS.min}-${TARGET_STOP_SCRIPT_CHARS.max} characters per stop script and
+  ${TARGET_WALK_SCRIPT_CHARS.min}-${TARGET_WALK_SCRIPT_CHARS.max} per walk cue. These are targets: a little over or
+  under is fine, and a stop with more to say may run longer than one with
+  less. What matters is the WHOLE tour, not any single segment — the scripts
+  together should take roughly as long to speak as the walk allows, so a
+  script several times the target length is a real problem where a slightly
+  long one is not.
 
 Reply with JSON only, matching:
 {"segments": [{"order": number, "kind": "intro"|"stop"|"walk"|"outro",

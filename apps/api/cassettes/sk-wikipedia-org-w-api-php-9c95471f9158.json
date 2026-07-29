@@ -8,16 +8,16 @@
       "cache-control": "private, must-revalidate, max-age=0",
       "content-disposition": "inline; filename=api-result.json",
       "content-encoding": "gzip",
+      "content-length": "1200",
       "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
       "content-type": "application/json; charset=utf-8",
-      "date": "Wed, 29 Jul 2026 07:29:02 GMT",
+      "date": "Wed, 29 Jul 2026 11:20:03 GMT",
       "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
       "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
-      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-l29x7",
-      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2609130621\"",
-      "set-cookie": "WMF-Uniq=Gi7x1TFWqLuOTqrVZDmTIgOsAAAAAFvdVR5kx2d3z7e_0lhz7dSWbBirKbz7bdPD;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-sbcfr",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1976268746\"",
+      "set-cookie": "WMF-Uniq=7wjiPQBm2XF-7i_IHFgKVAOsAAAAAFvdNfOaXApPREHktba8cf8Q3ZGS1KVXE0QU;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
       "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
-      "transfer-encoding": "chunked",
       "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
       "x-analytics": "",
       "x-cache": "cp3071 miss, cp3071 pass",
@@ -25,7 +25,7 @@
       "x-client-ip": "46.229.238.250",
       "x-content-type-options": "nosniff",
       "x-frame-options": "DENY",
-      "x-request-id": "79f91434-e454-43fa-b20f-da9d40fb70e6"
+      "x-request-id": "6dfb0d96-0f68-45c0-88f0-9d272902df9b"
     },
     "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":31014,\"ns\":0,\"title\":\"Hviezdoslavovo námestie (Bratislava)\",\"extract\":\"Hviezdoslavovo námestie je námestie v Bratislave v mestskej časti Staré Mesto. Je pomenované podľa slovenského básnika Pavla Országha Hviezdoslava (1849 – 1921)\\nJe jedným z najznámejších námestí v Bratislave. V minulosti malo rôzne názvy: koniec 18. st. – 1840 a 1861 – 1899 Promenade(platz), 1840 – 1852 Theaterplatz, 1852 – 1861 Radetzkyplatz, 1899 – 1920 Kossuth Lajos-Platz/Kossuth Lajos-tér, 1921 – 1930 Palackého sady.\\nNachádza sa na ľavom brehu Dunaja, medzi Mostom SNP a Slovenským národným divadlom.\\n\\n\\n== Dejiny ==\\nHviezdoslavovo námestie prešlo koncom 20. storočia výraznou rekonštrukciou, pričom sa jeho vzhľad výrazne zmenil. Pred rekonštrukciou pripomínalo skôr malý mestský park s množstvom zelene, v súčasnosti má charakter mestského korza.\\n\\n\\n== Vzhľad námestia ==\\nNámestie je predovšetkým pešia zóna s množstvom zelene, v centrálnej časti námestia sa nachádza pódium určené na kultúrne podujatia a stredom námestia prechádza pozdĺžna fontána. V blízkosti Slovenského národného divadla sa nachádza socha Pavla Országha Hviezdoslava v nadživotnej veľkosti. V posledných rokoch za pod vzhľad námestia negatívne podpísali bezpečnostné opatrenia veľvyslanectva Spojených štátov amerických, ktoré znehodnocujú vzhľad námestia a pôsobia rušivo na obyvateľov.\\n\\n\\n== Významné objekty na námestí ==\\nNa námestí sa nachádza viacero významných budov a objektov. Pravdepodobne najvýznamnejším objektom je historická budova Slovenského národného divadla, ktorá ohraničuje námestie z východnej strany. Napravo od divadla sa nachádza zrekonštruovaný, historický hotel komplex Radisson SAS Carlton. Hotel Carlton je neodmysliteľnou súčasťou bratislavského starého mesta. Na južnej strane námestia sa ďalej nachádza veľvyslanectvo Spojených štátov amerických a Nemeckej spolkovej republiky. Na severnej strane námestia sa nachádza veľké množstvo reštaurácií a barov.\\n\\n\\n== Galéria ==\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Hviezdoslavovo námestie (Bratislava)\\n\\n\\n== Externé odkazy ==\\nHviezdoslavovo námestie na mape Bratislavy\"}]}}"
   }

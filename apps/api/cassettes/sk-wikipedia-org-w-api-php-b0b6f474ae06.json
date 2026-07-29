@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=P%C3%A1lffyho+pal%C3%A1c+%28Pansk%C3%A1%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "1481",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:20:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-2r5nh",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"2112039283\"",
+      "set-cookie": "WMF-Uniq=2e0htSHeGhlTAh493J-WywOsAAAAAFvdsfjJijKVjTJD588zCoAnMhmwFcrXOzkA;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "072aa5af-70a9-4e11-a339-e6c5de280df1"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":204953,\"ns\":0,\"title\":\"Pálffyho palác (Panská)\",\"extract\":\"Pálffyho palác je palác v Bratislave na Panskej ulici. Je národnou kultúrnou pamiatkou vo vlastníctve hlavného mesta a v súčasnosti slúži ako sídlo Galérie mesta Bratislavy, jeho nádvorie je voľne prístupné širokej verejnosti. \\nJe jedným z viacerých bratislavských palácov, ktoré v minulosti patrili rodine Pálffyovcov, dedičných bratislavských županov. Tento významný rod ho vlastnil od roku 1715 až do rozpadu rakúsko-uhorskej monarchie. \\nDejiny\\nPalác prešiel viacerými prestavbami a svoju dnešnú podobu získal v polovici 19. storočia po neskoroklasicistickej prestavbe, ktorú inicioval gróf Ján Pálffy. Dovtedy slúžil ako župný dom. \\nPočas rokov 1981-1987 prešiel rekonštrukciou, ktorej súčasťou bol aj rozsiahly pamiatkový výskum. Ten poukázal na významnú historickú hodnotu paláca a jeho vzácne postavenie v dejinách Bratislavy. Na jednom mieste sa tu stretávajú fragmenty zásadných dejín mesta a jeho architektonického vývoja. \\nStopy keltského osídlenia - takzvané oppidum z 1. storočia nášho letopočtu - sú viditeľné v suteréne paláca. Našla sa tu šachta na skladovanie potravy, hrob aj nálezy dokladajúce bezprostrednú blízkosť mincovne. O prítomnosti slovanského osídlenia svedčí nález štyroch slovanských hrobov z 9. a z polovice 10. storočia. \\nObdobie Rímskej ríše je možné pozorovať vďaka množstvu stavebného materiálu použitého v murive objektu, zvlášť v múroch ranostredovekého románskeho paláca zo začiatku 13. storočia. Archeologický výskum odhalil tiež jadro mestského gotického paláca z 15. storočia. Viaceré prvky mestského paláca boli v objekte v rámci pamiatkovej obnovy priznané a návštevníci ich môžu obdivovať aj dnes. \\nPalác a umenie\\nPosledný majiteľ paláca, gróf Ján Pálffy, bol známy ako filantrop, mecén a zberateľ umenia európskych rozmerov. Práve v paláci na Panskej ulici umiestnil časť svojich vzácnych zbierok, napríklad historický nábytok, zbierku striebra, cenné predmety umeleckého remesla aj výtvarné diela talianskych či holandských majstrov. Žiaľ, dnes sa už v budove žiaden predmet z tejto kolekcie nenachádza. \\nK svojej funkcii vystavovať umelecké diela sa palác opäť prihlásil po roku 1988, keď ho dostala do užívania Galéria mesta Bratislavy. V súčasnosti sa v objekte nachádzajú stále expozície spojené s históriou paláca aj mesta, ako aj priestory pre krátkodobé výstavy moderného a súčasného umenia spojeného s regiónom. \\n\\n\\n== Referencie ==\"}]}}"
+  }
+}

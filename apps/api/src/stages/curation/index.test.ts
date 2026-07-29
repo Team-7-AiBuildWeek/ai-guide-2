@@ -208,13 +208,19 @@ describe('curate', () => {
 });
 
 describe('curation-bratislava synthetic cassette', () => {
-  it('is marked as synthetic, not a real recording', async () => {
+  it('records its provenance honestly as a real recording, not a hand-authored placeholder', async () => {
     const raw = await readFile(
       join(here, '..', '..', '..', 'cassettes', 'synthetic', 'curation-bratislava.json'),
       'utf8',
     );
     const cassette = JSON.parse(raw);
-    expect(cassette._synthetic).toBe(true);
+    // This cassette lives under a `synthetic/` directory for historical
+    // reasons, but its content is real recorded model output. `_synthetic`
+    // and `_comment` are the provenance record — this test would fail if
+    // someone silently swapped in a hand-authored placeholder that claimed
+    // to be real without actually saying so.
+    expect(cassette._synthetic).toBe(false);
+    expect(cassette._comment).toMatch(/record/i);
   });
 
   it('satisfies its own QID-membership and 100m-separation rules against the real discovery cassette', async () => {
@@ -233,6 +239,6 @@ describe('curation-bratislava synthetic cassette', () => {
     const { output } = await curate(pois, makeRequest(), { llm });
 
     expect(llm.callCount).toBe(1); // valid on the first attempt — no retry needed
-    expect(output.stops.length).toBe(8);
+    expect(output.stops.length).toBe(cassette.stops.length);
   });
 });

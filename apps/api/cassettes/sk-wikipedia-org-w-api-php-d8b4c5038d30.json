@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=M%C3%BAzeum+mesta+Bratislavy&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:19:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-2r5nh",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"4075800401\"",
+      "set-cookie": "WMF-Uniq=P-ZEup9P0-HpeEInWXdgWAOsAAAAAFvdzpvLlwacIFZebal36OUt0NPOQGruTaLV;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "760d7537-e9c1-4601-a748-c17a2c671077"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":621239,\"ns\":0,\"title\":\"Múzeum mesta Bratislavy\",\"extract\":\"Múzeum mesta Bratislavy bolo založené v roku 1868 a je najstarším múzeom s nepretržitou prevádzkou na Slovensku. Vzniklo z iniciatívy Bratislavského okrášľovacieho spolku a mešťanostu Heinricho Justiho. V roku 1923 múzeum prešlo ako súčasť Vedeckých ústavov mesta Bratislavy pod správu Magistrátu. Od roku 1953 je Múzeum mesta Bratislavy samostatnou inštitúciou s výnimkou rokov 1959 – 1960, kedy bolo zložkou Vlastivedného ústavu mesta Bratislavy.\\nČinnosť múzea je zameraná na dokumentovanie a prezentovanie dejín Bratislavy. Zbierky mimoriadnej umeleckohistorickej hodnoty dokladajú dejiny mesta prostredníctvom archeologických nálezov, pamiatok na bohatú remeselnú činnosť i priemysel, vinohradníctvo, kultúrny i spoločenský život ale i etnológiu, dejiny farmácie a numizmatiku. Zameranie múzea prezentujú i jednotlivé expozície, mnohé z nich umiestnené v architektonicky cenných, pamiatkovo chránených objektoch. Múzeum mesta Bratislavy ponúka pre návštevníkov 9 stálych expozícií, ktoré sú situované  predovšetkým v historickom centre starého mesta, mimo neho sa nachádza Národná kultúrna pamiatka hrad Devín a múzeum Antická Gerulata v Rusovciach.\\n\\n\\n== Múzeá ==\\nMúzeum dejín mesta\\nMúzeum vinohradníctva\\nMúzeum historických interiérov\\nMúzeum zbraní\\nMúzeum farmácie\\nMúzeum hodín\\nMúzeum Johanna Nepomuka Hummela\\nMúzeum Arthura Fleischmanna\\nMúzeum Janka Jesenského\\nAntická Gerulata v Rusovciach\\nHrad Devín\\n\\n\\n=== Múzeum zbraní ===\\nMúzeum sa nachádza v súčasti historického mestského opevnenenia, Michalskej veži. Expozícia je venovaná histórii opevnenia mesta, vystavené sú chladné zbrane, vojenská i turnajová výzbroj. Z najvyššieho poschodia je vchod na ochodzu veže, odkiaľ je výhľad na historické centrum Bratislavy.\\n\\n\\n=== Múzeum Johanna Nepomuka Hummela ===\\nMúzeum sa nachádza v rodnom dome hudobného skladateľa Jána Nepomuka Hummela na Klubučníckej ulici. V expozícií o živote a diele skladateľa sa nachádza kolekcia hudobných nástrojov z jeho pozostalosti a ukážky notových záznamov jeho diel.\\n\\n\\n=== Múzeum Janka Jesenského ===\\nMúzeum sa nachádza v byte slovenského básnika a prozaika Janka Jesenského na Somolického ulici, bolo zriadené v roku 1948 ako prvé literárne múzeum na Slovensku. Expozícia autentického obytného priestoru prezentuje život a dielo tohto spisovateľa.\\nPo renovácii v roku 1967 v pôvodnej spálni jeho manželky Anny rodenej Bottovej bola zriadená expozícia o živote a diele spisovateľa Jozefa Gregora Tajovského a jeho manželky Hany Gregorovej.\\n\\n\\n=== Múzeum Arthura Fleischmanna ===\\n\\nMúzeum sa nachádza na Bielej ulici v Starom meste. Prezentuje život a sochárske diela sochára Arthura Fleischmanna narodeného v Bratislave. V expozícií sa nachádzajú keramické diela z vzniknuté v 30. rokoch, ako aj výber sochárskych prác, ktoré vznikli po roku 1938 (najmä plastiky vytvorené v Londýne).\\n\\n\\n=== Múzeum hodín ===\\nMúzeum hodín sa nachádza v Dome dobrého pastiera, na Židovskej ulici v Bratislavskej mestskej časti Staré Mesto v podhradí. V múzeu, na dvoch poschodiach sú vystavené hodiny z 17.-19.storočia. Väčšina exponátov je signovaná bratislavskými hodinárskymi majstrami. Dom u dobrého pastiera je známy aj ako najužší dom v Bratislave.\\n\\n\\n=== Antická Gerulata Rusovce ===\\nRímsky vojenský tábor v Rusovciach, kastel Gerulata.\\n\\n\\n=== Hrad Devín ===\\nExpozícia archeologických nálezov na Devínskom hrade.\\n\\n\\n== Referencie ==\\n\\n\\n== Externé odkazy ==\\n\\nOficiálna stránka\"}]}}"
+  }
+}

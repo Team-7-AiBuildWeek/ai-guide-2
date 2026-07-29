@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Franti%C5%A1k%C3%A1nske+n%C3%A1mestie+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "1338",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:21:02 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-hj9hn",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"782261469\"",
+      "set-cookie": "WMF-Uniq=Rk8V-CC5MIXuZuG3izJWUQOsAAAAAFvdSsWAdmViAJQQbYjVuPsBLjrLzrIO7JPg;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "15de6410-cc96-4225-a2a0-fac2eba16eed"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":31041,\"ns\":0,\"title\":\"Františkánske námestie (Bratislava)\",\"extract\":\"Františkánske námestie je námestie v Bratislave v mestskej časti Staré Mesto.. Nachádza sa vedľa Hlavného námestia. V období socializmu – do 1. apríla 1991 malo názov Dibrovo námestie.\\n\\n\\n== Významné objekty ==\\nNa námestí sa nachádza významný Františkánsky kostol a kláštor, postavený na konci 13. storočia.\\nNachádza sa tu aj fontána so ženou s krčahom. Fontána, pôvodne studňa vybudovaná po požiari mesta, pochádza z roku 1592, socha z roku 1804. Oba roky sú uvedené na tabuliach na fontáne. Na podstavci sochy sú dve ťažko čitateľné nápisové tabule z červeného mramoru - staršia zo zadnej strany, novšia z prednej. Text na staršej tabuli (1592) znie: \\\"S. P. Q . POSONIEN OB LV // CTIFICAM CCCXX AEDIV // ANNO MDXC INTRA // VRBIS MOENIA ET EXTRA // INCENDIO CONFLAGRA // TARVM CLADEM HVIC // SECLO SOLATII ET // POSTERITATI PERFV // GII AC MEMORIAE // ERGO HOC MONV // MENTVM POSVIT // MDXCII\\\". Tento text uvádza (s drobnými odchýlkami) aj Matej Bel vo svojom diele Notitia vo zväzku týkajúcom sa Bratislavy. Text na novšej tabuli (1804) znie: \\\"CIVIUM . HOSPITUMQVE . COMODO . // CURA . SENATUS . L . R . Q . // CIVITATIS . POSONIENSIS . // AQUAE . DUCTULACUQUE . REFECTO . // CONTRACTUM . AB . ANNO . MDXCII . // QUO . ESSE . COEPERAM . // MUTAVI . TRISTEM . MELIORE . // CULTU . SQUALOREM . // MDCCCIV . // HAEREDITARII . AUSTRIAE . // IMPERII . ANNO . I . INEUNTE .\\\". Na bočných stranách podstavca sú erby - po ľavici ženy je erb mesta vo forme srdcového štítu na prsiach cisárskeho orla ovenčeného reťazou Rádu Zlatého rúna, po pravici ženy je erb cisára Rudolfa II., rovnako ovenčený reťazou Rádu.\\n\\n\\n== Dopravné spojenie ==\\nJesenského\\n  \\nKapucínska\\n (stav k 2. septembru 2024)\\n\\n\\n== Referencie ==\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Františkánske námestie (Bratislava)\\n\\n\\n== Externé odkazy ==\\nFrantiškánske námestie na mape Bratislavy\\nStať o fontáne v diele Mateja Bela str. 630\\nStať o fontáne na stránke Generálneho investora Bratislavy Archivované 2014-05-06 na Wayback Machine\"}]}}"
+  }
+}

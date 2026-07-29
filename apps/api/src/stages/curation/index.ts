@@ -9,7 +9,19 @@ import {
 import type { LlmClient, UserBlock } from '../../llm/anthropic.ts';
 import { curationSystemPrompt, curationCandidateBlock } from './prompt.ts';
 
-const MAX_TOKENS = 8000;
+/**
+ * Caps thinking AND output together, so it must cover both.
+ *
+ * 8000 was the original guess and it failed on the first live call: adaptive
+ * thinking spent 7182 of it, leaving 818 tokens for a JSON document that
+ * needed roughly 1500, and the answer came back truncated mid-string. The
+ * curated output itself is small; the thinking is not, and it is the part
+ * that varies.
+ *
+ * Generous is close to free — max_tokens is a ceiling, not a reservation, and
+ * billing follows tokens actually generated.
+ */
+const MAX_TOKENS = 32_000;
 const MIN_STOP_SEPARATION_M = 100;
 /** Total attempts, including the first — see the module doc below. */
 const MAX_ATTEMPTS = 2;

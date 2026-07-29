@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Pal%C3%A1c+Leopolda+de+Pauliho&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "540",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:18:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-56hck",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1917073426\"",
+      "set-cookie": "WMF-Uniq=MWLofSjPAIRso6ltWxyTvwOsAAAAAFvdBR5THMGz2LkDUfy-uPexatHCKFa39zb_;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "4f7a2f08-2871-4c73-86b8-89e5944ef3b4"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":130564,\"ns\":0,\"title\":\"Palác Leopolda de Pauliho\",\"extract\":\"Palác Leopolda de Pauliho je palác na Ventúrskej ulici 11 v Starom Meste v Bratislave.\\nBol postavený v rokoch 1775 – 1776 pre hlavného správcu cisárskych majetkov, Leopolda de Pauli na bývalom kráľovskom pozemku. Postavil ho architekt František Römish. Ako jediný vnútromestský palác mal záhradu, dokonca s rokokovým hudobným pavilónom. V salóne na prvom poschodí tu 28. novembra 1820 ako 9-ročný koncertoval Franz Liszt. V rokoch 1960 – 1968 bol zrekonštruovaný, podľa projektov architekta Alojza Daříčka st. a sprístupnený v roku 1969.\\nDnes tu sídli Univerzitná knižnica v Bratislave.\\n\\n\\n== Galéria ==\\n\\n\\n== Referencie ==\"}]}}"
+  }
+}

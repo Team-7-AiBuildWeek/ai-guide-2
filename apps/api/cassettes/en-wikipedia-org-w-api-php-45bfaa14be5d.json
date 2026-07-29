@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=House+of+the+Good+Shepherd&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-length": "1030",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:14:35 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-mnk55",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=treatment;\",co_id;desc=\"287855617\"",
+      "set-cookie": "WMF-Uniq=rgxE7_hCZx2B5drHOGH5rgOsAAAAAFvd1FvUZ6cpSVK7iElWw1bxqov3nCpbb15V;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "d95ae54f-97f7-432e-82bc-b3de32f20874"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":11378608,\"ns\":0,\"title\":\"House of the Good Shepherd\",\"extract\":\"The House of the Good Shepherd (Slovak: Dom U dobrého pastiera) is a narrow, Rococo-style building in Bratislava, Slovakia, located in the Old Town below Bratislava Castle. It was built in 1760–1765 by notable Bratislava master-mason Matej (Matthäus) Hollrigl. The townhouse was constructed for a local merchant and the lower part of the building was used for commercial purposes, the upper part for living. It is one of the few buildings in the area below Bratislava Castle to retain their original state, mostly due to the demolition of much of the Jewish quarter in the 20th century. \\nToday, the house is home to the Museum of Clocks, which exhibits antique clocks made from 17th to the beginning of the 20th century, specializing in 18th and 19th century timepieces from Bratislava clockmakers. The ground floor and basement serve as a pub. It gained its title because of the statue of Christ, the Good Shepherd, on its corner. The House of the Good Shepherd is considered to be one of the most beautiful Rococo-style buildings in Central Europe. \\n\\n\\n== History ==\\nThe building was constructed in 1760–1765 with a trapezium contour and extremely narrow frontal face with a width of one room and staircase for a Bratislava (at that time Pressburg/Pozsony) merchant. After a reconstruction in 1975, Bratislava City Museum opened its exhibition of over 60 historical clocks here. The building serves this purpose to this day.\\n\\n\\n== See also ==\\nOld Town, Bratislava\\nBratislava City Museum\\nTourism in Slovakia\\n\\n\\n== Notes ==\\n\\n\\n== References ==\\nJančušková, Mária (1971). \\\"Tvorba stavebného majstra Mateja Höllrigla (Activities of the Master-mason Matej Höllrigl)\\\". In Kalesný, František (ed.). Spisy mestského múzea v Bratislava / BRATISLAVA. Vol. VI. Osveta. pp. 309–328.\"}]}}"
+  }
+}

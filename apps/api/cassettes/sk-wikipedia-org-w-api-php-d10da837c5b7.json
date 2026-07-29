@@ -1,0 +1,31 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Mari%C3%A1nsky+st%C4%BAp+na+Franti%C5%A1k%C3%A1nskom+n%C3%A1mest%C3%AD+%28Bratislava%29&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 11:20:00 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-7hxq6",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"3948828911\"",
+      "set-cookie": "WMF-Uniq=LXJhzkz14P4uSJR7Hkx2LAOsAAAAAFvd9Hx1TyklEGCWcTde9Bctbc4qDNQU73JQ;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "424e3df6-b337-47b0-aaf4-45514e240a35"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":377537,\"ns\":0,\"title\":\"Mariánsky stĺp na Františkánskom námestí (Bratislava)\",\"extract\":\"Mariánsky stĺp na Františkánskom námestí je baroková stavebná pamiatka nachádzajúca sa na priestranstve pred hlavným vchodom do Kostola Najsvätejšieho Spasiteľa na bratislavskom Františkánskom námestí.\\nStĺp patrí do súboru stavebných pamiatok tohto druhu, ktoré stavali Habsburgovci na viacerých miestach monarchie ako pripomienku svojich víťazstiev nad protestantskými odporcami. Ikonograficky je stĺp typom mariánskych stĺpov, ktoré sa, najmä v období od polovice 17. storočia, stali v katolíckej Európe veľmi obľúbenými. Jeho zrejmým vzorom bol mariánsky stĺp z roku 1638, ktorý dodnes zdobí Mariánske námestie (Marienplatz) v nemeckom Mníchove.\\n\\n\\n== História a architektúra pamiatky ==\\nRok postavenia a meno stavebníka stĺpu dokladá nápis na jeho podstavci - dal ho postaviť cisár a uhorský kráľ Leopold I. v roku 1675 a okoloidúcim mal na večné časy pripomínať Leopoldovo víťazstvo pri potlačení vzbury uhorských rebelov z radov protestantov v rokoch 1670 - 1671, usilujúcich sa dosadiť na uhorský trón vlastného panovníka. Po potlačení sprisahania nastali ostré represie, počas ktorých boli hlavní vzbúrenci popravení alebo predaní do otroctva na galeje. Na mieste, kde dnes stojí stĺp, bol v roku 1671 popravený jeden z čelných predstaviteľov odboja, moravský protestantský kazateľ Mikuláš Drábik.\\nZ architektonického pohľadu je mariánsky stĺp pomerne jednoduchou stavbou. Tvorí ho valcový kompozitný stĺp vztýčený na kvádrovom podstavci stojacom na vyvýšenom, štvorschodovom piedestáli. Na vrchole stĺpa ukončenom korintskou hlavicou je umiestnená bohato profilovaná prieskovcová socha Nepoškvrnenej Panny Márie s Ježiškom na rukách. Autor sochy nie je známy.\\n\\nZ historického a ikonografického hľadiska je zaujímavý podstavec stĺpa. Zadná strana podstavca nesie reliéfny erb Uhorského kráľovstva, nápisy na dvoch bočných stranách hlásajú meno stavebníka a účel postavenia (...na slávu Najsvätejšieho Spasiteľa, Panny Márie a na odčinenie znesväcovania Eucharistie...). Na strane smerom k Hlavnému námestiu je text: \\\"LEOPOLDVS // ROMANORVM IMPERATOR // SEMPER AVGVSTVS // HVNGARIAE REX APOSTOLICUS // ARCHIDVX AVSTRIAE // MEMOR // ACCEPTARVM GRATIARVM // INTELLIGENS // MVLTIPLICEM OBLIGATIONEM // PROVIDENS // REGNO SIBI SVIS, // SENATV POPVLOQVE HVNGARIAE // OMNIQVE CHRISTIANITATI // LAVDETVR SS. SACRAMENTVM // ET SINE MACVLA CONCEPTA // VIRGO MARIA.\\\". Na strane smerom k Františkánskemu kostolu je (na niektorých miestach ťažšie čitateľný) nápis: \\\"GLORIAE SALVATORIS // IESV CHRISTI DOMINI NOSTRI // IN SACRA HOSTIA // NVPER SACRILEGE TRACTATAE // IN AEVVM REPARANDE // HONORI MARIAE VIRGINIS // SINE MACVLA CONCEPTAE // PATRONAE REGNI HVNGARIAE // MAGNAE DOMINAE NOSTRE // SEMPER MAGIS AVGENDO // POST TVRCAM PVLSVM // SEDITIONES COMPESCITAS // PROCVRATAM TRANQVILITATEM // ISTVD TROPHAEVM POSVIT // ANNO SALVTIS MDCLXXV // MENSE MAY DIE 23 // +\\\". Čelná strana podstavca nesie reliéf anjelov adorujúcich Eucharistiu v monštrancii. \\nIkonografia má silný protireformačný obsah - zdôraznenie víťazstva katolicizmu. I samotné umiestnenie stĺpu pred jezuitským kostolom bolo symbolické - kostol postavili protestanti a jeho prevzatie jezuitmi v kontexte vtedajších udalostí bolo vlastne aktom víťazstva katolicizmu nad protestantizmom.\\n\\n\\n== Zaujímavosť ==\\nK stĺpu sa viaže ešte jedna zaujímavá historická udalosť. 25. júna 1741 sa pred stĺpom zastavil korunovačný sprievod novej kráľovnej Márie Terézie (vnučky Leopolda I.). Panovníčka pred stĺpom pokľakla a vzdala vďaku svojej patrónke.\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Mariánsky stĺp na Františkánskom námestí (Bratislava)\\n\\n\\n== Zdroje ==\\n\\nA. Filipek SJ, Jezuitský kostol v Bratislave, Dobrá kniha, Trnava, 2010, ISBN 978-80-7141-678-4\\nŠt. Holčík, Korunovačné slávnosti Bratislava 1563 - 1830, Tatran, Bratislava, 1986\"}]}}"
+  }
+}

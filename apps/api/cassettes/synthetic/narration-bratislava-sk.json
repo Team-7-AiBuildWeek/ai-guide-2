@@ -1,108 +1,132 @@
 {
-  "_synthetic": true,
-  "_comment": "Hand-authored placeholder for a recorded claude-opus-5 narration response, in Slovak, for the 8 stops in cassettes/synthetic/curation-bratislava.json. It was never returned by the live API — no Anthropic call was made to produce it. It exists only to exercise narrate()'s parsing, validation and assembleTour()'s wiring in tests: it is structurally valid (17 segments = 2*8+1, correct intro/stop/walk/.../stop/outro kind sequence, every stop script 400-1400 characters, every walk-cue script 120-350 characters) but the prose is plain and repetitive, not something a traveller should actually hear. Replace this file with a real recording (CASSETTE_MODE=record) once budget is approved for a live narration call.",
+  "_synthetic": false,
+  "_comment": "Recorded from claude-opus-5 on 2026-07-29T11:26:50.682Z — real model output, not hand-authored.",
   "segments": [
     {
-      "order": 0,
-      "kind": "intro",
-      "title": "Vitajte v Bratislave",
-      "script": "Vitajte na prechádzke starou Bratislavou. Táto trasa vás povedie od hradného kopca cez korunovačnú katedrálu, stredovekú bránu a tiché kláštorné dvory až na hlavné námestie, kde sa mesto storočia stretávalo na trhu. Cestou budeme sledovať tú istú líniu, ktorou kedysi prechádzali korunovačné sprievody uhorských kráľov. Nasledujte cestu pomaly, dýchajte a dovoľte mestu, aby vám samo rozprávalo svoj príbeh."
-    },
-    {
       "order": 1,
-      "kind": "stop",
-      "title": "Bratislavský hrad",
-      "script": "Stojíme pred Bratislavským hradom — po slovensky Bratislavský hrad, po anglicky Bratislava Castle. Biela obdĺžniková stavba na kopci nad Dunajom je najznámejšou siluetou celého mesta. Hrad v súčasnej podobe vznikol prestavbou v osemnástom storočí, no jeho základy siahajú oveľa hlbšie do histórie regiónu. Z nádvoria je vidieť na Staré Mesto, ktorým sa dnes vydáme, aj na rieku Dunaj, ktorá mesto po stáročia živila obchodom. Práve táto poloha — kopec nad riekou na hranici troch krajín — robila z hradu strategické miesto už od stredoveku. V dnešnej podobe hrad slúži ako reprezentačné sídlo a múzeum, ale jeho múry si pamätajú oveľa búrlivejšie časy, od uhorských kráľov až po napoleonské vojny."
+      "kind": "intro",
+      "title": "Vitajte na prechádzke barokovým Prešporkom",
+      "script": "Vitajte v Bratislave. Volám sa — nuž, povedzme, že som len jeden z tých, čo sa v tomto meste narodili, celý život tu chodia po tých istých kockách dlažby a stále v nich nachádzajú niečo nové. Dnes vás povediem po meste, ktoré mám najradšej: po tom osemnástom storočí, keď sa Prešporok — Pressburg, Pozsony, dnešná Bratislava — obliekol do baroka, rokoka a jemných štukových ornamentov. Hrad necháme na pokoji, veď ten už máte za sebou. Namiesto neho pôjdeme desiatimi zastaveniami, kde sa dá zastať v tichu: pod bránou, ktorá jediná prežila zo štyroch, v strohom luteránskom kostole bez veže, na kanonickej ulici, kde takmer nejazdia autá, a nakoniec na nádvorí, kde ani v lete nie je hlučno. Kráčajte pomaly, dvíhajte hlavu k portálom a erbom — mesto sa tu prezrádza práve v detailoch. Tak teda, nech sa páči, začneme."
     },
     {
       "order": 2,
-      "kind": "walk",
-      "title": "Smer k Dómu svätého Martina",
-      "script": "Z nádvoria hradu sa vydajte dolu úzkou cestou smerom k mestu, po pravej ruke necháte hradné hradby. Cesta vás privedie dolu kopcom rovno k veľkej gotickej veži, ktorá sa vynorí spomedzi striech starého mesta."
+      "kind": "stop",
+      "title": "Michael's Gate a Michalská ulica",
+      "script": "Stojíme pod Michael's Gate — na tabuliach a na mape ju nájdete ako Michalská brána. Zo štyroch stredovekých brán prežila jediná: Laurinská, Rybárska aj Vydrická, ktorú pre jej dlhý tmavý priechod volali aj Temná, sú dávno preč. Táto stojí od konca 13. storočia, prvá písomná zmienka je z roku 1411, a meno dostala podľa kostola a predmestia svätého Michala. Vežu postupne nadstavovali; dnešnú barokovú podobu s cibuľovým zakončením a sochou svätého Michala od bratislavského majstra Petra Ellera dostala pri obnove v rokoch 1753 až 1758. Má 51 metrov. Na vnútornej strane si všimnite kamenný gotický znak a nápis, podľa ktorého vežu opravila mestská rada a obyvatelia mesta v roku 1758. Vo veži je expozícia historických zbraní Mestského múzea. A ten most, po ktorom sa vchádza — preklenuje bývalú vodnú priekopu a je z roku 1727, teda najstarší v meste. Odtiaľto vedie Michalská ulica na juh, plná šľachtických palácov: hneď na čísle 1 Palác Uhorskej kráľovskej komory, dielo architekta G. B. Martinelliho z rokov 1753 – 1756 v klasicizujúcom baroku, kde v rokoch 1802 – 1848 zasadal uhorský snem a dnes sídli Univerzitná knižnica. Na čísle 7 je Segnerova kúria bohatého kupca Andreasa Segnera, ktorého syn Ján Andrej vynašiel v roku 1750 Segnerovo koleso. A votkaná do radu domov je Kaplnka svätej Kataríny z roku 1311 — najstaršia gotická kaplnka v meste."
     },
     {
       "order": 3,
-      "kind": "stop",
-      "title": "Dóm svätého Martina",
-      "script": "Toto je Dóm svätého Martina — po slovensky Dóm svätého Martina, po anglicky St Martin's Cathedral. V tomto gotickom chráme bolo korunovaných jedenásť uhorských kráľov a kráľovien, vrátane Márie Terézie. Korunovačný sprievod vychádzal práve odtiaľto smerom k hradu, tou istou cestou, ktorou sme dnes prišli opačným smerom. Vysoká veža chrámu je zakončená pozlátenou replikou uhorskej kráľovskej koruny, ktorá pripomína mestu jeho niekdajšiu úlohu hlavného korunovačného mesta kráľovstva. Počas stavby diaľnice v dvadsiatom storočí sa most nad riekou priblížil nebezpečne blízko k základom chrámu, čo z neho robí jeden z mála kostolov, ktorý doslova žije v tieni modernej dopravnej stavby."
+      "kind": "walk",
+      "title": "Baštovou a von z brány",
+      "script": "Kým vykročíme, odbočte na dva kroky do Baštovej — najužšej ulice v Bratislave, budovanej pozdĺž hradieb; v dome číslo 7 kedysi býval mestský kat. Potom sa vráťte, prejdite bránou a po moste von z mesta, dajte sa mierne vľavo popri Hurbanovom námestí a stúpajte hore Panenskou ulicou."
     },
     {
       "order": 4,
-      "kind": "walk",
-      "title": "Smer k Universitas Istropolitana",
-      "script": "Od katedrály pokračujte rovno hore mierne stúpajúcou ulicou smerom do centra starého mesta. Po niekoľkých metroch odbočte vpravo do úzkej uličky, kde uvidíte skromnú starú budovu s kamenným portálom."
+      "kind": "stop",
+      "title": "Veľký evanjelický kostol na Panenskej",
+      "script": "Toto je Great Evangelical Church — Veľký evanjelický kostol, pôvodne Nemecký evanjelický kostol. Postavil ho staviteľ Matej Walch v rokoch 1774 – 1776 v strohom slohu barokového klasicizmu, a to strohosť tu nie je vkus, ale podmienka. Cisárske povolenie znelo jasne: kostol nesmie mať vežu a nesmie byť výstavný. Preto ten pokojný, takmer mestský dom namiesto chrámu — pekná lekcia o tom, ako viera a nariadenia spolu formovali fasády. Prvé Služby Božie tu 30. novembra 1776 odbavil evanjelický duchovný Michal Klein a na druhý deň bol kostol posvätený. Zvonka nič, vnútri prekvapenie: pod valbovou strechou sa skrýva monumentálny centrálny priestor s dvoma chórmi a piatimi poľami klenieb, ktorý má výbornú akustiku. Krov postavil neznámy hamburský tesár a odborníci ho považujú za skvost jedinečný v celej Európe. Prvý raz na Slovensku sa tu objavil kazateľnicový oltár; oltárny obraz doň namaľoval a daroval rodák Adam Friedrich Oeser. Dnešný organ je až tretím nástrojom kostola, postavila ho v roku 1923 firma Gebrüder Rieger. Zájdite ešte k susednej Konventnej ulici: Staré evanjelické lýceum z roku 1783 je takisto od Mateja Walcha, Nové lýceum z rokov 1854 – 1855 postavil E. G. Bendl. Na jeho rohu je pamätná tabuľa podľa návrhu Dušana Jurkoviča zo roku 1932 so 67 menami študentov — medzi nimi Ľudovít Štúr aj Milan Rastislav Štefánik. Rektorom lýcea bol v rokoch 1714 – 1719 Matej Bel."
     },
     {
       "order": 5,
-      "kind": "stop",
-      "title": "Universitas Istropolitana",
-      "script": "Toto je Universitas Istropolitana — po slovensky Universitas Istropolitana, po anglicky Academia Istropolitana. Túto krátko fungujúcu univerzitu založil v pätnástom storočí uhorský kráľ Matej Korvín s ambíciou urobiť z Bratislavy centrum vzdelanosti, ktoré by konkurovalo Viedni. Skromná zachovaná budova je ľahké prehliadnuť, no práve jej existencia vysvetľuje, prečo mesto na krátky čas hostilo popredných učencov strednej Európy. Univerzita zanikla už niekoľko desaťročí po založení, keď kráľ zomrel a podpora zanikla spolu s ním, no jej krátka existencia zostáva dôkazom ambícií mesta v čase, keď bolo dôležitým kráľovským sídlom."
+      "kind": "walk",
+      "title": "Nadol na Kapucínsku",
+      "script": "Vydajte sa Panenskou späť nadol, rovnakou stranou, po akej ste prišli. Na jej konci sa dajte doprava a pokračujte Kapucínskou ulicou; tá vás pod svahom hradného vrchu privedie priamo na Župné námestie."
     },
     {
       "order": 6,
-      "kind": "walk",
-      "title": "Smer k Michalskej bráne",
-      "script": "Vydajte sa ďalej rovno pešou zónou smerom na sever. Uličkami sa dostanete k vysokej veži, ktorá tvorí jedinú zachovanú bránu do pôvodného opevneného mesta."
+      "kind": "stop",
+      "title": "Župné námestie a kapucínsky kostol",
+      "script": "Sme na Župnom námestí — County Square, ako ho niekedy prekladajú; medzi rokmi 1946 a 1991 sa volalo Októbrové. Pri rekonštrukcii v roku 2006 tu objavili starú studňu, obnovili ju a nasvietili. Pred nami stojí Church of St Stephen the King — Kostol svätého Štefana s kláštorom kapucínov. Kapucíni prišli z Viedne v júli 1676 a ich prvým pôsobiskom bola kaplnka na Michalskej, kde sme pred chvíľou stáli. Základný kameň kláštora položili 17. decembra 1708, prvú omšu slúžil 3. októbra 1709 prímas-kardinál Christian August Saský, základný kameň kostola pridali 20. decembra 1711 a v roku 1717 ho konsekroval nitriansky biskup Ladislav Adam Erdődy. V roku 1735 bol kostol na spadnutie — stál na bahnitej pôde a povolili základy. Zachránil ho arcibiskup Imrich Esterházy: vojenský inžinier Felice Donato Allio budovu staticky zabezpečil a v rokoch 1736 – 1737 ju dostavali. Pozrite sa na to priečelie: kapucínske kostoly boli bez veže, do ulice sa obracali jednoduchým, tektonicky nečleneným štítom, vnútri hladké biele steny a na nich len skromné tmavohnedé stĺpové oltáre s orechovým fládrovaním. Toto je barok v jeho najpokornejšej podobe. Kamennú sochu patróna v nike vytvoril bratislavský sochár Anton Brandl pri úprave fasády v rokoch 1860 – 1861 podľa Ignáca Feiglera mladšieho. A pred kostolom Mariánsky morový stĺp z roku 1723, teda desať rokov po vypuknutí moru v meste: štyria okrídlení anjelici držia štíty s nápismi a na korintskom stĺpe stojí žena s dieťaťom na polmesiaci — podľa nápisu odetá slnkom, s vencom z dvanástich hviezd."
     },
     {
       "order": 7,
-      "kind": "stop",
-      "title": "Michalská brána",
-      "script": "Toto je Michalská brána — po slovensky Michalská brána, po anglicky Michael's Gate. Je to jediná zachovaná brána zo stredovekého opevnenia mesta a dodnes tvorí severnú hranicu starého mesta. Veža v súčasnej podobe pochádza zo šestnásteho storočia, hoci samotná brána je oveľa staršia. Prechod pod jej klenbou je najzreteľnejším spôsobom, ako pocítiť prechod z modernej Bratislavy do uzavretého stredovekého jadra. Na vrchole veže sa nachádza socha archanjela Michala zabíjajúceho draka, po ktorej brána dostala meno. V jej vnútri dnes sídli malé múzeum zbraní, ktoré pripomína, že táto brána bola kedysi vojenskou stavbou, nie len ozdobnou pamiatkou."
+      "kind": "walk",
+      "title": "Klariskou k Kapitulskej",
+      "script": "Z námestia sa vráťte pár krokov Kapucínskou a hľadajte schody, ktorými sa zíde na Klariskú ulicu. Tou pokračujte celou dole — je to jedna z najtichších ulíc v centre — a na jej konci sa dajte priečnou uličkou doľava na Kapitulskú."
     },
     {
       "order": 8,
-      "kind": "walk",
-      "title": "Smer k Františkánskemu kostolu",
-      "script": "Prejdite bránou dovnútra starého mesta a pokračujte rovno hlavnou pešou ulicou. Po krátkej chôdzi odbočte mierne vľavo k menšiemu gotickému kostolu s jednoduchou fasádou."
+      "kind": "stop",
+      "title": "Kapitulská a kláštor klarisiek",
+      "script": "Kapitulská — Chapter Street, ulica kanonikov. Takmer bez áut, s múrmi záhrad a s tichom, aké v centre inde nenájdete. Napravo je Kolégium Emericanum, renesančný seminár postavený v rokoch 1641 – 1642 z iniciatívy ostrihomského arcibiskupa Imricha Lósyho; projekt vypracoval rímsky jezuitský architekt Giacomo Rava so synom Giovannim. Budova je bez ozdôb, ale zastavte sa pri mohutnom portáli: hore plastický erb arcibiskupa a pod rímsou nápis SEMINARIVM S. EMERICI DVCIS MDCXLI. Študoval tu aj básnik Ján Hollý. Neďaleko stojí Prepoštský palác, barokový dom z roku 1632; na jeho nádvorí je súsošie svätej Alžbety z roku 1907, ktoré sochár Alojz Rigele vytesal z kameňa priamo na mieste. A hneď za tým Clarissine Church — Kostol Povýšenia svätého Kríža, ľudovo kostol klarisiek. Rehoľníčky prišli do Prešporka v roku 1297, keď im kráľ Ondrej III. daroval opustený kláštor cisterciánok pri západných hradbách. Obvodové múry kostola sú zo začiatku 14. storočia, loď zaklenuli okolo roku 1370 a v 15. storočí nadstavili tú vzácnu päťbokú vežu — v gotike vec zriedkavá. Po zemetrasení v roku 1700 dala opátka Eva Barbora Balassová vežu opraviť a v roku 1702 dostala cibuľové zakončenie; v priebehu 18. storočia pribudla rokoková iluzívna výmaľba svätyne a stropu. Rehoľu zrušil v roku 1782 dekrét Jozefa II., do priestorov sa presťahovala právnická akadémia a katolícke gymnázium — študovali tu Jozef Murgaš i Béla Bartók. Dnes je kostol koncertnou a výstavnou sieňou a v kláštore sídli Univerzitná knižnica."
     },
     {
       "order": 9,
-      "kind": "stop",
-      "title": "Františkánsky kostol",
-      "script": "Toto je Františkánsky kostol — po slovensky Františkánsky kostol, po anglicky Franciscan Church. Je to jedna z najstarších sakrálnych stavieb v meste, založená ešte v trinástom storočí. Jeho jednoduchá gotická fasáda je zámerným kontrastom k bohato zdobeným barokovým priečeliam, ktoré uvidíme v ďalšej časti prechádzky. Kostol slúžil počas stáročí rehoľníkom aj mestskej šľachte a jeho kaplnka bola miestom, kde sa odohrávali niektoré zo slávnostných udalostí stredovekého mesta. Skromnosť jeho výzdoby stojí v ostrom protiklade k okázalosti neskorších palácov — pripomienka, že staré mesto rástlo vo viacerých vrstvách štýlov popri sebe."
+      "kind": "walk",
+      "title": "Starou cestou pod hradný vrch",
+      "script": "Kapitulskou pokračujte dolu smerom k Dómu, potom prejdite popod rušnú cestu a hľadajte úzku Beblavého ulicu, ktorá stúpa hore. Držte sa jej — je to stará cesta na hradný kopec. Nemusíte vyjsť až nahor; nás zaujíma malý biely kostol na terase."
     },
     {
       "order": 10,
-      "kind": "walk",
-      "title": "Smer k Primaciálnemu palácu",
-      "script": "Od kostola pokračujte krátko rovno a potom odbočte vpravo na malé námestie. Vpravo uvidíte neoklasicistickú budovu so strieškou zdobenou liatinovým kardinálskym klobúkom."
+      "kind": "stop",
+      "title": "Chrám svätého Mikuláša",
+      "script": "Tu sa dobre postojí. Toto je St Nicholas Church — Chrám svätého Mikuláša, ranobaroková stavba z roku 1661. Dala ho postaviť Františka, rodená Khuen, vdova po palatínovi Pavlovi Pálffym, a to na mieste staršieho gotického kostola, ktorý zrúcali ešte v prvej polovici 16. storočia z obavy pred tureckým nebezpečenstvom, spolu s ďalšími sakrálnymi stavbami mimo hradieb. Archeológovia tu v deväťdesiatych rokoch našli zvyšky rotundy z 11. storočia; jej spodné podlažie slúžilo ako kostnica a okolo kostola sa pochovávalo až do konca 18. storočia. Za Márie Terézie pod kostolom vybudovali kryptu s pohrebnými komorami v troch stenách. Stavba je jednoduchá: jedna loď v západno-východnej orientácii, štít s drevenou vežičkou a zvonicou. V strede južnej fasády si všimnite kamenný portál s rozokladaným tympanónom, do ktorého kamenársky majster precízne vytesal erby manželov Pálffyovcov, a nad ním niku so sochou patróna — svätého Mikuláša, ochrancu plavcov. Vnútri sa z pôvodného vybavenia zachoval hlavný oltár s obrazom svätého Mikuláša a kazateľnica Petra Brandenthala z 18. storočia. Kostol patril k farnosti Dómu svätého Martina, v roku 1936 ho dostali gréckokatolíci, na konci vojny v roku 1945 zhorela strecha a v rokoch 1945 – 1950 ho farnosť zrekonštruovala. Po násilnej likvidácii gréckokatolíckej cirkvi v roku 1950 ho prevzala pravoslávna cirkev, ktorá tu slúži dodnes. Rozhliadnite sa: domy, ktoré kostol obklopovali, zbúrali v šesťdesiatych a sedemdesiatych rokoch pri demolícii veľkej časti Podhradia. Preto tu dnes stojí sám, nad prázdnom, ktoré si treba predstaviť plné."
     },
     {
       "order": 11,
-      "kind": "stop",
-      "title": "Primaciálny palác",
-      "script": "Toto je Primaciálny palác — po slovensky Primaciálny palác, po anglicky Primate's Palace. V Zrkadlovej sieni tohto paláca podpísali v roku tisícosemsto päť Napoleon a cisár František Druhý mier v Bratislave, ktorý nasledoval po bitke pri Slavkove. Neoklasicistická fasáda paláca je nezameniteľná vďaka strieške zdobenej liatinovým kardinálskym klobúkom, symbolom cirkevnej hodnosti niekdajšieho majiteľa. Palác dnes slúži ako sídlo primátora mesta a vo vnútri sa nachádza aj vzácna zbierka anglických gobelínov zo sedemnásteho storočia. Stojí za to zastaviť sa práve tu, predtým než sa vydáme dolu smerom k rieke a k dlhému zelenému námestiu, ktoré nás čaká ďalej."
+      "kind": "walk",
+      "title": "Späť dolu k Dómu",
+      "script": "Vydajte sa tou istou starou cestou nadol, popod hradný svah, a smerujte k tej vysokej veži so zlatou korunou. Ocitnete sa na Rudnayovom námestí, pomenovanom po uhorskom prímasovi kardinálovi Alexandrovi Rudnayovi."
     },
     {
       "order": 12,
-      "kind": "walk",
-      "title": "Smer k Hlavnému námestiu",
-      "script": "Z námestia sa vydajte späť smerom do centra starého mesta, uličkami mierne na sever. Po niekoľkých minútach chôdze sa uličky otvoria do širokého hlavného námestia s fontánou uprostred."
+      "kind": "stop",
+      "title": "Dóm svätého Martina a Dom U dobrého pastiera",
+      "script": "Pred nami je St Martin's Cathedral — Katedrála, ľudovo Dóm svätého Martina. Prepoštstvo sa z hradu presťahovalo do podhradia v roku 1221 a nový gotický chrám tu začali stavať v roku 1311; pre náročnosť stavby a nedostatok peňazí ho posvätili až v roku 1452, práce však pokračovali do 16. storočia. Veža má 85 metrov a bola priamo súčasťou mestského opevnenia — západná časť trojlodia je vstavaná do hradieb. Od roku 1563 do roku 1830 to bol korunovačný kostol; korunovalo sa tu jedenásť kráľov a kráľovien a osem ich manželiek či manželov, medzi nimi Mária Terézia. Prvým bol 8. septembra 1563 Maximilián II. Na vrchole veže je pozlátená kópia Svätoštefanskej koruny, osadená v roku 1847 na pamiatku korunovácií; váži 150 kilogramov a spolu s podložkou obsahuje osem kilogramov zlata. A teraz to, na čo tu chodím ja: v 18. storočí pribudla baroková kaplnka svätého Jána Almužníka, financovaná kardinálom Imrichom Esterházym, a v roku 1744 slávne barokové súsošie svätého Martina — svätec v uhorskom husárskom odeve delí plášť so žobrákom. Oboje je dielom Georga Rafaela Donnera. Vedľa katedrály stojí pamätník synagógy, ktorá tu bola po stáročia, kým ju nezbúrali kvôli novému mostu. A pár krokov ďalej, na Židovskej 1, je House of the Good Shepherd — Dom U dobrého pastiera, rokoková stavba z rokov 1760 – 1765 od bratislavského majstra Mateja Höllrigla, s lichobežníkovým pôdorysom a priečelím širokým na jednu miestnosť a schodisko. Meno má podľa sochy Krista, dobrého pastiera, na nároží. Dnes v ňom Múzeum mesta Bratislavy vystavuje historické hodiny bratislavských majstrov."
     },
     {
       "order": 13,
-      "kind": "stop",
-      "title": "Hlavné námestie",
-      "script": "Toto je Hlavné námestie — po slovensky Hlavné námestie, po anglicky Main Square. Fontána Rolanda uprostred a Stará radnica na severnej strane námestia sú od seba vzdialené len pár krokov a dá sa ich počúvať z jedného miesta. Fontána z konca šestnásteho storočia je najstaršou fontánou svojho druhu na Slovensku a stále slúži ako obľúbený orientačný bod stretávania. Stará radnica, zložená z niekoľkých budov spájaných storočia, bola sídlom mestskej samosprávy a dodnes v nej sídli mestské múzeum. Toto námestie bolo od stredoveku trhovým centrom mesta a miestom, kadiaľ prechádzali korunovačné sprievody smerujúce od katedrály k hradu — tri vlákna dnešnej prechádzky, trh, samospráva a korunovácia, sa tu napokon stretávajú."
+      "kind": "walk",
+      "title": "Na Ventúrsku",
+      "script": "Prejdite Rudnayovým námestím a dajte sa Panskou ulicou do mesta. Cestou minete Čákiho palác na čísle 33 z roku 1775 a hneď za ním novorenesančnú Lekáreň u Salvatora — na jej fasáde je socha Krista Spasiteľa od Alojza Rigeleho. Po niekoľkých krokoch potom odbočte vľavo Strakovou do Ventúrskej."
     },
     {
       "order": 14,
-      "kind": "walk",
-      "title": "Smer k Hviezdoslavovmu námestiu",
-      "script": "Od paláca sa vydajte dolu miernym svahom smerom k rieke. Cesta vás privedie na dlhé zelené námestie lemované stromami, ktoré sa tiahne smerom k Národnému divadlu."
+      "kind": "stop",
+      "title": "Ventúrska ulica — rad palácov",
+      "script": "Ventúrska, po nemecky Venturgasse — jedna dláždená ulička a v nej takmer celá prešporská aristokracia. Meno má podľa bohatej rodiny Bonaventura di Salto, ktorá zohrávala dôležitú úlohu v 15. storočí. Na čísle 10 je Pálffyho palác, ktorý si dal v roku 1747 postaviť gróf Leopold Pálffy; portál zdobia vojenské trofeje pripomínajúce jeho generálsku kariéru v armáde Márie Terézie. Pri obnove našli v murive časti gotickej stavby a v suteréne rímske a keltské nálezy. Vraj tu v roku 1762 koncertoval šesťročný Wolfgang Amadeus Mozart — historici sa o tom dodnes hádajú, iné zdroje hovoria o Pálffyho paláci na Zámockej. Naproti, na čísle 9, stojí Zičiho palác, dokončený v roku 1775 pre grófa Františka Zičiho: prísne klasicistická elegantná fasáda, vnútro pôvodne gotické, a rozľahlé nádvorie s fontánou a levom s otvorenými ústami. Na čísle 11 je Palác Leopolda de Pauliho, postavený v rokoch 1775 – 1776 architektom Františkom Römischom pre hlavného správcu cisárskych majetkov. Ako jediný vnútromestský palác mal záhradu — a v nej rokokový hudobný pavilón. V salóne na prvom poschodí tu 28. novembra 1820 koncertoval deväťročný Franz Liszt. Na rohu, na čísle 1, uzatvára rad neskorobarokový Erdődyho palác z roku 1770, postavený pre krajinského sudcu Juraja Erdődyho podľa projektu Mateja Walcha. A na čísle 3 nazrite do nádvoria Universitas Istropolitana — prvej univerzity na území dnešného Slovenska, ktorú v roku 1465 založil na žiadosť Mateja Korvína pápež Pavol II. a ktorá začala učiť v roku 1467. V dome číslo 7 sídlila v 15. storočí mestská mincovňa."
     },
     {
       "order": 15,
-      "kind": "stop",
-      "title": "Hviezdoslavovo námestie",
-      "script": "Toto je Hviezdoslavovo námestie — po slovensky Hviezdoslavovo námestie, po anglicky Hviezdoslav Square. Dlhé, zelenou zeleňou lemované námestie je pomenované po slovenskom básnikovi Pavlovi Országhovi Hviezdoslavovi, ktorého socha stojí na jeho hornom konci. Námestie sa tiahne smerom k Národnému divadlu a k Dunaju, a ponúka prechádzajúcim chvíľu oddychu medzi hustými zhlukmi pamiatok na oboch stranách trasy. V lete tu bývajú pouličné kaviarne a trhy, v zime vianočné stánky — je to miesto, kde sa mestský život odohráva dodnes, nielen v minulosti. Jeho pokojná dlhá os je zámerným protikladom k stiesnenému, uzavretému priestoru hlavného námestia, ktoré nás čaká na konci prechádzky."
+      "kind": "walk",
+      "title": "Hore Sedlárskou",
+      "script": "Pokračujte Ventúrskou nahor; plynulo prejde do Sedlárskej, kde v Kutscherfeldovom paláci sídli Francúzsky inštitút. Sedlárska vás vyústi na Hlavné námestie — postavte sa priamo k tej veľkej kamennej fontáne, odtiaľ sa námestie čítá najlepšie."
     },
     {
       "order": 16,
+      "kind": "stop",
+      "title": "Hlavné námestie pri Maximiliánovej fontáne",
+      "script": "Main Square — Hlavné námestie, srdce mesta. Prvý raz sa jeho názov spomína v roku 1373 ako Forum, teda Trh; v nemčine Markcht, Ring, potom Hauptplatz. Trhy, zábavy, verejné popravy aj korunovačné pochody, všetko sa dialo tu. Fontána, pri ktorej stojíte, je Maximiliánova, často jej hovoria aj Rolandova — najstaršia v meste, z roku 1572. Dal ju postaviť Maximilián II., prvý kráľ korunovaný v Bratislave: pri hrách na jeho korunováciu v septembri 1563 vypukol požiar, ktorý sa preniesol do mesta, a panovník dal preto zriadiť vodné nádrže s tečúcou vodou. Namiesto tradičného Rolanda sa tu ako kresťanský rytier dal stvárniť sám kráľ — v brnení, s mečom, opretý o štít so znakom Uhorska, hľadí na radnicu. Vytesal ju majster Andreas Luttringer, nádrž má priemeru deväť metrov a po obvode maskaróny. V roku 2019 fontánu vrátili do renesančnej podoby, aj s cikajúcimi chlapcami. Teraz sa otočte dokola. Východnú stranu drží Stará radnica, najstaršia radnica v krajine — veža vznikla približne v roku 1370 a radnicu vytvorili spojením niekoľkých meštianskych domov; v jej múre je zabudnutá delová guľa z francúzskeho bombardovania v roku 1809 a od roku 1868 tu sídli Múzeum mesta Bratislavy. Vedľa nej Kostol Najsvätejšieho Spasiteľa, ľudovo jezuitský: v rokoch 1636 – 1638 ho postavili nemeckí evanjelici — bez veže a bez čohokoľvek, čo by pripomínalo chrám — a v roku 1673 ho odovzdali jezuitom. Pred ním stojí Mariánsky stĺp, ktorý dal v roku 1675 postaviť cisár Leopold I. Ďalej okolo námestia: rokokový Kutscherfeldov palác z roku 1762, najmenší v meste, Jesenákov palác s kamennou kartušou s erbom baróna Jána Jesenáka, neobarokový Paluďaiho palác obchodníka s vínom a barokový Miestodržiteľský palác na čísle osem."
+    },
+    {
+      "order": 17,
+      "kind": "walk",
+      "title": "Na Panskú a k divadlu",
+      "script": "Vráťte sa pár krokov Sedlárskou a Ventúrskou a odbočte na Panskú ulicu. Kráčajte ňou pokojne, obzerajte portály — a potom ktoroukoľvek priečnou uličkou zíďte dolu na Hviezdoslavovo námestie, pod platany."
+    },
+    {
+      "order": 18,
+      "kind": "stop",
+      "title": "Panská ulica a Hviezdoslavovo námestie",
+      "script": "Panská, po nemecky Herrengasse — ulica pánov. Grófi a šľachta si tu stavali mestské paláce, a preto ich je tu taká hustota. Pôvodne viedla za hradbami, pred ktorými bola vodná priekopa, od Laurinskej brány až po Vydrickú; neskôr sa rozdelila na dnešnú Panskú a Laurinskú. Na čísle 15 je Balašov palác z rokov 1754 – 1762 s erbom stavebníka Pavla Balašu; na portáli a atike sú neskorobarokové alegórie ľudských cností — Rozvahy, Miernosti, Spravodlivosti a Statočnosti. Na čísle 11 by ste kaplnku hľadali marne, keby vám o nej nikto nepovedal: Kaplnka Kristovho Tela vôbec nevyzerá ako cirkevná stavba, je vtesnaná do barokovo-klasicistického domu. Pôvodná kaplnka tu bola už v roku 1396 a patrila Bratstvu Božieho tela, založenému v roku 1349. V roku 1772 ju pod vedením Mateja Walcha radikálne prestavali a presťahovali z dvorového do uličného krídla; z tej doby je aj baroková výzdoba s alegorickými maľbami. Nad vstupom je reliéf Vzkriesenia s datovaním 1627 a erbom kaločského arcibiskupa Jána Telegdyho. Na tejto ulici stojí aj Pálffyho palác, dnes Galéria mesta Bratislavy, s voľne prístupným nádvorím — v jeho suteréne sú stopy keltského oppida a našli tu aj štyri slovanské hroby z 9. a polovice 10. storočia. A teraz sa nechajte doviesť pod platany Hviezdoslavovho námestia. Kedysi sa volalo Promenade, potom Theaterplatz — a to nie náhodou: východnú stranu drží historická budova Slovenského národného divadla z roku 1886 podľa projektu viedenských architektov Fellnera a Helmera, ktorú za dva roky postavil Ignác Feigler mladší; interiér osvetľovalo 800 plynových lámp. Pred ňou je Ganymedova fontána bratislavského sochára Viktora Tilgnera, darovaná mestu v roku 1888 Prvou bratislavskou sporiteľňou. Chlapec Ganymedes na orlovi, na obvode misy korytnačky, žaby a raky, na sokli deti s dunajskými rybami — a bola to prvá bratislavská verejná fontána s výlučne okrasnou funkciou."
+    },
+    {
+      "order": 19,
+      "kind": "walk",
+      "title": "Poza radnicu na Františkánske",
+      "script": "Vydajte sa námestím k budove divadla a potom Rybárskou bránou nahor späť na Hlavné námestie. Prejdite ho, obíďte Starú radnicu a úzkym prechodom vedľa jezuitského kostola vyjdite na Františkánske námestie."
+    },
+    {
+      "order": 20,
+      "kind": "stop",
+      "title": "Františkánske a Primaciálne námestie",
+      "script": "Toto je finále pre barokové oko. Pred vami je Františkánsky kostol — Kostol Zvestovania Pána, historicky najstaršia zachovaná sakrálna stavba v meste. Podľa tradície ho dal postaviť kráľ Ladislav IV. na pamiatku víťazstva nad Přemyslom Otakarom II. v bitke na Moravskom poli v roku 1278 a posvätili ho s veľkou slávou 24. marca 1297 v prítomnosti Ondreja III. Zemetrasenia v rokoch 1580 a 1586 zvalili klenbu lode, dnešná je baroková, a priečelie upravil v rokoch 1745 – 1746 staviteľ Lucca de Schramm; sochu Panny Márie Immaculaty s dvoma anjelmi nad portálom vytvoril prešporský sochár Jozef Sartory. Vnútri je rokoková kazateľnica z roku 1756 a pri kostole gotická Kaplnka svätého Jána Evanjelistu z druhej polovice 14. storočia s kryptou rodiny richtára Jakuba — jedno z najvýznamnejších gotických diel na Slovensku. Pri korunováciách sa tu králi pasovali rytierov Radu zlatej ostrohy. Na námestí je aj fontána so ženou s krčahom: studňa je z roku 1592, postavená po veľkom požiari mesta, socha z roku 1804. Severnú stranu zatvára Mirbachov palác — najkrajšia barokovo-rokoková stavba v meste. Postavili ho v rokoch 1768 – 1770 pre pivovarníka Michaela Specha, práce vedol murársky majster Matej Höllrigl a fasády pokryli jemné rokaje. Barón Emil Mirbach, ktorý ho kúpil v roku 1917, ho v poslednej vôli odkázal mestu so žiadosťou, aby dom sprístupnili verejnosti ako múzeum výtvarného umenia; od roku 1975 tu sídli Galéria mesta Bratislavy. Zachovali sa dve miestnosti na prvom poschodí s dreveným obložením a vzácnymi grafickými listami z 18. storočia, a na nádvorí je fontána so súsoším Tritón a nymfa. Nablízku nájdete aj Kostol Loretánskej Panny Márie, uršulínsky: postavili si ho v rokoch 1659 – 1663 bratislavskí protestanti, v roku 1672 ho pridelili uršulínkam a sochu čiernej Panny Márie im v roku 1684 daroval neskorší arcibiskup Leopold Kolonič. A na záver prejdite poza radnicu na Primaciálne námestie, k tomu ružovému Primaciálnemu palácu. Postavili ho v rokoch 1778 – 1781 podľa projektu viedenského architekta Melchiora Hefeleho pre arcibiskupa a uhorského prímasa Jozefa Baťána. V jeho Zrkadlovej sieni podpísali v roku 1805 Bratislavský mier a pri obnove v roku 1903 našli za stenou šesť neznámych gobelínov s príbehom Héra a Leandra, tkaných v 30. rokoch 17. storočia v manufaktúre v Mortlake pri Londýne. Vojdite do uzavretého nádvoria s fontánou svätého Juraja — pokojnejšie miesto na skončenie prechádzky v tomto meste nepoznám."
+    },
+    {
+      "order": 21,
       "kind": "outro",
-      "title": "Na záver prechádzky",
-      "script": "Tu naša prechádzka končí, na Hlavnom námestí, kde sa storočia stretávali obchodníci, mešťania aj kráľovské sprievody. Od hradného kopca sme prešli cez korunovačnú katedrálu, stredovekú bránu, tiché kláštorné dvory a barokové paláce až sem, do srdca starého mesta. Dúfame, že vám táto trasa ukázala Bratislavu ako mesto viacerých vrstiev histórie poukladaných tesne vedľa seba. Ďakujeme, že ste sa vydali na cestu s nami, a prajeme príjemný zvyšok dňa v starom meste."
+      "title": "Na rozlúčku",
+      "script": "Tu vás nechám — na nádvorí, kde je slyšať vodu a nie autá. Za dopoludnie sme prešli od jedinej brány, ktorá prežila, po arcibiskupský palác; od kostola, ktorý nesmel mať vežu, po kaplnku, ktorú by ste v rade domov ani nespoznali. To je podľa mňa celý prešporský barok: nie veľkolepé gestá, ale trpezlivé nadstavovanie, opravovanie a prispôsobovanie toho, čo tu už bolo. Cibuľa na gotickej veži, rokoková štuka na dome pivovarníka, klasicistická fasáda na gotickej kaplnke. Ak vám ešte zostal čas a chuť, vráťte sa na niektoré miesto sami a bez sprievodu — na Kapitulskú v podvečer, na Baštovú, do nádvoria Zičiho paláca. Mesto sa najlepšie číta, keď človek zastane a nikam nespěchá. Ďakujem, že ste kráčali so mnou. A vráťte sa — Bratislava má ešte niekoľko tichých kútov, ktoré sme dnes nechali na inokedy."
     }
   ]
 }
