@@ -7,6 +7,7 @@ import { discover } from './stages/discovery/index.ts';
 import { curate } from './stages/curation/index.ts';
 import { route, type RouteResult } from './stages/routing/index.ts';
 import { narrate, fetchStopExtracts, assembleTour } from './stages/narration/index.ts';
+import { scrubSecrets } from './scrub.ts';
 
 export interface OrchestratorDeps {
   repo: TourRepository;
@@ -255,7 +256,7 @@ export async function runPipeline(jobId: string, deps: OrchestratorDeps): Promis
     try {
       await deps.repo.updateJob(jobId, {
         status: 'failed',
-        error: err instanceof Error ? err.message : String(err),
+        error: scrubSecrets(err instanceof Error ? err.message : String(err)),
       });
     } catch {
       // There is truly nothing more we can do here without risking throwing

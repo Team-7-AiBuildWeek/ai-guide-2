@@ -6,6 +6,7 @@ import type { TourRepository } from '../db/repository.ts';
 import type { LlmClient } from '../llm/anthropic.ts';
 import { findCityConfig } from '../config/cities.ts';
 import { runPipeline } from '../orchestrator.ts';
+import { scrubSecrets } from '../scrub.ts';
 
 export interface ToursRouteDeps {
   repo: TourRepository;
@@ -78,7 +79,7 @@ export function createToursRouter(deps: ToursRouteDeps): Hono {
       try {
         await deps.repo.updateJob(job.id, {
           status: 'failed',
-          error: err instanceof Error ? err.message : String(err),
+          error: scrubSecrets(err instanceof Error ? err.message : String(err)),
         });
       } catch {
         // Nothing more we can do without risking an unhandled rejection.
