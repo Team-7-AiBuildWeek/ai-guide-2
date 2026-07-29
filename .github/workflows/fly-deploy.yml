@@ -1,0 +1,63 @@
+# Deploy to Fly on every push to main.
+#
+# Replaces Fly's GitHub App, which was connected but silently never rebuilt:
+# the running machine stayed on the image Fly Launch produced at first setup
+# while a dozen commits went by, and the only symptom was a white page and a
+# Last-Modified header from the previous day. A workflow leaves a build log in
+# the Actions tab, so a failed deploy says so instead of looking like a bug in
+# the app.
+#
+# Requires one repository secret: FLY_API_TOKEN.
+#   Fly dashboard -> Tokens -> Create deploy token
+#   GitHub -> Settings -> Secrets and variables -> Actions -> New repository secret
+#
+# Runtime configuration lives in `fly secrets`, not here. In particular the
+# Mapbox token is served to the client at runtime from GET /api/config, so
+# there is no build argument to pass and nothing secret in this file.
+name: Deploy to Fly
+
+on:
+  push:
+    branches: [main]
+  # Lets you redeploy the current main without an empty commit.
+  workflow_dispatch:
+
+# A queued deploy of an older commit that lands after a newer one would roll
+# the app backwards. Cancel superseded runs instead.
+concurrency:
+  group: fly-deploy
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Matches .nvmrc. The suite cannot run on Node 20.17 — jsdom fails
+          # with ERR_REQUIRE_ESM and zero tests execute, which looks like a
+          # pass if you only check the exit code of the wrong command.
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Both gates, deliberately. Vitest transpiles with esbuild and does not
+      # type-check, so a green suite has coexisted with a broken build in this
+      # repo more than once.
+      - run: npm test
+      - run: npm run build
+
+  deploy:
+    name: Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
