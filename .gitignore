@@ -19,6 +19,9 @@ dist-ssr
 # Scratch workspace for subagent-driven execution ledgers
 .superpowers/
 
+# Toponym-spike output — MP3s to listen to, not artefacts to keep
+apps/api/spike-audio/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
