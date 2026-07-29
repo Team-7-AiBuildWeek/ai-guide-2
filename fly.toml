@@ -13,11 +13,22 @@ primary_region = 'iad'
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
+  # The machine scales to zero when idle (below) to keep cost near zero for
+  # a low-traffic phone-testing app. The tradeoff: the first request after
+  # any idle period pays a cold start — machine boot plus Node startup,
+  # several seconds — before /api/health responds. Expect that delay on the
+  # first request of a live walk; it is not a bug to chase.
   min_machines_running = 0
   processes = ['app']
 
 [[vm]]
+  # A single value, not the previous contradictory pair (`memory = '1gb'`
+  # alongside `memory_mb = 256`). 256 MB is sized for a static file server;
+  # this process is Node running a generation pipeline that holds a Postgres
+  # connection open and makes concurrent outbound calls to Wikidata,
+  # Wikipedia, Overpass, Mapbox and the Anthropic API in the same request —
+  # V8's own baseline footprint plus that fan-out does not fit in 256 MB
+  # without risking an OOM-kill mid-generation. 1 GB gives it headroom.
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256

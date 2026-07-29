@@ -1,11 +1,19 @@
 # Fly Launch generated a one-line .dockerignore alongside a `COPY . /srv/http/`
 # static-server Dockerfile. That combination publishes the entire build context
 # as downloadable files. Secrets first, everything else after.
+#
+# This still matters with the current Node/Hono Dockerfile: its build stage
+# runs `COPY . .` into the image before `npm run build`, so anything not
+# excluded here is available to be copied forward into the runtime stage (or
+# read during the build) even though the runtime stage only explicitly
+# copies a short allow-list of paths back out. Every rule below still applies.
 
 # Secrets — never in a build context, under any circumstances
 .env
 .env.*
 *.local
+# ...except the checked-in templates (.env.example, .env.local.example),
+# which carry no values and document what to set, not a secret to hide.
 !*.example
 
 # Version control history
