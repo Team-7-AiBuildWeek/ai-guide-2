@@ -77,8 +77,19 @@ const auth = createGenerateAuthMiddleware({ repo });
  * nothing to store. Absent either, tours generate without audio and the player
  * falls back to the device's own speech — degraded, but working.
  */
+// Real `fetch`, NOT the cassette-wrapped one.
+//
+// Wiring it through the cassette layer made every synthesis call miss in the
+// default `replay` mode and throw, so tours silently fell back to the
+// browser's own voice — the bug looked like an exhausted TTS quota.
+//
+// The cassette layer exists to stop development spending money on APIs
+// charged per call. Synthesis is already protected by something better: audio
+// is content addressed, so re-generating a tour whose scripts have not
+// changed re-uses every clip and bills nothing. The store IS the cache here,
+// and putting a second one in front of it only broke things.
 const tts = process.env.GOOGLE_TTS_API_KEY
-  ? new ChirpTtsProvider({ apiKey: process.env.GOOGLE_TTS_API_KEY, fetch: wrappedFetch })
+  ? new ChirpTtsProvider({ apiKey: process.env.GOOGLE_TTS_API_KEY })
   : undefined;
 const audioStore = audioStoreFromEnv() ?? undefined;
 

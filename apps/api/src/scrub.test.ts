@@ -36,3 +36,43 @@ describe('scrubSecrets', () => {
     expect(out.match(/REDACTED/g)).toHaveLength(2);
   });
 });
+
+describe('scrubSecrets — bare tokens with no name= in front', () => {
+  // Two credentials have escaped through error text in this project: a Mapbox
+  // token via a cassette-miss URL, and a Google API key via a synthesis
+  // warning. Both had `name=` in front. These cover the case where one does
+  // not — a token quoted on its own in a message, body or stack frame.
+  it('redacts a Google API key', () => {
+    const out = scrubSecrets('failed with AIzaSyA6cm83prbIYSfHJmH2y3DLHubSR_Lub5M oh dear');
+    expect(out).not.toContain('AIzaSyA6cm83prbIYSfHJmH2y3DLHubSR_Lub5M');
+    expect(out).toContain('GOOGLE_API_KEY:REDACTED');
+    expect(out).toContain('oh dear');
+  });
+
+  it('redacts an Anthropic key', () => {
+    const out = scrubSecrets('Authorization: sk-ant-api03-AAAAAAAAAAAAAAAAAAAAAA');
+    expect(out).not.toContain('sk-ant-api03-AAAAAAAAAAAAAAAAAAAAAA');
+  });
+
+  it('redacts a Supabase secret key', () => {
+    const out = scrubSecrets('using sb_secret_AAAAAAAAAAAAAAAAAAAAAAAA now');
+    expect(out).not.toContain('sb_secret_AAAAAAAAAAAAAAAAAAAAAAAA');
+  });
+
+  it('redacts a Mapbox token, public or secret', () => {
+    const pk = 'pk.eyJ1IjoiZXhhbXBsZSJ9.abc123DEF';
+    expect(scrubSecrets(`token ${pk}`)).not.toContain(pk);
+  });
+
+  it('redacts a Postgres connection string, which carries the password', () => {
+    const url = 'postgresql://postgres:hunter2@db.example.supabase.co:5432/postgres';
+    const out = scrubSecrets(`connect failed: ${url}`);
+    expect(out).not.toContain('hunter2');
+    expect(out).toContain('connect failed');
+  });
+
+  it('leaves ordinary prose alone', () => {
+    const text = 'Cannot find route between points 2 and 3.';
+    expect(scrubSecrets(text)).toBe(text);
+  });
+});

@@ -49,9 +49,20 @@ export class ChirpTtsProvider implements TtsProvider {
       audioConfig: { audioEncoding: 'MP3' },
     });
 
-    const res = await this.fetchImpl(`${ENDPOINT}?key=${encodeURIComponent(this.apiKey)}`, {
+    // Key in a HEADER, never the URL.
+    //
+    // Google accepts `?key=…`, and using it cost a leak: a cassette-miss error
+    // quoted the request URL, the key went with it, and it landed in a log.
+    // A URL travels — into errors, logs, cassette keys and filenames — and
+    // every one of those is a place a credential can end up by accident. A
+    // header does not travel, so the whole class of mistake disappears rather
+    // than needing to be remembered at each site.
+    const res = await this.fetchImpl(ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Goog-Api-Key': this.apiKey,
+      },
       body,
     });
 

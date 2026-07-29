@@ -249,9 +249,14 @@ async function runPipelineInner(jobId: string, deps: OrchestratorDeps): Promise<
           })),
         };
       } catch (err) {
+        // Scrubbed. This is not belt-and-braces: the unscrubbed version of
+        // this exact line put a Google API key into a log file, because the
+        // failure quoted a request URL that carried the key as a query
+        // parameter. Anything written about an error is a place a credential
+        // can escape.
         console.warn(
           `[job ${jobId}] synthesis failed, tour will use on-device speech:`,
-          err instanceof Error ? err.message : err,
+          scrubSecrets(err instanceof Error ? err.message : String(err)),
         );
       }
     }
