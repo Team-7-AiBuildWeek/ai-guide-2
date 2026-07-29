@@ -25,7 +25,11 @@ export function NowPlaying({ segment, offRoute }: NowPlayingProps) {
   return (
     <div className="bg-slate-900 px-4 py-3 text-white">
       <p className="text-xs uppercase tracking-wide text-slate-400">Now playing</p>
-      <p className="text-base font-semibold">{segment.title}</p>
+      {/* This is an audio-first app; a screen-reader user gets no other cue
+          that narration has moved to a new segment. */}
+      <p className="text-base font-semibold" aria-live="polite">
+        {segment.title}
+      </p>
     </div>
   );
 }

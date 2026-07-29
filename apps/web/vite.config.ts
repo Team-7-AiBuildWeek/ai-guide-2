@@ -21,6 +21,12 @@ export default defineConfig({
         icons: [],
       },
       workbox: {
+        // Default precache limit is 2 MiB; the main JS chunk (mapbox-gl +
+        // zod, pulled in at runtime by tourStore.ts's TourSchema.parse,
+        // + react/tailwind) now sits just over that. Raised rather than
+        // code-split — this is a single-page prototype, not a place where
+        // splitting pays for itself yet.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         // Narration MP3s arrive in Plan 2; caching them makes tours work
         // without signal, which is common in dense old towns. No MP3s
         // exist yet in this plan, so this rule matches nothing today — it

@@ -1,26 +1,46 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { GenerateRequest, Tour } from '@ai-guide/shared';
 import { amsterdamTour } from './fixtures/amsterdam-tour';
 import { useTourPlayer } from './hooks/useTourPlayer';
 import { useWakeLock } from './hooks/useWakeLock';
 import { SimulatedLocation } from './lib/location/simulated';
 import { BrowserLocation } from './lib/location/browser';
 import { SpeechSynthesisPlayer } from './lib/audio/speechSynthesis';
+import {
+  createApiClient,
+  WrongPassphraseError,
+  getStoredPassphrase,
+  setStoredPassphrase,
+  clearStoredPassphrase,
+} from './lib/api/client';
+import { loadLatest, saveTour } from './lib/storage/tourStore';
 import { TourMap } from './components/TourMap';
 import { NowPlaying } from './components/NowPlaying';
 import { StopList } from './components/StopList';
 import { DevPanel } from './components/DevPanel';
+import { GenerateScreen } from './components/GenerateScreen';
+import { ProgressScreen } from './components/ProgressScreen';
 
 // ?sim=1 in the URL runs the simulator instead of real GPS. Read once at
 // module scope — never recomputed per render — so it cannot make the
 // `location` memo below see a changing dependency and rebuild the provider.
 const simRequested = new URLSearchParams(window.location.search).has('sim');
 
-export default function App() {
-  const tour = amsterdamTour;
+// ?demo=1 (or ?sim=1, which implies it) skips generation entirely and loads
+// the built-in Amsterdam fixture — the dev-only affordance that keeps the
+// manual walkthroughs in docs/TESTING.md working now that the app's default
+// path is generate → progress → player rather than the fixture alone.
+const demoRequested = simRequested || new URLSearchParams(window.location.search).has('demo');
 
-  // setGpsError (from useState) is referentially stable across the
-  // component's lifetime, so including it in the memo's deps below cannot
-  // trigger a re-creation of `location` on re-render.
+/**
+ * The existing GPS-triggered player, unchanged from Plan 1 — it consumes a
+ * `Tour` and does not care where that `Tour` came from. Pulled into its own
+ * component (rather than left inline in `App`) purely so its hooks
+ * (`useTourPlayer`, `useWakeLock`, ...) are never called while `tour` might
+ * still be null; App itself decides *whether* to render this, not this
+ * component.
+ */
+function Player({ tour }: { tour: Tour }) {
   const [gpsError, setGpsError] = useState<string | null>(null);
 
   const location = useMemo(
@@ -108,4 +128,84 @@ export default function App() {
       </div>
     </div>
   );
+}
+
+export default function App() {
+  const [tour, setTour] = useState<Tour | null>(demoRequested ? amsterdamTour : null);
+  const [loadingStore, setLoadingStore] = useState(!demoRequested);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [generateError, setGenerateError] = useState<string | null>(null);
+
+  const apiClient = useMemo(() => createApiClient(), []);
+
+  // Whatever tour was generated (or resumed) last time, on a device that
+  // never talks to anything until a fresh generate is requested.
+  useEffect(() => {
+    if (demoRequested) return;
+    let cancelled = false;
+    loadLatest()
+      .then((stored) => {
+        if (!cancelled) setTour(stored);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingStore(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleGenerate = useCallback(
+    async (request: GenerateRequest) => {
+      setGenerateError(null);
+
+      let passphrase = getStoredPassphrase();
+      if (passphrase === null) {
+        passphrase = window.prompt('Enter the passphrase to generate a tour:');
+        if (!passphrase) return;
+        setStoredPassphrase(passphrase);
+      }
+
+      try {
+        const { jobId: newJobId } = await apiClient.createTour(request);
+        setJobId(newJobId);
+      } catch (err) {
+        if (err instanceof WrongPassphraseError) {
+          // Clear it so the next attempt re-prompts instead of silently
+          // retrying the same wrong value forever.
+          clearStoredPassphrase();
+          setGenerateError('Wrong passphrase. Please try again.');
+        } else {
+          setGenerateError('Could not start generation. Please try again.');
+        }
+      }
+    },
+    [apiClient],
+  );
+
+  const handleComplete = useCallback(
+    async (tourId: string) => {
+      const finished = await apiClient.getTour(tourId);
+      await saveTour(finished);
+      setJobId(null);
+      setTour(finished);
+    },
+    [apiClient],
+  );
+
+  const handleRetry = useCallback(() => setJobId(null), []);
+
+  if (tour) return <Player tour={tour} />;
+  if (loadingStore) return null;
+  if (jobId) {
+    return (
+      <ProgressScreen
+        jobId={jobId}
+        subscribeToJob={apiClient.subscribeToJob}
+        onComplete={handleComplete}
+        onRetry={handleRetry}
+      />
+    );
+  }
+  return <GenerateScreen onGenerate={handleGenerate} error={generateError} />;
 }

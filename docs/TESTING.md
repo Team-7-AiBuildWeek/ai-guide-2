@@ -1,5 +1,19 @@
 # Manual testing
 
+## Reaching the Amsterdam fixture (dev-only)
+
+As of task 11, the app's default path is generate → progress → the finished
+tour, not the built-in Amsterdam fixture — a fresh browser with nothing
+generated yet lands on the generate screen. Every walkthrough below still
+exercises the Amsterdam fixture directly, bypassing generation, via a
+dev-only URL flag:
+
+- `?sim=1` (used by "Simulated walk" below) already implies the fixture.
+- Sections below that test real GPS need the fixture too, but must **not**
+  use `?sim=1` (that flag also swaps in `SimulatedLocation`). Use `?demo=1`
+  instead — it loads the same fixture without touching the location
+  provider.
+
 ## Node version — read this first
 
 This machine's default Node (20.17.0) cannot run the test suite: `npm test`
@@ -96,7 +110,7 @@ trigger-engine bug — run this walkthrough at 10× or below.
 ## GPS permission denial and recovery (Task 7 behaviour)
 
 1. `npm run dev` (no `?sim=1` — this exercises real `BrowserLocation`)
-2. Open the app and tap **Start the walk**
+2. Open `http://localhost:5173/?demo=1` and tap **Start the walk**
 3. When the browser prompts for location permission, **deny** it
 4. Confirm a red banner appears at the top of the screen (`role="alert"`)
    with a message — the app must not fail silently or hang
@@ -112,7 +126,8 @@ trigger-engine bug — run this walkthrough at 10× or below.
 1. `npm run dev -- --host` and note the LAN address
 2. Serve over HTTPS (geolocation requires a secure context) — `npx vite --https`
    or a tunnel such as `npx localtunnel --port 5173`
-3. Open on the phone, tap **Start the walk**, grant location permission
+3. Open `?demo=1` at that address on the phone, tap **Start the walk**, grant
+   location permission
 4. Confirm the red dot tracks you and the map follows
 5. Confirm the screen does not sleep while the tour is running
 6. Walk to a stop and confirm narration fires within ~2 fixes of arrival
