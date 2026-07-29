@@ -21,18 +21,35 @@ const EXAMPLE_CHIPS = [
 ];
 
 export interface GenerateScreenProps {
-  onGenerate: (request: GenerateRequest) => void;
+  onGenerate: (request: GenerateRequest, passphrase?: string) => void;
   /** Surfaced from a failed previous attempt — e.g. a wrong passphrase. */
   error?: string | null;
+  /**
+   * Show a passphrase field, because none is stored yet (or the stored one was
+   * rejected).
+   *
+   * This used to be a `window.prompt`, which is the wrong tool twice over:
+   * iOS Safari can suppress prompts entirely in standalone PWA mode — which is
+   * precisely the mode someone is in after adding this to their home screen for
+   * a walk — and a dismissed prompt silently aborts with no feedback at all.
+   * On a street, with no laptop, that is unrecoverable.
+   */
+  needsPassphrase?: boolean;
 }
 
-export function GenerateScreen({ onGenerate, error = null }: GenerateScreenProps) {
+export function GenerateScreen({
+  onGenerate,
+  error = null,
+  needsPassphrase = false,
+}: GenerateScreenProps) {
   const [profileText, setProfileText] = useState('');
   const [language, setLanguage] = useState<Language>('en');
   const [persona, setPersona] = useState('');
   const [budgetMin, setBudgetMin] = useState<number>(60);
+  const [passphrase, setPassphrase] = useState('');
 
-  const canSubmit = profileText.trim().length > 0;
+  const canSubmit =
+    profileText.trim().length > 0 && (!needsPassphrase || passphrase.trim().length > 0);
 
   function appendExample(text: string) {
     setProfileText((prev) => (prev.length === 0 ? text : `${prev} ${text}`));
@@ -41,13 +58,16 @@ export function GenerateScreen({ onGenerate, error = null }: GenerateScreenProps
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!canSubmit) return;
-    onGenerate({
-      city: CITY,
-      profileText: profileText.trim(),
-      language,
-      persona: persona.trim(),
-      budgetMin,
-    });
+    onGenerate(
+      {
+        city: CITY,
+        profileText: profileText.trim(),
+        language,
+        persona: persona.trim(),
+        budgetMin,
+      },
+      needsPassphrase ? passphrase.trim() : undefined,
+    );
   }
 
   return (
@@ -123,6 +143,22 @@ export function GenerateScreen({ onGenerate, error = null }: GenerateScreenProps
           ))}
         </select>
       </label>
+
+      {needsPassphrase && (
+        <label className="flex flex-col gap-1 text-sm font-medium">
+          Passphrase
+          <span className="text-xs font-normal text-slate-400">
+            Asked once per device, then remembered
+          </span>
+          <input
+            type="password"
+            value={passphrase}
+            onChange={(e) => setPassphrase(e.target.value)}
+            autoComplete="current-password"
+            className="rounded bg-slate-800 p-2 font-normal text-white placeholder:text-slate-500"
+          />
+        </label>
+      )}
 
       {error !== null && (
         <p role="alert" className="text-sm font-medium text-red-400">

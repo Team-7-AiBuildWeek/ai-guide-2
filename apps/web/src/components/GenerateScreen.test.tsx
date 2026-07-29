@@ -103,3 +103,52 @@ describe('GenerateScreen', () => {
     expect(screen.getByRole('alert').textContent).toMatch(/wrong passphrase/i);
   });
 });
+
+function passphraseField(): HTMLInputElement {
+  return screen.getByLabelText(/passphrase/i) as HTMLInputElement;
+}
+
+describe('GenerateScreen — passphrase', () => {
+  // Replaces a window.prompt. iOS Safari can suppress prompts in standalone
+  // PWA mode — the mode you are in after adding this to a home screen for a
+  // walk — and a dismissed prompt aborted silently, on a street, with no
+  // laptop. An in-form field cannot be suppressed and cannot fail silently.
+  it('does not ask when a passphrase is already stored', () => {
+    render(<GenerateScreen onGenerate={vi.fn()} />);
+    expect(screen.queryByLabelText(/passphrase/i)).toBeNull();
+  });
+
+  it('asks when one is needed', () => {
+    render(<GenerateScreen onGenerate={vi.fn()} needsPassphrase />);
+    expect(screen.getByLabelText(/passphrase/i)).toBeTruthy();
+  });
+
+  it('keeps submit disabled until the passphrase is filled in', () => {
+    render(<GenerateScreen onGenerate={vi.fn()} needsPassphrase />);
+
+    fireEvent.change(textarea(), { target: { value: 'baroque' } });
+    expect(submitButton().disabled).toBe(true);
+
+    fireEvent.change(passphraseField(), { target: { value: 'hunter2' } });
+    expect(submitButton().disabled).toBe(false);
+  });
+
+  it('hands the passphrase to onGenerate alongside the request', () => {
+    const onGenerate = vi.fn();
+    render(<GenerateScreen onGenerate={onGenerate} needsPassphrase />);
+
+    fireEvent.change(textarea(), { target: { value: 'baroque' } });
+    fireEvent.change(passphraseField(), { target: { value: 'hunter2' } });
+    fireEvent.click(submitButton());
+
+    expect(onGenerate).toHaveBeenCalledWith(
+      expect.objectContaining({ profileText: 'baroque' }),
+      'hunter2',
+    );
+  });
+
+  it('masks the field so it is not readable over a shoulder', () => {
+    render(<GenerateScreen onGenerate={vi.fn()} needsPassphrase />);
+    expect(screen.getByLabelText(/passphrase/i).getAttribute('type')).toBe('password');
+  });
+});

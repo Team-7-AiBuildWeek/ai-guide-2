@@ -141,6 +141,8 @@ export default function App() {
   const [loadingStore, setLoadingStore] = useState(!demoRequested);
   const [jobId, setJobId] = useState<string | null>(null);
   const [generateError, setGenerateError] = useState<string | null>(null);
+  /** Show the passphrase field: none stored yet, or the stored one was wrong. */
+  const [needsPassphrase, setNeedsPassphrase] = useState(() => getStoredPassphrase() === null);
 
   const apiClient = useMemo(() => createApiClient(), []);
 
@@ -162,14 +164,19 @@ export default function App() {
   }, []);
 
   const handleGenerate = useCallback(
-    async (request: GenerateRequest) => {
+    async (request: GenerateRequest, passphrase?: string) => {
       setGenerateError(null);
 
-      let passphrase = getStoredPassphrase();
-      if (passphrase === null) {
-        passphrase = window.prompt('Enter the passphrase to generate a tour:');
-        if (!passphrase) return;
+      // The passphrase now comes from a field in the form rather than a
+      // `window.prompt`. iOS Safari can suppress prompts in standalone PWA
+      // mode — the mode you are in after adding this to a home screen for a
+      // walk — and a dismissed prompt aborted silently with no feedback.
+      if (passphrase !== undefined && passphrase.length > 0) {
         setStoredPassphrase(passphrase);
+      }
+      if (getStoredPassphrase() === null) {
+        setNeedsPassphrase(true);
+        return;
       }
 
       try {
@@ -177,9 +184,10 @@ export default function App() {
         setJobId(newJobId);
       } catch (err) {
         if (err instanceof WrongPassphraseError) {
-          // Clear it so the next attempt re-prompts instead of silently
+          // Clear it so the next attempt asks again instead of silently
           // retrying the same wrong value forever.
           clearStoredPassphrase();
+          setNeedsPassphrase(true);
           setGenerateError('Wrong passphrase. Please try again.');
         } else {
           setGenerateError('Could not start generation. Please try again.');
@@ -213,5 +221,11 @@ export default function App() {
       />
     );
   }
-  return <GenerateScreen onGenerate={handleGenerate} error={generateError} />;
+  return (
+    <GenerateScreen
+      onGenerate={handleGenerate}
+      error={generateError}
+      needsPassphrase={needsPassphrase}
+    />
+  );
 }
