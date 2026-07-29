@@ -27,18 +27,30 @@ export default defineConfig({
         // code-split — this is a single-page prototype, not a place where
         // splitting pays for itself yet.
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        // Narration MP3s arrive in Plan 2; caching them makes tours work
-        // without signal, which is common in dense old towns. No MP3s
-        // exist yet in this plan, so this rule matches nothing today — it
-        // is dormant configuration, not dead code, established now so
-        // Plan 2 doesn't have to touch the PWA shell to get offline audio.
+        // Narration MP3s, so a tour keeps talking where there is no signal —
+        // routine in a dense old town, and the whole point of an audio guide.
+        //
+        // ANCHORED AT THE START, and that is not cosmetic. Workbox only
+        // applies a RegExp urlPattern to a CROSS-ORIGIN request if the match
+        // begins at position 0 of the URL — a deliberate guard against
+        // accidentally caching third parties. The previous `/\.mp3$/` matched
+        // the URL perfectly well in isolation and was silently ignored for
+        // every Supabase request, so nothing was ever cached and the failure
+        // looked like the audio element's Range requests rather than the
+        // pattern. Verified empirically: a plain fetch() with no Range header
+        // was not cached either.
         runtimeCaching: [
           {
-            urlPattern: /\.mp3$/,
+            urlPattern: /^https:\/\/[^/]+\.supabase\.co\/storage\/v1\/object\/public\/.*\.mp3$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'tour-audio',
               expiration: { maxEntries: 500, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              // Cross-origin responses are only cacheable when they are not
+              // opaque. Supabase sends CORS headers so these are status 200;
+              // 0 is allowed for the opaque case rather than silently
+              // dropping every entry if that ever changes.
+              cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],

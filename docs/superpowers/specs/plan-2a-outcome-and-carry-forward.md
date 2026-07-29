@@ -152,19 +152,33 @@ Deliberate choices worth keeping:
   service worker's `/\.mp3$/` rule *does* match real Supabase URLs, because
   public ones carry no query string.
 
-### Open: offline audio is not actually being cached
+### Offline audio — resolved, and the first diagnosis was wrong
 
-The `.mp3` rule matches and a service worker is registered, but no
-`tour-audio` cache exists after playback and nothing is stored in it.
+Nothing was being cached despite the `.mp3` rule matching and a service worker
+being registered. My hypothesis was Range requests from the `<audio>` element.
+**It was not.** A plain `fetch()` with no Range header was not cached either,
+and the worker was confirmed to be controlling the page.
 
-Symptom verified; cause not. The likely explanation is that `<audio>` playback
-issues Range requests, which Workbox's `CacheFirst` does not handle without
-`RangeRequestsPlugin` — but that is a hypothesis. Fixing it probably means
-either adding that plugin or pre-fetching each MP3 with `fetch()` so the
-service worker sees an ordinary request it can cache.
+The cause is a documented Workbox rule: for a **cross-origin** request, a
+RegExp `urlPattern` is only applied if it matches from **position 0** of the
+URL — a guard against accidentally caching third parties. `/\.mp3$/` matches
+at the end, so it was silently ignored for every Supabase request. Same-origin
+requests allow partial matches, which is why it looked correct in isolation
+and why Plan 1's "verify it actually matches once real URLs exist" was the
+right instinct for the wrong reason.
 
-This matters for the product: a tour that needs mobile data at every stop is
-a different thing from one you download and walk.
+Anchoring the pattern at `^https://…supabase.co/storage/v1/object/public/…`
+fixed it. Verified: `tour-audio` cache created, entry present.
+
+Caching on request is still not enough on its own, because the request happens
+when the walker *arrives* at a stop — exactly when they may have no data.
+`prefetchTourAudio` now pulls the whole tour down on the start screen, where
+they are probably still indoors on wifi. Verified end to end: **21 of 21 clips
+cached, 6.3 MB, served from cache at status 200 with `audio/mpeg`.**
+
+Worth keeping: the prefetch swallows per-segment failures rather than
+aborting. Nineteen of twenty-one cached is a good tour with two gaps; giving
+up at the first timeout is a bad one.
 
 ## Not done — do not assume otherwise
 - **`fly deploy` has never been run.** Fly's networking, TLS and cold-start

@@ -7,6 +7,7 @@ import { SimulatedLocation } from './lib/location/simulated';
 import { BrowserLocation } from './lib/location/browser';
 import { SpeechSynthesisPlayer } from './lib/audio/speechSynthesis';
 import { HtmlAudioPlayer } from './lib/audio/htmlAudio';
+import { prefetchTourAudio, type PrefetchProgress } from './lib/audio/prefetch';
 import {
   createApiClient,
   WrongPassphraseError,
@@ -87,6 +88,30 @@ function Player({ tour }: { tour: Tour }) {
   useWakeLock(player.started);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
+  const [download, setDownload] = useState<PrefetchProgress | null>(null);
+
+  /**
+   * Pull the whole tour's audio down before the walk begins.
+   *
+   * The service worker caches on request, so without this each MP3 would be
+   * fetched at the moment the walker reaches its stop — exactly when they are
+   * most likely to be in a narrow street with no data. Doing it here moves
+   * the risky moment to the start screen, indoors, probably on wifi.
+   *
+   * Not awaited and not blocking: a walker who taps Start immediately still
+   * gets a working tour, just with the first stops streaming.
+   */
+  useEffect(() => {
+    let cancelled = false;
+    void prefetchTourAudio(tour, {
+      onProgress: (p) => {
+        if (!cancelled) setDownload(p);
+      },
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [tour]);
 
   if (!player.started) {
     return (
@@ -115,6 +140,13 @@ function Player({ tour }: { tour: Tour }) {
         {startError !== null && (
           <p className="text-sm font-medium text-red-400" role="alert">
             {startError}
+          </p>
+        )}
+        {download !== null && download.total > 0 && (
+          <p className="text-xs text-slate-400" aria-live="polite">
+            {download.done < download.total
+              ? `Downloading audio for offline use… ${download.done}/${download.total}`
+              : `Audio ready for offline use · ${download.total} clips`}
           </p>
         )}
         <p className="max-w-xs text-xs text-slate-400">
