@@ -30,7 +30,14 @@ execution workspace is deleted once the work lands.
 
 ## L1 — done. What first contact with Opus 5 cost and taught
 
-**Total spend: $2.21.** Estimated $0.46. The gap is entirely thinking tokens.
+**Total spend: $2.57** ($2.21 on L1, $0.36 verifying the budget fix) against a
+$0.46 estimate. The gap is entirely thinking tokens, which bill as output and
+were not counted.
+
+**Measured cost of a cold tour, one language: ~$0.79** — curation $0.35 plus
+narration $0.44. Before the distance-budget fix it would have been ~$1.14,
+because the over-budget re-curation fired on any realistic request. The spec's
+$0.46 should be replaced with $0.79.
 
 | | |
 |---|---|
@@ -51,9 +58,27 @@ Three of my own design errors, none findable without paying:
    saying anything substantive. Bounds widened to catch only broken segments;
    the real check is now total narration duration against the budget.
 3. **Curation cannot reason about a time budget.** Given "60 minutes" and
-   coordinates, it produced a 5.2 km, 78-minute walk. It was never told
-   walking speed or dwell time. It now receives an explicit distance budget
-   in metres, derived from routing's own constants. **Unverified live.**
+   coordinates, it produced a 5.2 km, 78-minute walk — 31% over. It was never
+   told walking speed or dwell time, so the conversion was not available to
+   it. It now receives an explicit distance budget in metres, derived from
+   routing's own dwell constants.
+
+   **Verified live, $0.36.** Same profile, same 60-minute request:
+
+   | | baseline | with distance budget |
+   |---|---|---|
+   | walking distance | 5165 m | **3411 m** |
+   | walking time | 61.7 min | **40.8 min** |
+   | estimated total | 78.4 min | **59.2 min** |
+   | `overBudget` | true | **false** |
+
+   Within 1.3% of the request, and it chose *eleven* stops rather than ten —
+   more places, shorter walk, which is the right trade. The model was never
+   careless; it was uninformed.
+
+   This also removes the re-curation that would otherwise fire on nearly every
+   realistic request, so a cold 60-minute tour costs one curation instead of
+   two.
 
 **What the model did well**, and better than the hand-authored fixture:
 grouped 12 QIDs into one Hlavné námestie stop; kept every pair ≥117 m apart;

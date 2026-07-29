@@ -321,13 +321,19 @@ Per tour, **cold city** (full generation, single language):
 | Maps | negligible |
 | **Total** | **~$1.36** |
 
-*Corrected 2026-07-28. The original ~$0.35 omitted adaptive thinking tokens,
-which bill at the output rate (~4k tokens ≈ $0.10). Roughly 65% of the
-generation cost is narration output — ~5,000 words of bespoke prose, which is
-the product and has no cheaper form. See the Plan 2a spec §3.5 for the
-per-stage breakdown and the two mitigations (two-stage context trimming and
-prompt caching on the candidate block) that cut curation from ~$0.12 to
-~$0.04.*
+*Corrected again 2026-07-29, this time from receipts rather than arithmetic.
+**Measured: ~$0.79** — curation $0.35, narration $0.44. Both earlier figures
+($0.35, then $0.46) were derived from token counts that under-counted adaptive
+thinking, which bills at the output rate and dominates: one curation call spent
+7,182 thinking tokens against 1,500 of actual JSON.*
+
+*Prompt caching works as designed (17k cached input tokens per call), but it
+discounts input, and input is not where the money goes.*
+
+*The figure was ~$1.14 until curation was given an explicit walking-distance
+budget: without one it overshot a 60-minute request by 31%, tripping the
+over-budget re-curation on essentially every realistic request and paying for
+curation twice. See `plan-2a-outcome-and-carry-forward.md`.*
 
 Claude Opus 5 is $5 / $25 per MTok input / output. Chirp 3 HD's 1M chars/month
 free tier covers roughly 33 full tours — the entire prototype phase costs
