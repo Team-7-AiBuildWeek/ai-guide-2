@@ -4,9 +4,10 @@ import { Hono } from 'hono';
 import { InMemoryTourRepository } from './db/memory.ts';
 import { PostgresTourRepository } from './db/postgres.ts';
 import type { TourRepository } from './db/repository.ts';
-import { AnthropicLlmClient } from './llm/anthropic.ts';
+import { AnthropicLlmClient, type LlmClient } from './llm/anthropic.ts';
+import { SyntheticLlmClient } from './llm/synthetic.ts';
 import { FileCassetteStore, cassetteFetch, resolveCassetteMode } from './cassette/index.ts';
-import { resolveMapboxToken } from './stages/routing/mapbox.ts';
+import { resolveMapboxToken, createRedactingCassetteFetch } from './stages/routing/mapbox.ts';
 import { createGenerateAuthMiddleware } from './auth.ts';
 import { createToursRouter } from './routes/tours.ts';
 
@@ -34,7 +35,32 @@ const cassetteMode = resolveCassetteMode();
 const cassetteStore = new FileCassetteStore(cassetteDir);
 const wrappedFetch = cassetteFetch(cassetteMode, cassetteStore, fetch);
 
-const llm = new AnthropicLlmClient({ apiKey: process.env.ANTHROPIC_API_KEY ?? '', fetch: wrappedFetch });
+/**
+ * Synthetic unless explicitly told otherwise.
+ *
+ * The default is the one that cannot spend money: an operator who has not
+ * said "use the real model" gets the hand-authored fixtures. Set
+ * `LLM_MODE=live` to reach Opus 5, which requires ANTHROPIC_API_KEY and
+ * bills real money per generation.
+ */
+function buildLlmClient(): LlmClient {
+  if (process.env.LLM_MODE !== 'live') return new SyntheticLlmClient();
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    throw new Error('LLM_MODE=live requires ANTHROPIC_API_KEY. Refusing to start.');
+  }
+  return new AnthropicLlmClient({ apiKey, fetch: wrappedFetch });
+}
+
+const llm = buildLlmClient();
+// Mapbox carries its credential in the URL, so it needs the redacting
+// variant: the token must be stripped before a cassette key is derived, or
+// it is written into a cassette file and printed in any miss/error message.
+// Wiring the generic fetch here instead is not a cosmetic slip — it makes the
+// running service compute different cassette keys from the recording scripts,
+// so every routing replay misses.
+const mapboxFetch = createRedactingCassetteFetch(cassetteMode, cassetteStore, fetch);
 const mapboxToken = resolveMapboxToken();
 
 // Throws if GENERATE_PASSPHRASE is unset — see auth.ts. This module must not
@@ -45,6 +71,7 @@ const toursRouter = createToursRouter({
   repo,
   llm,
   fetch: wrappedFetch,
+  mapboxFetch,
   mapboxToken,
   auth,
 });

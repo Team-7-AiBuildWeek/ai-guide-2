@@ -12,6 +12,24 @@ export interface OrchestratorDeps {
   repo: TourRepository;
   llm: LlmClient;
   fetch: typeof fetch;
+  /**
+   * Fetch used for Mapbox Directions only.
+   *
+   * Mapbox carries its credential as a URL query parameter, so the URL that
+   * reaches the cassette layer must have the token stripped before a key is
+   * derived from it — see `createRedactingCassetteFetch`. Keeping it a
+   * separate dependency rather than reusing `fetch` is deliberate: when the
+   * service wired the generic fetch through to routing, recordings (made via
+   * the redacting path, keyed on `access_token=REDACTED`) and the running
+   * service (keyed on the real token) disagreed on every key, so routing
+   * missed its cassette and printed the token in the error. Tests and
+   * recording scripts agreed with each other while both disagreed with the
+   * app.
+   *
+   * Falls back to `fetch` so existing callers keep working; production wiring
+   * must pass the redacting one.
+   */
+  mapboxFetch?: typeof fetch;
   mapboxToken: string;
 }
 
@@ -60,6 +78,7 @@ function stageOutputOf(job: Job): StageOutput {
  */
 async function runPipelineInner(jobId: string, deps: OrchestratorDeps): Promise<void> {
   const { repo, llm, fetch: fetchImpl, mapboxToken } = deps;
+  const mapboxFetch = deps.mapboxFetch ?? fetchImpl;
 
   const job = await repo.getJob(jobId);
   if (!job) {
@@ -137,7 +156,7 @@ async function runPipelineInner(jobId: string, deps: OrchestratorDeps): Promise<
   } else {
     try {
       routeResult = await route(curationResult.output.stops, job.request.budgetMin, {
-        fetch: fetchImpl,
+        fetch: mapboxFetch,
         token: mapboxToken,
       });
 

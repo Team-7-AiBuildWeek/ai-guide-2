@@ -11,6 +11,8 @@ export interface ToursRouteDeps {
   repo: TourRepository;
   llm: LlmClient;
   fetch: typeof fetch;
+  /** Redacting fetch for Mapbox Directions — see `OrchestratorDeps`. */
+  mapboxFetch?: typeof fetch;
   mapboxToken: string;
   /** Middleware guarding the POST route only — `createGenerateAuthMiddleware`. */
   auth: MiddlewareHandler;
@@ -70,6 +72,7 @@ export function createToursRouter(deps: ToursRouteDeps): Hono {
       repo: deps.repo,
       llm: deps.llm,
       fetch: deps.fetch,
+      mapboxFetch: deps.mapboxFetch,
       mapboxToken: deps.mapboxToken,
     }).catch(async (err: unknown) => {
       try {

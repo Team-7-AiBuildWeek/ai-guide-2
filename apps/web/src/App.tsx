@@ -26,11 +26,17 @@ import { ProgressScreen } from './components/ProgressScreen';
 // `location` memo below see a changing dependency and rebuild the provider.
 const simRequested = new URLSearchParams(window.location.search).has('sim');
 
-// ?demo=1 (or ?sim=1, which implies it) skips generation entirely and loads
-// the built-in Amsterdam fixture — the dev-only affordance that keeps the
-// manual walkthroughs in docs/TESTING.md working now that the app's default
-// path is generate → progress → player rather than the fixture alone.
-const demoRequested = simRequested || new URLSearchParams(window.location.search).has('demo');
+// ?demo=1 skips generation entirely and loads the built-in Amsterdam
+// fixture — the dev-only affordance that keeps the manual walkthroughs in
+// docs/TESTING.md working now that the app's default path is
+// generate → progress → player rather than the fixture alone.
+//
+// Deliberately INDEPENDENT of ?sim=1. Having sim imply demo meant the
+// simulator could only ever walk Amsterdam, so the one thing you most want
+// to test — a freshly generated tour, without going outside — was the one
+// thing you could not. Combine them (?sim=1&demo=1) for the original
+// Amsterdam walkthrough.
+const demoRequested = new URLSearchParams(window.location.search).has('demo');
 
 /**
  * The existing GPS-triggered player, unchanged from Plan 1 — it consumes a
