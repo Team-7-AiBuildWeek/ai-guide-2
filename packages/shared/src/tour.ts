@@ -25,7 +25,10 @@ export interface Segment {
   trigger: LatLng | null;
   /** Base radius; the engine widens this to match GPS accuracy at runtime. */
   triggerRadiusM: number;
-  poiId: string | null;
+  /** Wikidata QIDs covered by this stop. A stop is a place you stand, and one
+   * standing point routinely covers several POIs — Hlavné námestie covers the
+   * square, the Roland Fountain, the Old Town Hall and Čumil. */
+  poiIds: string[];
 }
 
 export interface Tour {

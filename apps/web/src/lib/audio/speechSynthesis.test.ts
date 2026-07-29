@@ -46,7 +46,7 @@ const segment: Segment = {
   durationMs: null,
   trigger: { lat: 52.3731, lng: 4.8936 },
   triggerRadiusM: 25,
-  poiId: 'poi-0',
+  poiIds: ['poi-0'],
 };
 
 describe('SpeechSynthesisPlayer', () => {

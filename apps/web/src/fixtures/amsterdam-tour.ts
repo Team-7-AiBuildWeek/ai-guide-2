@@ -44,7 +44,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: null,
       triggerRadiusM: 0,
-      poiId: null,
+      poiIds: [],
     },
     {
       id: 'dam-square',
@@ -57,7 +57,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: { lat: 52.3731, lng: 4.8936 },
       triggerRadiusM: 30,
-      poiId: 'Q621594',
+      poiIds: ['Q621594'],
     },
     {
       id: 'walk-to-palace',
@@ -70,7 +70,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: { lat: 52.3731, lng: 4.893 },
       triggerRadiusM: 25,
-      poiId: null,
+      poiIds: [],
     },
     {
       id: 'royal-palace',
@@ -83,7 +83,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: { lat: 52.3731, lng: 4.8912 },
       triggerRadiusM: 30,
-      poiId: 'Q224964',
+      poiIds: ['Q224964'],
     },
     {
       id: 'westerkerk',
@@ -96,7 +96,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: { lat: 52.3747, lng: 4.884 },
       triggerRadiusM: 30,
-      poiId: 'Q1547588',
+      poiIds: ['Q1547588'],
     },
     {
       id: 'noordermarkt',
@@ -109,7 +109,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: { lat: 52.3789, lng: 4.8843 },
       triggerRadiusM: 30,
-      poiId: 'Q2262940',
+      poiIds: ['Q2262940'],
     },
     {
       id: 'outro',
@@ -121,7 +121,7 @@ export const amsterdamTour: Tour = {
       durationMs: null,
       trigger: null,
       triggerRadiusM: 0,
-      poiId: null,
+      poiIds: [],
     },
   ],
 };

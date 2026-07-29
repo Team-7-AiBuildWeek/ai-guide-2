@@ -20,7 +20,7 @@ export function makeSegment(index: number, overrides: Partial<Segment> = {}): Se
     durationMs: null,
     trigger: STOP_COORDS[index] ?? null,
     triggerRadiusM: 25,
-    poiId: `poi-${index}`,
+    poiIds: [`poi-${index}`],
     ...overrides,
   };
 }
@@ -73,7 +73,7 @@ export function tourWithStopsAt(stops: { id: string; lat: number; lng: number }[
     durationMs: null,
     trigger: { lat: s.lat, lng: s.lng },
     triggerRadiusM: 25,
-    poiId: `poi-${s.id}`,
+    poiIds: [`poi-${s.id}`],
   }));
 
   return {

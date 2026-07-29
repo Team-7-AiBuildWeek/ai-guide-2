@@ -279,7 +279,7 @@ describe('useTourPlayer', () => {
       durationMs: null,
       trigger: null,
       triggerRadiusM: 0,
-      poiId: null,
+      poiIds: [],
     };
     const tour = makeTour({ segments: [introSegment, ...makeTour().segments] });
     const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
@@ -364,7 +364,7 @@ describe('useTourPlayer', () => {
       durationMs: null,
       trigger: null,
       triggerRadiusM: 0,
-      poiId: null,
+      poiIds: [],
     };
     const tour = makeTour({ segments: [introSegment, ...makeTour().segments] });
     const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
@@ -439,7 +439,7 @@ describe('useTourPlayer', () => {
       durationMs: null,
       trigger: null,
       triggerRadiusM: 0,
-      poiId: null,
+      poiIds: [],
     };
     const tour = makeTour({ segments: [introSegment, ...makeTour().segments] });
     const { result } = renderHook(() => useTourPlayer({ tour, location, audio }));
@@ -485,7 +485,7 @@ describe('useTourPlayer', () => {
       durationMs: null,
       trigger: null,
       triggerRadiusM: 0,
-      poiId: null,
+      poiIds: [],
     };
 
     it('enqueues the outro once every triggerable segment has played, and only once', async () => {
