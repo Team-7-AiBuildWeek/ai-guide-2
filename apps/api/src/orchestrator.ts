@@ -8,6 +8,9 @@ import { curate } from './stages/curation/index.ts';
 import { route, type RouteResult } from './stages/routing/index.ts';
 import { narrate, fetchStopExtracts, assembleTour } from './stages/narration/index.ts';
 import { scrubSecrets } from './scrub.ts';
+import { synthesizeTour } from './stages/synthesis/index.ts';
+import type { TtsProvider } from './tts/types.ts';
+import type { AudioStore } from './tts/audioStore.ts';
 
 export interface OrchestratorDeps {
   repo: TourRepository;
@@ -32,7 +35,14 @@ export interface OrchestratorDeps {
    */
   mapboxFetch?: typeof fetch;
   mapboxToken: string;
+  /** Voice. Both optional together — without them a tour is generated with no
+   * audio and the player falls back to the device's own speech. */
+  tts?: TtsProvider;
+  audioStore?: AudioStore;
 }
+
+/** Chosen in the toponym spike: a warm, unhurried delivery. */
+const DEFAULT_VOICE = 'Aoede' as const;
 
 /**
  * How much a re-curation after an over-budget route is allowed to shave off
@@ -204,7 +214,7 @@ async function runPipelineInner(jobId: string, deps: OrchestratorDeps): Promise<
     costUsd += narrationResult.costUsd;
 
     const tourId = randomUUID();
-    const tour = assembleTour({
+    let tour = assembleTour({
       tourId,
       tourTitle: curationResult.output.tourTitle,
       city: city.name,
@@ -213,6 +223,39 @@ async function runPipelineInner(jobId: string, deps: OrchestratorDeps): Promise<
       route: routeResult,
       narration: narrationResult.output,
     });
+
+    // ---- Stage 5: voice ----
+    //
+    // Deliberately inside the narration try/catch and deliberately NOT fatal.
+    // A tour with no audio still works — the player falls back to the
+    // device's own speech — so failing the whole job because Chirp was
+    // rate-limited would throw away a generation that cost real money and
+    // several minutes to produce.
+    //
+    // Skipped entirely when TTS or storage is unconfigured, which is what
+    // makes a deployment without either still able to generate tours.
+    if (deps.tts && deps.audioStore) {
+      try {
+        const voiced = await synthesizeTour(
+          tour.segments.map((s) => ({ order: s.order, kind: s.kind, title: s.title, script: s.script })),
+          { language: tour.language, voice: DEFAULT_VOICE },
+          { tts: deps.tts, store: deps.audioStore },
+        );
+        tour = {
+          ...tour,
+          segments: tour.segments.map((s) => ({
+            ...s,
+            audioUrl: voiced.audioUrlByOrder.get(s.order) ?? null,
+          })),
+        };
+      } catch (err) {
+        console.warn(
+          `[job ${jobId}] synthesis failed, tour will use on-device speech:`,
+          err instanceof Error ? err.message : err,
+        );
+      }
+    }
+
     await repo.saveTour(tour);
 
     await repo.updateJob(jobId, {

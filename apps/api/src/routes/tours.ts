@@ -7,6 +7,8 @@ import type { LlmClient } from '../llm/anthropic.ts';
 import { findCityConfig } from '../config/cities.ts';
 import { runPipeline } from '../orchestrator.ts';
 import { scrubSecrets } from '../scrub.ts';
+import type { TtsProvider } from '../tts/types.ts';
+import type { AudioStore } from '../tts/audioStore.ts';
 
 export interface ToursRouteDeps {
   repo: TourRepository;
@@ -15,6 +17,9 @@ export interface ToursRouteDeps {
   /** Redacting fetch for Mapbox Directions — see `OrchestratorDeps`. */
   mapboxFetch?: typeof fetch;
   mapboxToken: string;
+  /** Voice — see `OrchestratorDeps`. Optional; without them tours have no audio. */
+  tts?: TtsProvider;
+  audioStore?: AudioStore;
   /** Middleware guarding the POST route only — `createGenerateAuthMiddleware`. */
   auth: MiddlewareHandler;
   /** SSE poll interval; overridable so tests don't wait on a real timer. */
@@ -75,6 +80,8 @@ export function createToursRouter(deps: ToursRouteDeps): Hono {
       fetch: deps.fetch,
       mapboxFetch: deps.mapboxFetch,
       mapboxToken: deps.mapboxToken,
+      tts: deps.tts,
+      audioStore: deps.audioStore,
     }).catch(async (err: unknown) => {
       try {
         await deps.repo.updateJob(job.id, {

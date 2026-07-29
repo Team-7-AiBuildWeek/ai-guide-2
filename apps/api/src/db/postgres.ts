@@ -140,7 +140,29 @@ export class PostgresTourRepository implements TourRepository {
     // reachable database and short enough that an unreachable one doesn't
     // stall whatever is waiting on it (including repository.test.ts's
     // reachability probe).
-    this.pool = new Pool({ connectionString, connectionTimeoutMillis: 5000 });
+    this.pool = new Pool({
+      connectionString,
+      connectionTimeoutMillis: 15_000,
+      // Supabase's pooler closes idle connections from its side. `pg` does not
+      // notice, so the next request is handed a dead socket and fails with
+      // "Connection terminated unexpectedly" — observed here after the app sat
+      // idle. Retiring our own idle connections first means we reconnect
+      // rather than discovering the corpse.
+      //
+      // This is precisely the Fly cold-start case: `min_machines_running = 0`,
+      // so the very first request after any quiet period is the one that would
+      // fail — the worst possible one to lose.
+      idleTimeoutMillis: 10_000,
+      max: 5,
+      // Belt and braces: if a pooled connection dies while idle, `pg` emits an
+      // error on the pool. Unhandled, that is an uncaught exception that takes
+      // the process down.
+      allowExitOnIdle: false,
+    });
+
+    this.pool.on('error', (err) => {
+      console.warn('[db] idle client error, connection will be replaced:', err.message);
+    });
   }
 
   async close(): Promise<void> {

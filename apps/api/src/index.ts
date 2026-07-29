@@ -6,6 +6,8 @@ import { PostgresTourRepository } from './db/postgres.ts';
 import type { TourRepository } from './db/repository.ts';
 import { AnthropicLlmClient, type LlmClient } from './llm/anthropic.ts';
 import { SyntheticLlmClient } from './llm/synthetic.ts';
+import { ChirpTtsProvider } from './tts/chirp.ts';
+import { audioStoreFromEnv } from './tts/supabaseAudioStore.ts';
 import { FileCassetteStore, cassetteFetch, resolveCassetteMode } from './cassette/index.ts';
 import { resolveMapboxToken, createRedactingCassetteFetch } from './stages/routing/mapbox.ts';
 import { createGenerateAuthMiddleware } from './auth.ts';
@@ -67,12 +69,27 @@ const mapboxToken = resolveMapboxToken();
 // import cleanly into a process that would otherwise serve every request.
 const auth = createGenerateAuthMiddleware({ repo });
 
+/**
+ * Voice, when it is configured.
+ *
+ * Both halves are optional and both must be present to matter: a TTS key with
+ * nowhere to put the audio is useless, and storage with no synthesiser has
+ * nothing to store. Absent either, tours generate without audio and the player
+ * falls back to the device's own speech — degraded, but working.
+ */
+const tts = process.env.GOOGLE_TTS_API_KEY
+  ? new ChirpTtsProvider({ apiKey: process.env.GOOGLE_TTS_API_KEY, fetch: wrappedFetch })
+  : undefined;
+const audioStore = audioStoreFromEnv() ?? undefined;
+
 const toursRouter = createToursRouter({
   repo,
   llm,
   fetch: wrappedFetch,
   mapboxFetch,
   mapboxToken,
+  tts,
+  audioStore,
   auth,
 });
 

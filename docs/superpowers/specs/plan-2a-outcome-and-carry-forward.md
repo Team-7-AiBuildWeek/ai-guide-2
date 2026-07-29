@@ -118,6 +118,54 @@ The end-to-end ordering test found three separate real defects before it
 found this one, and was kept strict throughout rather than loosened to
 something that would pass.
 
+## Plan 2b progress — voice
+
+**The toponym spike passed.** Chirp 3 HD reads Slovak street names in German,
+Spanish and Italian voices well enough to find the place from. That settles
+the vendor and closes parent-spec §11.1 and §11.2. Cost: $0.03, inside the
+free tier.
+
+**The golden tour is voiced.** 21 segments, 20,320 characters, 61 seconds,
+$0. Synthesis is wired in as a fifth pipeline stage and a generated tour now
+comes back with audio on every segment.
+
+**Content addressing works across tours, verified.** A second generation of
+the same tour produced the identical first `audio_url` hash — it re-used every
+segment and billed nothing. That is the mechanism the whole cost model rests
+on, and it is no longer theoretical.
+
+Deliberate choices worth keeping:
+
+- **Audio is keyed on text + language + voice, never on the audio bytes.**
+  Chirp is non-deterministic — measured returning 4736, 4736 and then 3712
+  bytes for identical input. Hashing output would defeat the cache and
+  silently re-bill every render.
+- **Synthesis failure is not fatal.** It runs inside the narration stage's
+  try/catch and logs rather than failing the job: a tour with no audio still
+  works via on-device speech, and throwing away a generation that cost real
+  money and several minutes because Chirp was rate-limited is the worse
+  outcome.
+- **The player chooses per tour**, not globally — a tour generated before the
+  voice pipeline existed still plays, robotically. Silence is the worse
+  failure in an audio-first app.
+- **The bucket is public**, which turned out to dissolve a Plan 1 worry: the
+  service worker's `/\.mp3$/` rule *does* match real Supabase URLs, because
+  public ones carry no query string.
+
+### Open: offline audio is not actually being cached
+
+The `.mp3` rule matches and a service worker is registered, but no
+`tour-audio` cache exists after playback and nothing is stored in it.
+
+Symptom verified; cause not. The likely explanation is that `<audio>` playback
+issues Range requests, which Workbox's `CacheFirst` does not handle without
+`RangeRequestsPlugin` — but that is a hypothesis. Fixing it probably means
+either adding that plugin or pre-fetching each MP3 with `fetch()` so the
+service worker sees an ordinary request it can cache.
+
+This matters for the product: a tour that needs mobile data at every stop is
+a different thing from one you download and walk.
+
 ## Not done — do not assume otherwise
 - **`fly deploy` has never been run.** Fly's networking, TLS and cold-start
   behaviour are untested.
