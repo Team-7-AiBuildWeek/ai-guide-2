@@ -197,7 +197,11 @@ describe.each(repositories)('%s repository', (name, make) => {
         expect(actual.kind).toBe(expected.kind);
         expect(actual.poiIds).toEqual(expected.poiIds);
         expect(actual.triggerRadiusM).toBe(expected.triggerRadiusM);
-        expect(actual.audioUrl).toBeNull();
+        // Round-trips, rather than "is null". It was null when nothing had
+        // been voiced; the fixture now carries real Supabase URLs, and what
+        // this test is actually for is that the repository preserves whatever
+        // is there.
+        expect(actual.audioUrl).toBe(expected.audioUrl);
         expect(actual.durationMs).toBeNull();
 
         if (expected.kind === 'intro' || expected.kind === 'outro') {

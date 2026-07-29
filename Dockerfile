@@ -36,19 +36,19 @@ RUN npm ci
 
 COPY . .
 
-# Vite inlines VITE_-prefixed vars into the static bundle at build time —
-# `fly secrets set` only reaches the *running* container, so it cannot
-# supply this one for the client bundle. Pass it here with `fly deploy
-# --build-arg VITE_MAPBOX_TOKEN=pk...`. This is Mapbox's public pk. token,
-# meant to ship inside client-side bundles, so baking it into the image
-# layer history is not a secret leak the way the other env vars would be.
+# No build arg for the Mapbox token, deliberately.
 #
-# This does NOT also cover the runtime stage: apps/api's own routing stage
-# reads this same variable name (or MAPBOX_TOKEN) again, server-side, at
-# process startup — `fly secrets set VITE_MAPBOX_TOKEN=...` is separately
-# required for the container to boot at all. See docs/DEPLOYMENT.md.
-ARG VITE_MAPBOX_TOKEN
-ENV VITE_MAPBOX_TOKEN=$VITE_MAPBOX_TOKEN
+# It used to be inlined into the client bundle by Vite here, which meant it
+# had to exist twice — as a build argument AND a runtime secret — and made a
+# GitHub-triggered deploy impossible without committing it, since such a build
+# never sees `--build-arg`. GitHub's push protection then refused that commit,
+# unable to distinguish a public `pk.` token from a secret `sk.` one.
+#
+# The client now fetches it from `GET /api/config` at runtime, so the token
+# lives only in `fly secrets` and never in git or in image layer history.
+# `fly secrets set VITE_MAPBOX_TOKEN=...` is still required — the API's own
+# routing stage reads it server-side at startup and the container will not
+# boot without it.
 RUN npm run build --workspace @ai-guide/web
 
 FROM node:24-alpine AS runtime

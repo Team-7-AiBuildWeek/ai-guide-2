@@ -6,6 +6,7 @@ import { useWakeLock } from './hooks/useWakeLock';
 import { SimulatedLocation } from './lib/location/simulated';
 import { BrowserLocation } from './lib/location/browser';
 import { SpeechSynthesisPlayer } from './lib/audio/speechSynthesis';
+import { HtmlAudioPlayer } from './lib/audio/htmlAudio';
 import {
   createApiClient,
   WrongPassphraseError,
@@ -60,7 +61,27 @@ function Player({ tour }: { tour: Tour }) {
         : new BrowserLocation(setGpsError),
     [tour, setGpsError],
   );
-  const audio = useMemo(() => new SpeechSynthesisPlayer(tour.language), [tour]);
+  /**
+   * Real recorded narration when the tour has it, the browser's own voice
+   * otherwise.
+   *
+   * Chosen per tour rather than globally: a tour generated before the voice
+   * pipeline existed, or one whose synthesis failed, still plays — with a
+   * robotic voice, but it plays. Silence would be the worse failure, and this
+   * is an audio-first app where "no sound" is indistinguishable from "broken".
+   *
+   * Note both branches depend on `tour`, so switching tours rebuilds the
+   * player. Constructing either inline in the component body instead would
+   * make a new object every render and silently kill a running tour — a trap
+   * this codebase has documented since Plan 1.
+   */
+  const audio = useMemo(
+    () =>
+      tour.segments.some((s) => s.audioUrl !== null)
+        ? new HtmlAudioPlayer()
+        : new SpeechSynthesisPlayer(tour.language),
+    [tour],
+  );
 
   const player = useTourPlayer({ tour, location, audio });
   useWakeLock(player.started);

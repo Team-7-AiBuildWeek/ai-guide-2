@@ -8,6 +8,7 @@ import {
   type CuratedStop,
   type GenerateRequest,
   type NarrationOutput,
+  type Tour,
 } from '@ai-guide/shared';
 import type { RouteResult } from '../routing/index.ts';
 import { speakingSeconds, DWELL_SECONDS, route } from '../routing/index.ts';
@@ -137,7 +138,10 @@ describe('assembleTour', () => {
     }
   });
 
-  it('sets audioUrl and durationMs to null on every segment', () => {
+  it('leaves audioUrl and durationMs null — synthesis is a later stage', () => {
+    // assembleTour's output is PRE-synthesis by contract. The voicing stage
+    // fills these in afterwards, which is why the committed fixture (which is
+    // post-synthesis) carries real URLs while this does not.
     const { tour } = assemble(3);
     for (const seg of tour.segments) {
       expect(seg.audioUrl).toBeNull();
@@ -225,7 +229,23 @@ describe('assembleTour', () => {
     const fixture = JSON.parse(fixtureRaw) as { _generated: boolean; tour: unknown };
 
     expect(fixture._generated).toBe(true);
-    expect(tour).toEqual(fixture.tour);
+
+    // Compared with audioUrl stripped from both sides. The fixture is now
+    // POST-synthesis — voice-golden-tour.ts wrote real Supabase URLs into it —
+    // while assembleTour is pre-synthesis by contract and always emits null.
+    // Everything else must still match exactly; that is what stops the
+    // cross-workspace fixture drifting from what the code actually produces.
+    const withoutAudio = (t: unknown) => {
+      const parsed = t as Tour;
+      return { ...parsed, segments: parsed.segments.map((s) => ({ ...s, audioUrl: null })) };
+    };
+
+    expect(withoutAudio(tour)).toEqual(withoutAudio(fixture.tour));
+
+    // And the fixture really is voiced — if this ever fails, the tour on the
+    // phone has lost its audio and will fall back to the robot voice.
+    const voiced = (fixture.tour as Tour).segments.filter((s) => s.audioUrl !== null);
+    expect(voiced).toHaveLength((fixture.tour as Tour).segments.length);
   });
 
   it('throws if the narration segment count does not match 2N+1 for the given stops', () => {
