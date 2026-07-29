@@ -1,0 +1,108 @@
+{
+  "_synthetic": true,
+  "_comment": "Hand-authored placeholder for a recorded claude-opus-5 narration response, in Slovak, for the 8 stops in cassettes/synthetic/curation-bratislava.json. It was never returned by the live API — no Anthropic call was made to produce it. It exists only to exercise narrate()'s parsing, validation and assembleTour()'s wiring in tests: it is structurally valid (17 segments = 2*8+1, correct intro/stop/walk/.../stop/outro kind sequence, every stop script 400-1400 characters, every walk-cue script 120-350 characters) but the prose is plain and repetitive, not something a traveller should actually hear. Replace this file with a real recording (CASSETTE_MODE=record) once budget is approved for a live narration call.",
+  "segments": [
+    {
+      "order": 0,
+      "kind": "intro",
+      "title": "Vitajte v Bratislave",
+      "script": "Vitajte na prechádzke starou Bratislavou. Táto trasa vás povedie od hradného kopca cez korunovačnú katedrálu, stredovekú bránu a tiché kláštorné dvory až na hlavné námestie, kde sa mesto storočia stretávalo na trhu. Cestou budeme sledovať tú istú líniu, ktorou kedysi prechádzali korunovačné sprievody uhorských kráľov. Nasledujte cestu pomaly, dýchajte a dovoľte mestu, aby vám samo rozprávalo svoj príbeh."
+    },
+    {
+      "order": 1,
+      "kind": "stop",
+      "title": "Bratislavský hrad",
+      "script": "Stojíme pred Bratislavským hradom — po slovensky Bratislavský hrad, po anglicky Bratislava Castle. Biela obdĺžniková stavba na kopci nad Dunajom je najznámejšou siluetou celého mesta. Hrad v súčasnej podobe vznikol prestavbou v osemnástom storočí, no jeho základy siahajú oveľa hlbšie do histórie regiónu. Z nádvoria je vidieť na Staré Mesto, ktorým sa dnes vydáme, aj na rieku Dunaj, ktorá mesto po stáročia živila obchodom. Práve táto poloha — kopec nad riekou na hranici troch krajín — robila z hradu strategické miesto už od stredoveku. V dnešnej podobe hrad slúži ako reprezentačné sídlo a múzeum, ale jeho múry si pamätajú oveľa búrlivejšie časy, od uhorských kráľov až po napoleonské vojny."
+    },
+    {
+      "order": 2,
+      "kind": "walk",
+      "title": "Smer k Dómu svätého Martina",
+      "script": "Z nádvoria hradu sa vydajte dolu úzkou cestou smerom k mestu, po pravej ruke necháte hradné hradby. Cesta vás privedie dolu kopcom rovno k veľkej gotickej veži, ktorá sa vynorí spomedzi striech starého mesta."
+    },
+    {
+      "order": 3,
+      "kind": "stop",
+      "title": "Dóm svätého Martina",
+      "script": "Toto je Dóm svätého Martina — po slovensky Dóm svätého Martina, po anglicky St Martin's Cathedral. V tomto gotickom chráme bolo korunovaných jedenásť uhorských kráľov a kráľovien, vrátane Márie Terézie. Korunovačný sprievod vychádzal práve odtiaľto smerom k hradu, tou istou cestou, ktorou sme dnes prišli opačným smerom. Vysoká veža chrámu je zakončená pozlátenou replikou uhorskej kráľovskej koruny, ktorá pripomína mestu jeho niekdajšiu úlohu hlavného korunovačného mesta kráľovstva. Počas stavby diaľnice v dvadsiatom storočí sa most nad riekou priblížil nebezpečne blízko k základom chrámu, čo z neho robí jeden z mála kostolov, ktorý doslova žije v tieni modernej dopravnej stavby."
+    },
+    {
+      "order": 4,
+      "kind": "walk",
+      "title": "Smer k Universitas Istropolitana",
+      "script": "Od katedrály pokračujte rovno hore mierne stúpajúcou ulicou smerom do centra starého mesta. Po niekoľkých metroch odbočte vpravo do úzkej uličky, kde uvidíte skromnú starú budovu s kamenným portálom."
+    },
+    {
+      "order": 5,
+      "kind": "stop",
+      "title": "Universitas Istropolitana",
+      "script": "Toto je Universitas Istropolitana — po slovensky Universitas Istropolitana, po anglicky Academia Istropolitana. Túto krátko fungujúcu univerzitu založil v pätnástom storočí uhorský kráľ Matej Korvín s ambíciou urobiť z Bratislavy centrum vzdelanosti, ktoré by konkurovalo Viedni. Skromná zachovaná budova je ľahké prehliadnuť, no práve jej existencia vysvetľuje, prečo mesto na krátky čas hostilo popredných učencov strednej Európy. Univerzita zanikla už niekoľko desaťročí po založení, keď kráľ zomrel a podpora zanikla spolu s ním, no jej krátka existencia zostáva dôkazom ambícií mesta v čase, keď bolo dôležitým kráľovským sídlom."
+    },
+    {
+      "order": 6,
+      "kind": "walk",
+      "title": "Smer k Michalskej bráne",
+      "script": "Vydajte sa ďalej rovno pešou zónou smerom na sever. Uličkami sa dostanete k vysokej veži, ktorá tvorí jedinú zachovanú bránu do pôvodného opevneného mesta."
+    },
+    {
+      "order": 7,
+      "kind": "stop",
+      "title": "Michalská brána",
+      "script": "Toto je Michalská brána — po slovensky Michalská brána, po anglicky Michael's Gate. Je to jediná zachovaná brána zo stredovekého opevnenia mesta a dodnes tvorí severnú hranicu starého mesta. Veža v súčasnej podobe pochádza zo šestnásteho storočia, hoci samotná brána je oveľa staršia. Prechod pod jej klenbou je najzreteľnejším spôsobom, ako pocítiť prechod z modernej Bratislavy do uzavretého stredovekého jadra. Na vrchole veže sa nachádza socha archanjela Michala zabíjajúceho draka, po ktorej brána dostala meno. V jej vnútri dnes sídli malé múzeum zbraní, ktoré pripomína, že táto brána bola kedysi vojenskou stavbou, nie len ozdobnou pamiatkou."
+    },
+    {
+      "order": 8,
+      "kind": "walk",
+      "title": "Smer k Františkánskemu kostolu",
+      "script": "Prejdite bránou dovnútra starého mesta a pokračujte rovno hlavnou pešou ulicou. Po krátkej chôdzi odbočte mierne vľavo k menšiemu gotickému kostolu s jednoduchou fasádou."
+    },
+    {
+      "order": 9,
+      "kind": "stop",
+      "title": "Františkánsky kostol",
+      "script": "Toto je Františkánsky kostol — po slovensky Františkánsky kostol, po anglicky Franciscan Church. Je to jedna z najstarších sakrálnych stavieb v meste, založená ešte v trinástom storočí. Jeho jednoduchá gotická fasáda je zámerným kontrastom k bohato zdobeným barokovým priečeliam, ktoré uvidíme v ďalšej časti prechádzky. Kostol slúžil počas stáročí rehoľníkom aj mestskej šľachte a jeho kaplnka bola miestom, kde sa odohrávali niektoré zo slávnostných udalostí stredovekého mesta. Skromnosť jeho výzdoby stojí v ostrom protiklade k okázalosti neskorších palácov — pripomienka, že staré mesto rástlo vo viacerých vrstvách štýlov popri sebe."
+    },
+    {
+      "order": 10,
+      "kind": "walk",
+      "title": "Smer k Primaciálnemu palácu",
+      "script": "Od kostola pokračujte krátko rovno a potom odbočte vpravo na malé námestie. Vpravo uvidíte neoklasicistickú budovu so strieškou zdobenou liatinovým kardinálskym klobúkom."
+    },
+    {
+      "order": 11,
+      "kind": "stop",
+      "title": "Primaciálny palác",
+      "script": "Toto je Primaciálny palác — po slovensky Primaciálny palác, po anglicky Primate's Palace. V Zrkadlovej sieni tohto paláca podpísali v roku tisícosemsto päť Napoleon a cisár František Druhý mier v Bratislave, ktorý nasledoval po bitke pri Slavkove. Neoklasicistická fasáda paláca je nezameniteľná vďaka strieške zdobenej liatinovým kardinálskym klobúkom, symbolom cirkevnej hodnosti niekdajšieho majiteľa. Palác dnes slúži ako sídlo primátora mesta a vo vnútri sa nachádza aj vzácna zbierka anglických gobelínov zo sedemnásteho storočia. Stojí za to zastaviť sa práve tu, predtým než sa vydáme dolu smerom k rieke a k dlhému zelenému námestiu, ktoré nás čaká ďalej."
+    },
+    {
+      "order": 12,
+      "kind": "walk",
+      "title": "Smer k Hviezdoslavovmu námestiu",
+      "script": "Od paláca sa vydajte dolu miernym svahom smerom k rieke. Cesta vás privedie na dlhé zelené námestie lemované stromami, ktoré sa tiahne smerom k Národnému divadlu."
+    },
+    {
+      "order": 13,
+      "kind": "stop",
+      "title": "Hviezdoslavovo námestie",
+      "script": "Toto je Hviezdoslavovo námestie — po slovensky Hviezdoslavovo námestie, po anglicky Hviezdoslav Square. Dlhé, zelenou zeleňou lemované námestie je pomenované po slovenskom básnikovi Pavlovi Országhovi Hviezdoslavovi, ktorého socha stojí na jeho hornom konci. Námestie sa tiahne smerom k Národnému divadlu a k Dunaju, a ponúka prechádzajúcim chvíľu oddychu medzi hustými zhlukmi pamiatok na oboch stranách trasy. V lete tu bývajú pouličné kaviarne a trhy, v zime vianočné stánky — je to miesto, kde sa mestský život odohráva dodnes, nielen v minulosti. Jeho pokojná dlhá os je zámerným protikladom k stiesnenému, uzavretému priestoru hlavného námestia, ktoré nás čaká na konci prechádzky."
+    },
+    {
+      "order": 14,
+      "kind": "walk",
+      "title": "Smer k Hlavnému námestiu",
+      "script": "Z námestia sa vydajte späť smerom do centra starého mesta, uličkami mierne na sever. Po niekoľkých minútach chôdze sa uličky otvoria do širokého hlavného námestia s fontánou uprostred."
+    },
+    {
+      "order": 15,
+      "kind": "stop",
+      "title": "Hlavné námestie",
+      "script": "Toto je Hlavné námestie — po slovensky Hlavné námestie, po anglicky Main Square. Fontána Rolanda uprostred a Stará radnica na severnej strane námestia sú od seba vzdialené len pár krokov a dá sa ich počúvať z jedného miesta. Fontána z konca šestnásteho storočia je najstaršou fontánou svojho druhu na Slovensku a stále slúži ako obľúbený orientačný bod stretávania. Stará radnica, zložená z niekoľkých budov spájaných storočia, bola sídlom mestskej samosprávy a dodnes v nej sídli mestské múzeum. Toto námestie bolo od stredoveku trhovým centrom mesta a miestom, kadiaľ prechádzali korunovačné sprievody smerujúce od katedrály k hradu — tri vlákna dnešnej prechádzky, trh, samospráva a korunovácia, sa tu napokon stretávajú."
+    },
+    {
+      "order": 16,
+      "kind": "outro",
+      "title": "Na záver prechádzky",
+      "script": "Tu naša prechádzka končí, na Hlavnom námestí, kde sa storočia stretávali obchodníci, mešťania aj kráľovské sprievody. Od hradného kopca sme prešli cez korunovačnú katedrálu, stredovekú bránu, tiché kláštorné dvory a barokové paláce až sem, do srdca starého mesta. Dúfame, že vám táto trasa ukázala Bratislavu ako mesto viacerých vrstiev histórie poukladaných tesne vedľa seba. Ďakujeme, že ste sa vydali na cestu s nami, a prajeme príjemný zvyšok dňa v starom meste."
+    }
+  ]
+}

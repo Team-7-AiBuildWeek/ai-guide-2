@@ -1,0 +1,32 @@
+{
+  "key": "GET https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Primate%27s+Palace%2C+Bratislava&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 07:28:03 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-5zwzt",
+      "server-timing": "WMF-Uniq;desc=\"we-1-8-tempuser-post-edit=treatment;we-1-8-account-creation-no-desktop-benefits=treatment;\",co_id;desc=\"613035013\"",
+      "set-cookie": "WMF-Uniq=CHX8978c90PBEp4W_vZ1mQOsAAAAAFvd6QaGs5jjVULHZMRSMUHvKZzB1JiZAxaL;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "90c86c3b-2cfc-4883-a366-fafe177e31d5"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":10953437,\"ns\":0,\"title\":\"Primate's Palace, Bratislava\",\"extract\":\"The Primacial Palace (Slovak: Primaciálny palác, Hungarian: Prímási palota) is a neoclassical palace in the Old Town of Bratislava the capital of Slovakia. It was built from 1778 to 1781 for Archbishop of Esztergom József Batthyány, Primate of the Kingdom of Hungary, after the design of architect Melchior Hefele. In 1805, the Palace's Hall of Mirrors saw the signing of the fourth Peace of Pressburg, ending the War of the Third Coalition (Pressburg is the old name of Bratislava). Today, it serves as the seat of Mayor of Bratislava. The Archbishops of Esztergom had also the Episcopal Summer Palace (the current seat of the government of Slovakia) in the same city.\\n\\n\\n== History ==\\nThe palace and its most famous chamber, the Hall of Mirrors, were the location of the signing of the fourth Peace of Pressburg by Johann I Josef, Prince of Liechtenstein, Ignácz Gyulay and Charles Maurice de Talleyrand in 1805 after the Battle of Austerlitz, which effectively ended the War of the Third Coalition. As a result of the Peace of Pressburg, the Holy Roman Empire was dissolved, and Emperor Francis II proclaimed himself Emperor Francis I of Austria; this is commemorated today by a Roman-style bust of the Emperor on the staircase next to the Hall of Mirrors. The opening sessions of the Hungarian Diet, which convened in the University Library, took place here as well. István Széchenyi offered his yearly income to establish here the Hungarian Academy of Sciences. Here Ferdinand V of Hungary promoted the first responsible Hungarian government (első felelős magyar kormány) and signed the April laws, where Lajos Batthyány, Lajos Kossuth, Bertalan Szemere, Ferenc Deák, Pál Esterházy, István Széchenyi, Lázár Mészáros, József Eötvös and Gábor Klauzál Hungarian ministers were also present.\\nThe city purchased the palace in 1903. During reconstruction in 1903, a series of six previously unknown tapestries were found behind a wall, depicting the legend of Hero and Leander and their tragic love. The tapestries were woven in the 1630s at the Mortlake Tapestry Works, near London.\\nAccording to old Hungarian newspapers, literary lectures and author evenings were arranged in its Hall of Mirrors between the two world wars. Zseni Várnai, Aladár Schöpflin, Zsigmond Móricz, Thomas Mann also took part in these events.\\nThe scholar Paracelsus used to live here briefly and there is a memorial plate commemorating his visit.\\nThe Palace served as a temporary seat of the President of Slovakia before the Grassalkovich Palace became the permanent presidential residence in 1996.\\nThe Palace is open to the public as a tourist attraction. The famous Hall of Mirrors serves as the location for Bratislava City Council meetings.\\n\\n\\n== References ==\"}]}}"
+  }
+}

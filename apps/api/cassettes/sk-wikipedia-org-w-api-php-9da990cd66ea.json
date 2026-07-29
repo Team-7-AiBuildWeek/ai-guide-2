@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Universitas+Istropolitana&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 07:29:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-mmghh",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"4113092045\"",
+      "set-cookie": "WMF-Uniq=gzdC0B5H-FEQdbUj5syOYQOsAAAAAFvdcNk5QRlyxTkfGKj1bbhXddKOgJA4BDuM;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "650fd1ae-73b9-458c-aa24-4650cd1470be"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":208286,\"ns\":0,\"title\":\"Universitas Istropolitana\",\"extract\":\"Universitas Istropolitana (Iné názvy: Universitas Histropolitana, Universitas Histropolensis, Universitas Posoniensis, od 16. storočia aj Academia Istropolitana) (1465/1467 – cca 1491) v Bratislave bola najstaršou univerzitou založenou na území Slovenska.\\n\\n\\n== Dejiny ==\\nZaložením University Istropolitany Matejom Korvínom v roku 1465 sa začali písať dejiny vysokého školstva na území dnešného Slovenska. V tomto roku na žiadosť Mateja Korvína pápež Pavol II. poveril Jána Vitéza zo Sredny, arcibiskupa ostrihomského, a Jána z Čazmy (Jána Pannónia), pécskeho biskupa, založením univerzity v Uhorsku (v tom čase jedinej, hoci nie prvej). Roku 1467 zomrel bohatý bratislavský mešťan Gmaitl a jeho domy aj s príslušenstvom pripadli kráľovi. Matej Korvín sa rozhodol, že ich použije ako univerzitné budovy a umiestnil univerzitu do Bratislavy.\\nO dva roky neskôr začala svoju činnosť štyrmi fakultami: teologickou, právnickou, lekárskou a umeleckou (filozofickou). Škola bola zriadená podľa štatútov bolonskej univerzity a vládla na nej humanistická a protischolastická atmosféra, dôraz sa kládol na prírodné vedy, matematiku, astronómiu a medicínu. Do roku 1472 ju viedli Ján Vitéz ako kancelár univerzity a tiež bratislavský prepošt Juraj von Schönberg.\\nUčitelia najprv prišli z Viedenskej univerzity, neskôr z Talianska a Poľska (z Krakova). Od roku 1467 do 1471 na univerzite pôsobil známy nemecký matematik, astrológ a astronóm Johannes Müller von Königsberg (Regiomontanus). Ďalej tu napríklad pôsobili Poliaci Martin z Olkusza a magister Peter, Nemci Mikuláš Schricker, Erazmus z Rezna, z územia dnešného Slovenska pochádzali Vavrinec Koch z Krompách a Martin zo Štiavnice. Prednášal tu tiež vzdelaný kanonik Ján Han z Weytry. Profesori používali knihy z bohatej a vzácnej knižnice bratislavskej kapituly, na čo získal súhlas Juraj von Schönberg.\\nRoku 1472 Jána Vitéza uväznili, pretože spolu s Jánom z Čazmy 1471 – 1472 zorganizovali sprisahanie, pri ktorom mal poľský kráľ Kazimír IV. získať uhorský trón. Viacerí učitelia nato opustili univerzitu.\\nPo dobytí Viedne Matejom Korvínom (1485) a smrti Juraja von Schönberg (1486) nastal postupný úpadok univerzity. Pracovať prestala niekedy v období 1488 – 1490. Definitívne skončila po smrti Mateja Korvína, ktorý univerzitu financoval.\\nDnes je budova sídlom Divadelnej fakulty Vysokej školy múzických umení a patrí medzi sedem Národných kultúrnych pamiatok (NKP) v Bratislave, vyhlásených pred rokom 2002.\\nPo univerzite je pomenovaná planétka (11614) Istropolitana.\\n\\n\\n== Referencie ==\\n\\n\\n== Literatúra ==\\nkolektív autorov: Učebné texty pre vlastivedných sprievodcov po Bratislave I. – Dejiny Bratislavy, Vydavateľ: Bratislavská informačná služba, Bratislava 2001\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Universitas Istropolitana\\n\\n\\n== Externé odkazy ==\\nBiografia Regiomontana\\nAkademia Istropolitana Archivované 2016-04-15 na Wayback Machine\\n\\n\\n== Zdroj ==\\n\\nFILIT\"}]}}"
+  }
+}

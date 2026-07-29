@@ -4,7 +4,10 @@
     "target": "es2023",
     "lib": ["ES2023", "DOM"],
     "module": "esnext",
-    "types": ["vite/client"],
+    // "node" is needed only by test files that read the cross-workspace
+    // Tour fixture from disk (see assembledTour.test.ts) — the app itself
+    // never touches node:fs; jsdom's DOM lib and these types coexist fine.
+    "types": ["vite/client", "node"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 

@@ -1,0 +1,32 @@
+{
+  "key": "GET https://sk.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=Michalsk%C3%A1+br%C3%A1na&format=json&formatversion=2",
+  "response": {
+    "status": 200,
+    "headers": {
+      "accept-ranges": "bytes",
+      "age": "0",
+      "cache-control": "private, must-revalidate, max-age=0",
+      "content-disposition": "inline; filename=api-result.json",
+      "content-encoding": "gzip",
+      "content-security-policy": "default-src 'self'; script-src 'none'; object-src 'none'",
+      "content-type": "application/json; charset=utf-8",
+      "date": "Wed, 29 Jul 2026 07:29:01 GMT",
+      "nel": "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}",
+      "report-to": "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }",
+      "server": "mw-api-ext.eqiad.main-5ccdf4f4d9-nqf9m",
+      "server-timing": "cache;desc=\"pass\", host;desc=\"cp3071\",co_id;desc=\"1660873229\"",
+      "set-cookie": "WMF-Uniq=KNyCDpaOtiHRrUIByL8lMAOsAAAAAFvdpFdKOG-p03sl5TeNXzi0-io0Q4h6dhxG;Domain=.wikipedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 29 Jul 2027 00:00:00 GMT",
+      "strict-transport-security": "max-age=106384710; includeSubDomains; preload",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent",
+      "x-analytics": "",
+      "x-cache": "cp3071 miss, cp3071 pass",
+      "x-cache-status": "pass",
+      "x-client-ip": "46.229.238.250",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "x-request-id": "20acbf9f-b582-4f35-b980-8317fc6cbc45"
+    },
+    "body": "{\"batchcomplete\":true,\"query\":{\"pages\":[{\"pageid\":26785,\"ns\":0,\"title\":\"Michalská brána\",\"extract\":\"Michalská brána je jediná zachovaná brána z pôvodných štyroch v bratislavskom mestskom opevnení, dnes pamiatka v Starom meste. \\nMeno dostala podľa osady a kostola svätého Michala, ktorá bola neďaleko na predmestí. Dnes osadu pripomína len ružový náhrobný kameň, použitý v murive veže, vo výške asi tretieho poschodia viditeľný z vnútornej strany. V minulosti mala padací most, padaciu mrežu a silné drevené vráta. Dodnes sa zachovalo horné brvno s otvormi na pánty vrát. \\nVežu postavili koncom 14. storočia. Vežu v priebehu histórie viackrát nadstavovali. Horná osemboká časť veže bola postavená v rokoch 1511 – 1517. Na konci 16. storočia mala strecha medenú cibuľu s malou zástavkou. Dnešnú barokovú podobu dostala počas rekonštrukcií v rokoch 1753 – 1758 spolu so sochou svätého Michala, vyhotovenou bratislavským majstrom Petrom Ellerom. Jej súčasná výška je 51 metrov. \\nMeno dostala podľa kostola sv. Michala a podľa neho pomenovaného predmestia, z ktorého sa Michalskou bránou vchádzalo do mesta. V pôdoryse ulice od Michalskej brány nahor je dobre zachovaný zahnutý typ ulice v medzibrání. Z vonkajšej časti brány sa nachádza most, \\nktorý preklenuje bývalú priekopu pozdĺž hradobného múru. Na vnútornej strane brány je kamenný gotický znak, na južnej strane v kartuši nápis, podľa ktorého vežu opravila mestská rada a bratislavské obyvateľstvo roku 1758. V dnešnej dobe cez ňu vedie označenie historickej korunovačnej cesty.\\nMestské múzeum v Bratislave tu zriadilo expozíciu historických zbraní.\\nMedzi jej novšie atrakcie patrí laserový lúč, vysielaný z južného okna, ktorý naznačuje trasu pôvodného Korza.\\n\\n\\n== Pozri aj ==\\nLaurinská brána\\nVydrická brána\\nRybárska brána\\n\\n\\n== Iné projekty ==\\n\\n Commons ponúka multimediálne súbory na tému Michalská brána\"}]}}"
+  }
+}

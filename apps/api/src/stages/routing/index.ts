@@ -1,4 +1,10 @@
-import { haversineM, type CuratedStop, type LatLng, type LineString } from '@ai-guide/shared';
+import {
+  haversineM,
+  fractionAlongLineString,
+  type CuratedStop,
+  type LatLng,
+  type LineString,
+} from '@ai-guide/shared';
 import { fetchDirections } from './mapbox.ts';
 
 export { MAX_WAYPOINTS, buildDirectionsUrl, resolveMapboxToken, redactAccessToken, createRedactingCassetteFetch, fetchDirections } from './mapbox.ts';
@@ -148,13 +154,23 @@ export async function route(
     durationS: leg.duration,
   }));
 
-  const totalLegDistanceM = legs.reduce((sum, leg) => sum + leg.distanceM, 0);
-  let cumulativeM = 0;
-  const walkCuePoints: LatLng[] = legs.map((leg) => {
-    const targetM = cumulativeM + WALK_CUE_FRACTION * leg.distanceM;
-    cumulativeM += leg.distanceM;
-    const fraction = totalLegDistanceM === 0 ? 0 : targetM / totalLegDistanceM;
-    return walkCuePoint(mapboxRoute.geometry, fraction);
+  // Each leg's own share of the GEOMETRY's arc length, found by projecting
+  // its two stops onto the route — NOT a fraction of Mapbox's reported
+  // road-network `leg.distance` values. Those distances need not divide the
+  // polyline's arc length in the same proportions: on the real recorded
+  // Bratislava route, one leg's road distance was disproportionately large
+  // relative to its share of the drawn geometry, so deriving a cue's
+  // position from cumulative *leg distance* (old behaviour) placed it
+  // BEHIND the stop it was supposed to depart from — an out-of-order
+  // trigger a real walker would hit before finishing the previous stop.
+  // Anchoring both ends of the interpolation to the stops' own projected
+  // positions on `mapboxRoute.geometry` makes the cue's position agree with
+  // where those stops actually are on the line, by construction.
+  const walkCuePoints: LatLng[] = legs.map((_leg, i) => {
+    const startFraction = fractionAlongLineString(byOrder[i].standingPoint, mapboxRoute.geometry);
+    const endFraction = fractionAlongLineString(byOrder[i + 1].standingPoint, mapboxRoute.geometry);
+    const cueFraction = startFraction + WALK_CUE_FRACTION * (endFraction - startFraction);
+    return walkCuePoint(mapboxRoute.geometry, cueFraction);
   });
 
   const triggerRadiiM = deriveTriggerRadii(byOrder);
