@@ -7,9 +7,12 @@
     "types": ["node"],
     "skipLibCheck": true,
 
-    /* Bundler mode */
+    /* Node-native ESM. There is no build step: `noEmit` is true and the
+       service runs its TypeScript directly under Node's type stripping, so
+       relative imports carry explicit .ts extensions the way Node requires. */
     "moduleResolution": "nodenext",
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
