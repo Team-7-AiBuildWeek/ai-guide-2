@@ -259,68 +259,100 @@ describe('TriggerEngine — off-route detection', () => {
   });
 });
 
-describe('walk cues depend on their stop', () => {
+describe('walk cues fire on departure, not proximity', () => {
   const START = 1_000_000;
+  const STOP = { lat: 48.1436, lng: 17.1085 };
 
-  /** A stop with its departure cue 30 m away — closer than either radius, as
-   * happens on any short leg once the cue sits a quarter of the way along. */
+  /** A stop with its cue 30 m away — closer than either radius, as happens on
+   * any short leg once the cue sits a quarter of the way along it. */
   function tourWithCueNearItsStop(): Tour {
-    const stop = { lat: 48.1436, lng: 17.1085 };
-    const cue = eastOf(stop, 30);
+    const cue = eastOf(STOP, 30);
     const tour = tourWithStopsAt([
-      { id: 'stop-a', lat: stop.lat, lng: stop.lng },
+      { id: 'stop-a', lat: STOP.lat, lng: STOP.lng },
       { id: 'cue-a', lat: cue.lat, lng: cue.lng },
     ]);
     tour.segments[1].kind = 'walk';
-    // Both radii must comfortably cover the 30 m gap, so that standing on the
-    // cue puts BOTH in range. That overlap is the situation under test; with
-    // the default 25 m radius the stop would simply be out of range and the
-    // test would prove nothing.
     tour.segments[0].triggerRadiusM = 45;
     tour.segments[1].triggerRadiusM = 45;
     return tour;
   }
 
-  it('does not fire a walk cue before the stop it departs from', () => {
+  function firedIds(events: ReturnType<TriggerEngine['onFix']>): string[] {
+    return events.flatMap((e) => (e.type === 'fire' ? [e.segment.id] : []));
+  }
+
+  it('does not fire the cue while the walker is still at the stop', () => {
     const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
 
-    // Standing right on the cue, 30 m from the stop: both are in range, and
-    // the cue is nearer. It must still not fire first.
-    const atCue = eastOf({ lat: 48.1436, lng: 17.1085 }, 30);
+    // Standing on the cue's own coordinate. Under the old proximity model this
+    // was the ambiguous case; now the cue simply is not a candidate.
+    const atCue = eastOf(STOP, 30);
     engine.onFix(fixAt(atCue, 10, START));
     const events = engine.onFix(fixAt(atCue, 10, START + 1_000));
 
-    const fired = events.filter((e) => e.type === 'fire');
-    expect(fired).toHaveLength(1);
-    expect(fired[0].type === 'fire' && fired[0].segment.id).toBe('stop-a');
+    expect(firedIds(events)).toEqual(['stop-a']);
   });
 
-  it('releases the walk cue once its stop has played', () => {
+  it('fires the cue once the walker leaves the stop radius', () => {
     const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
-    const atCue = eastOf({ lat: 48.1436, lng: 17.1085 }, 30);
+    const atCue = eastOf(STOP, 30);
 
     engine.onFix(fixAt(atCue, 10, START));
-    engine.onFix(fixAt(atCue, 10, START + 1_000)); // stop-a fires
-    engine.onFix(fixAt(atCue, 10, START + 2_000));
-    const events = engine.onFix(fixAt(atCue, 10, START + 3_000));
+    engine.onFix(fixAt(atCue, 10, START + 1_000)); // stop-a fires, cue armed
 
-    const fired = events.filter((e) => e.type === 'fire');
-    expect(fired).toHaveLength(1);
-    expect(fired[0].type === 'fire' && fired[0].segment.id).toBe('cue-a');
+    // Still inside the 45 m radius: nothing yet.
+    expect(firedIds(engine.onFix(fixAt(eastOf(STOP, 40), 10, START + 2_000)))).toEqual([]);
+
+    // Past it: the cue fires, on the first fix, with no hysteresis — departure
+    // is an event, not a place you dwell in.
+    expect(firedIds(engine.onFix(fixAt(eastOf(STOP, 60), 10, START + 3_000)))).toEqual(['cue-a']);
   });
 
-  it('never fires a skipped stop’s cue', () => {
+  it('fires the cue exactly once, however far the walker goes', () => {
+    const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
+    const atCue = eastOf(STOP, 30);
+
+    engine.onFix(fixAt(atCue, 10, START));
+    engine.onFix(fixAt(atCue, 10, START + 1_000));
+    engine.onFix(fixAt(eastOf(STOP, 60), 10, START + 2_000));
+
+    const later = [80, 120, 200].map((m, i) =>
+      firedIds(engine.onFix(fixAt(eastOf(STOP, m), 10, START + 3_000 + i * 1_000))),
+    );
+    expect(later.flat()).toEqual([]);
+  });
+
+  it('widens the departure radius to match GPS accuracy', () => {
+    // A 45 m radius with 80 m of reported error would otherwise let a noisy
+    // fix bounce the walker "out of" a stop they are standing in.
+    const engine = new TriggerEngine(tourWithCueNearItsStop(), {
+      requiredHits: 2,
+      maxAccuracyM: 100,
+    });
+    const atCue = eastOf(STOP, 30);
+
+    engine.onFix(fixAt(atCue, 10, START));
+    engine.onFix(fixAt(atCue, 10, START + 1_000));
+
+    // 60 m away but with 80 m accuracy — inside max(45, 80), so not a departure.
+    expect(firedIds(engine.onFix(fixAt(eastOf(STOP, 60), 80, START + 2_000)))).toEqual([]);
+  });
+
+  it('never fires the cue of a stop that was skipped', () => {
     // Skipping a stop means skipping its leg; its departure cue is then
     // meaningless and must stay silent rather than surfacing later.
     const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
-    const atCue = eastOf({ lat: 48.1436, lng: 17.1085 }, 30);
 
     engine.selectManually('cue-a');
-    engine.onFix(fixAt(atCue, 10, START));
-    const events = engine.onFix(fixAt(atCue, 10, START + 1_000));
+    const events = engine.onFix(fixAt(eastOf(STOP, 200), 10, START));
 
-    expect(
-      events.filter((e) => e.type === 'fire' && e.segment.id === 'cue-a'),
-    ).toHaveLength(0);
+    expect(firedIds(events)).toEqual([]);
+  });
+
+  it('arms the cue when the stop is played by tapping rather than walking', () => {
+    const engine = new TriggerEngine(tourWithCueNearItsStop(), { requiredHits: 2 });
+
+    engine.selectManually('stop-a');
+    expect(firedIds(engine.onFix(fixAt(eastOf(STOP, 200), 10, START)))).toEqual(['cue-a']);
   });
 });

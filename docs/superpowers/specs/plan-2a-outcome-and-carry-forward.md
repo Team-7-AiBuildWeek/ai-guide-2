@@ -64,22 +64,34 @@ POI in the set, and again in the prose (*"Hrad necháme na pokoji"*).
 architecture is load-bearing, not merely prudent. Any UI copy promising a
 minute is wrong.
 
-## Known limitation: walk cues on self-intersecting routes
+## Walk cues are events, not places
 
-Every segment fires exactly once. Strict tour order does not hold: the real
-route crosses itself twice, and a cue's 25%-along point can sit nearer a
-later part of the route than its own leg.
+Resolved, after four attempts, and only the fourth addressed the cause.
 
-Three fixes already landed (order tie-break, cues waiting for their stop,
-monotonic stop projection) and the residue is not closable that way. The
-premise is wrong — proximity is a proxy for progress, and on a self-crossing
-route it is not one.
+The first three treated it as geometry: break ties on tour order rather than
+distance; make a cue wait for the stop it departs from; project stop
+positions monotonically. Each was a real improvement. None closed it, because
+each still assumed a cue is a **place**.
 
-**The answer is that walk cues should not be GPS-triggered at all.** Fire
-them on departure from a stop's radius. That removes the cue radius, the
-projection, and the whole failure class. Plan 2b.
+On the real 5.2 km route — which crosses itself twice, passing within a metre
+of its own earlier path — a cue's 25%-along point can sit nearer a later part
+of the walk than its own leg. Proximity was standing in for progress, and on
+a self-intersecting route it is not one.
 
-Marked `it.fails` in `assembledTour.test.ts` with the full diagnosis.
+**A walk cue belongs to the moment you leave a stop.** The engine observes
+that directly: the walker was inside the stop's radius, and now is not. Cues
+are no longer proximity candidates at all, which deletes the cue radius, the
+projection question, and the entire failure class. Departure fires on the
+first qualifying fix — no hysteresis, because leaving is an event rather than
+a place you dwell in — and the radius is accuracy-widened exactly as the
+stop's own is, so a noisy fix cannot bounce a walker out of a stop they are
+standing in.
+
+A skipped stop never arms its cue, which is correct: that leg was not walked.
+
+The end-to-end ordering test found three separate real defects before it
+found this one, and was kept strict throughout rather than loosened to
+something that would pass.
 
 ## Not done — do not assume otherwise
 - **`fly deploy` has never been run.** Fly's networking, TLS and cold-start

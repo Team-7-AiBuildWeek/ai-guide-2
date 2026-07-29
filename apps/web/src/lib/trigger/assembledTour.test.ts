@@ -146,35 +146,31 @@ describe('assembled Bratislava tour fixture', () => {
     // Net effect before the fix: orders 9/10 swapped and 13/14/15 fired as
     // 15/14/13 — every segment fired exactly once, but not in tour order.
     //
-    // PARTLY RESOLVED, and the residue is a design limit rather than a bug.
+    // RESOLVED, after four attempts, and the fourth is the only one that
+    // addressed the actual cause.
     //
-    // Fixed since: the tie-break now breaks on tour order rather than
-    // distance; walk cues wait for the stop they depart from; and stop
-    // fractions are projected monotonically, so a route that returns past an
-    // earlier stop no longer places that stop's departure cue a third of the
-    // way through the tour.
+    // The first three treated it as a geometry problem: break ties on tour
+    // order rather than distance; make a walk cue wait for the stop it
+    // departs from; project stop positions monotonically so a route returning
+    // past an earlier stop cannot place that stop's cue a third of the way
+    // through the tour. Each was a genuine improvement. None closed it,
+    // because each still assumed a cue is a PLACE.
     //
-    // What remains: on the real 5.2km recorded route, which crosses itself
-    // twice, a walk cue's 25%-along-the-leg point can be nearer to a LATER
-    // part of the route than to the leg it belongs to. The walker then
-    // reaches the next stop before entering the cue's radius, and the cue
-    // fires after it. Every segment still fires exactly once — the test above
-    // asserts that and passes — but not always in order.
+    // On this real 5.2km route — which crosses itself twice, passing within a
+    // metre of its own earlier path — a cue's 25%-along-the-leg point can sit
+    // nearer to a later part of the walk than to the leg it belongs to. No
+    // projection fixes that, because proximity was standing in for progress
+    // and on a self-intersecting route it is not one.
     //
-    // No amount of projection fixing closes this, because the premise is
-    // wrong: proximity is being used as a proxy for progress, and on a
-    // self-intersecting route it is not one. The real answer is that a walk
-    // cue should not be GPS-triggered at all. "Head left down the alley"
-    // belongs to the moment you LEAVE a stop, not to a coordinate a quarter
-    // of the way along a leg — trigger it on departure from the stop's radius
-    // and the whole class of problem disappears, along with the need for a
-    // cue radius at all.
+    // A walk cue is an EVENT, not a place: it belongs to the moment you leave
+    // a stop. The engine can observe that directly — the walker was inside the
+    // stop's radius, and now is not — and once it does, the cue radius, the
+    // projection and the whole failure class stop existing.
     //
-    // That is a Plan 2b change. Left failing and documented rather than
-    // deleted, loosened, or "fixed" by weakening the assertion to something
-    // that would pass — an ordering test that tolerates disorder proves
-    // nothing, and this one has already earned its keep three times.
-    it.fails('fires segments in ascending tour order', async () => {
+    // Kept strict throughout rather than loosened to something that would
+    // pass. An ordering test that tolerates disorder proves nothing, and this
+    // one found three separate real defects before it found this one.
+    it('fires segments in ascending tour order', async () => {
       const { tour, fired } = await walkTheRoute();
       const triggeredSegments = tour.segments.filter((s) => s.trigger !== null);
 

@@ -45,6 +45,12 @@ export class TriggerEngine {
   private hits = new Map<string, number>();
   private played = new Set<string>();
 
+  /**
+   * A walk cue waiting for the walker to actually leave the stop it departs
+   * from. See `evaluateDeparture`.
+   */
+  private pendingDeparture: { walkIndex: number; fromStop: Segment } | null = null;
+
   private offRouteSince: number | null = null;
   private offRouteAnnounced = false;
   /** Timestamp of the last fix that reached off-route evaluation (i.e. was
@@ -77,6 +83,7 @@ export class TriggerEngine {
 
     const events: EngineEvent[] = [];
     events.push(...this.evaluateOffRoute(fix));
+    events.push(...this.evaluateDeparture(fix));
 
     const candidates = this.findCandidates(fix);
     const inRange = new Set(candidates.map((c) => c.segment.id));
@@ -115,6 +122,7 @@ export class TriggerEngine {
 
     const winner = ready[0];
     if (winner !== undefined) {
+      this.armDeparture(winner.index);
       this.played.add(winner.segment.id);
       // The cursor bounds the forward lookahead window; a fix on a segment
       // behind it (reached via skip-ahead, then backtracked to) must not
@@ -139,6 +147,14 @@ export class TriggerEngine {
     this.played.add(segment.id);
     if (index + 1 > this.cursorIndex) this.cursorIndex = index + 1;
     this.hits.clear();
+
+    // A manually played stop arms its departure cue just as a triggered one
+    // does — tapping a stop you are standing at should still cue you out of
+    // it. And if the tapped segment IS the pending cue, it has now been heard,
+    // so stop waiting for it.
+    if (this.pendingDeparture?.walkIndex === index) this.pendingDeparture = null;
+    this.armDeparture(index);
+
     return segment;
   }
 
@@ -168,7 +184,8 @@ export class TriggerEngine {
       const segment = this.tour.segments[i];
       if (segment.trigger === null) continue;
       if (this.played.has(segment.id)) continue;
-      if (segment.kind === 'walk' && !this.precedingStopPlayed(i)) continue;
+      // Walk cues are not proximity-triggered at all — see `evaluateDeparture`.
+      if (segment.kind === 'walk') continue;
 
       const distanceM = haversineM(fix, segment.trigger);
       // Widen the radius to the reported accuracy: a 25 m radius is
@@ -183,31 +200,67 @@ export class TriggerEngine {
   }
 
   /**
-   * A walk cue is only eligible once the stop it departs from has played.
+   * Arms the walk cue that follows a stop, so it can fire on departure.
    *
-   * This is a structural dependency, not a geometric one. "Head left down the
-   * alley" is meaningless until the walker has been told where they are, so a
-   * cue firing before its own stop is always wrong regardless of distance.
-   *
-   * It has to be a rule rather than something the geometry guarantees: a cue
-   * sits about a quarter of the way along its leg, which on a short leg is
-   * only tens of metres from the stop, well inside both trigger radii. Which
-   * of the two the walker's path approaches first is then an accident of how
-   * the street curves — on the recorded Bratislava route the cue for the
-   * Franciscan Church leg won that race.
-   *
-   * Skip-ahead is unaffected. A walker who skips the Franciscan Church
-   * entirely never hears its departure cue, which is correct — they did not
-   * walk that leg.
+   * Called whenever a segment fires. Only a `stop` immediately followed by a
+   * `walk` arms anything.
    */
-  private precedingStopPlayed(walkIndex: number): boolean {
-    for (let i = walkIndex - 1; i >= 0; i--) {
-      const previous = this.tour.segments[i];
-      if (previous.trigger === null) continue;
-      return this.played.has(previous.id);
+  private armDeparture(firedIndex: number): void {
+    const fired = this.tour.segments[firedIndex];
+    if (fired.kind !== 'stop') return;
+
+    const next = this.tour.segments[firedIndex + 1];
+    if (next === undefined || next.kind !== 'walk') return;
+    if (this.played.has(next.id)) return;
+
+    this.pendingDeparture = { walkIndex: firedIndex + 1, fromStop: fired };
+  }
+
+  /**
+   * Fires a walk cue when the walker leaves the stop it departs from.
+   *
+   * Walk cues are NOT proximity-triggered, and the reason is worth keeping:
+   * they used to be, placed a quarter of the way along their leg, and that
+   * design cannot be made correct. A cue point sits tens of metres from its
+   * own stop, so their zones overlap; and on a route that crosses itself — the
+   * real Bratislava tour passes within one metre of its own earlier path
+   * twice — a cue's coordinate can be nearer to a later part of the walk than
+   * to the leg it belongs to. Three separate fixes (order tie-break, waiting
+   * for the departing stop, monotonic projection) each improved matters and
+   * none closed it, because the premise was wrong: proximity was standing in
+   * for progress, and on a self-intersecting route it is not.
+   *
+   * Departure is the honest trigger. "Head left down the alley" belongs to the
+   * moment you leave, which is a thing the engine can observe directly: the
+   * walker was inside the stop's radius, and now is not.
+   *
+   * A cue for a stop that was skipped never arms, which is correct — that leg
+   * was not walked.
+   */
+  private evaluateDeparture(fix: Fix): EngineEvent[] {
+    const pending = this.pendingDeparture;
+    if (pending === null) return [];
+
+    const stopPoint = pending.fromStop.trigger;
+    if (stopPoint === null) {
+      this.pendingDeparture = null;
+      return [];
     }
-    // No triggerable segment precedes it; nothing to wait for.
-    return true;
+
+    const distanceM = haversineM(fix, stopPoint);
+    // Same accuracy widening the stop itself uses, so "left the radius" means
+    // the same thing on both sides and a noisy fix cannot bounce the walker
+    // out of a stop they are still standing in.
+    const radiusM = Math.max(pending.fromStop.triggerRadiusM, fix.accuracyM);
+    if (distanceM <= radiusM) return [];
+
+    const walk = this.tour.segments[pending.walkIndex];
+    this.pendingDeparture = null;
+    if (this.played.has(walk.id)) return [];
+
+    this.played.add(walk.id);
+    this.cursorIndex = Math.max(this.cursorIndex, pending.walkIndex + 1);
+    return [{ type: 'fire', segment: walk }];
   }
 
   private evaluateOffRoute(fix: Fix): EngineEvent[] {
