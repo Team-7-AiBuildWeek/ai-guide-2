@@ -48,6 +48,48 @@ account.
 that one, run `fly apps create <new-name>` and change `app = '...'` in
 `fly.toml` to match before deploying.
 
+### Deploying by pushing (no `flyctl` needed)
+
+If Fly's GitHub App is connected to this repo, a push to `main` builds and
+deploys on its own. That path cannot receive `--build-arg` from a command
+line, which is why `fly.toml` carries a `[build.args]` block with
+`VITE_MAPBOX_TOKEN` in it. **Replace the `pk.REPLACE_ME` placeholder there
+before your first push**, or the deploy succeeds and the map is dead.
+
+Putting a Mapbox token in a committed file is deliberate, not sloppy: `pk.`
+tokens are public by design and already ship inside the client JS of every
+build, so this exposes nothing a visitor could not read from the bundle.
+Restrict it to your `.fly.dev` hostname in the Mapbox dashboard
+(Account → Tokens → URL restrictions) and it is safe to commit.
+
+Runtime secrets still have to be set once, from the Fly dashboard
+(Secrets tab) or the CLI. The dashboard is enough — no `flyctl` install
+required.
+
+### A first deploy that cannot spend money
+
+Recommended for the first one, and for the first real walk:
+
+| Variable | Set it to | Why |
+|---|---|---|
+| `GENERATE_PASSPHRASE` | a long random string | The app refuses to start without it |
+| `DATABASE_URL` | the session-pooler URI | Jobs and tours |
+| `VITE_MAPBOX_TOKEN` | your `pk.` token | Routing reads it server-side; without it the container will not boot |
+| `ANTHROPIC_API_KEY` | **do not set it** | See below |
+| `LLM_MODE` | leave unset | Defaults to synthetic — serves the recorded fixtures |
+| `CASSETTE_MODE` | leave unset | Defaults to `replay` — never calls a paid API |
+
+Leaving `ANTHROPIC_API_KEY` unset is a safety property, not an oversight: if
+`LLM_MODE=live` were ever set by accident, the app **refuses to start** rather
+than billing you. Add the key only when you deliberately want to pay for a
+live generation.
+
+A deploy configured this way runs the whole pipeline — discovery, curation,
+routing, narration, the map, the player — from the 106 committed cassettes,
+at zero cost. It proves everything that has never been tested (Fly's build,
+HTTPS, cold start, Supabase reachable from Fly's network, and the app running
+on a real phone) without spending a cent.
+
 ### Runtime secrets
 
 These are read by the Node process at request time, so `fly secrets set` is
