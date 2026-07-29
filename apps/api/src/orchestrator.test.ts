@@ -328,3 +328,75 @@ describe('runPipeline — over-budget routing', () => {
     expect(mapboxCalls).toBe(2); // route, then re-route — no third call
   });
 });
+
+describe('runPipeline — the over-budget re-route', () => {
+  // This branch shipped broken. Every test and every manual check used a
+  // 60- or 90-minute budget against a ~35-minute tour, so the re-curation
+  // path never ran, and the second `route()` call inside it kept using the
+  // non-redacting fetch long after the first was fixed. The symptom reached
+  // a user: a cassette miss whose error carried a live Mapbox URL.
+  it(
+    'routes through the Mapbox fetch on BOTH calls, not just the first',
+    async () => {
+      const repo = new InMemoryTourRepository();
+      const llm = new StageAwareStubLlmClient(
+        [result(validCurationResponseText(), 0.03), result(validCurationResponseText(), 0.03)],
+        [result(validNarrationResponseText(), 0.05)],
+      );
+
+      const replay = combinedReplayFetch();
+      const mapboxCalls: string[] = [];
+      const genericMapboxCalls: string[] = [];
+
+      const urlOf = (input: Parameters<typeof fetch>[0]): string =>
+        typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+
+      const mapboxFetch = (async (input: Parameters<typeof fetch>[0], init?: RequestInit) => {
+        if (urlOf(input).includes('api.mapbox.com')) mapboxCalls.push(urlOf(input));
+        return replay(input, init);
+      }) as typeof fetch;
+
+      const fetchImpl = (async (input: Parameters<typeof fetch>[0], init?: RequestInit) => {
+        if (urlOf(input).includes('api.mapbox.com')) genericMapboxCalls.push(urlOf(input));
+        return replay(input, init);
+      }) as typeof fetch;
+
+      // 20 minutes against a ~35-minute tour forces the single re-curation.
+      const job = await repo.createJob('bratislava', makeRequest({ budgetMin: 20 }));
+      await runPipeline(job.id, { repo, llm, fetch: fetchImpl, mapboxFetch, mapboxToken: 'tok' });
+
+      expect(mapboxCalls).toHaveLength(2);
+      expect(genericMapboxCalls).toEqual([]);
+    },
+    CASSETTE_TEST_TIMEOUT_MS,
+  );
+
+  it(
+    'never writes a raw access_token into the job error',
+    async () => {
+      const repo = new InMemoryTourRepository();
+      const llm = new StageAwareStubLlmClient([result(validCurationResponseText(), 0.03)], []);
+      const job = await repo.createJob('bratislava', makeRequest());
+
+      const leaky = (async () => {
+        throw new Error(
+          'Cassette miss: GET https://api.mapbox.com/directions/v5/mapbox/walking/17.1,48.1?access_token=pk.eyJ1IjoibGVhayJ9.secret',
+        );
+      }) as typeof fetch;
+
+      await runPipeline(job.id, {
+        repo,
+        llm,
+        fetch: combinedReplayFetch(),
+        mapboxFetch: leaky,
+        mapboxToken: 'tok',
+      });
+
+      const failed = await repo.getJob(job.id);
+      expect(failed?.status).toBe('failed');
+      expect(failed?.error ?? '').not.toContain('pk.eyJ1IjoibGVhayJ9.secret');
+      expect(failed?.error ?? '').toContain('REDACTED');
+    },
+    CASSETTE_TEST_TIMEOUT_MS,
+  );
+});

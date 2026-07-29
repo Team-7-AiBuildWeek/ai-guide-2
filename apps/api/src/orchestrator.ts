@@ -173,7 +173,12 @@ async function runPipelineInner(jobId: string, deps: OrchestratorDeps): Promise<
         // nudged curation toward. If it is still over, we proceed anyway
         // and record it — this is the one retry, not a loop.
         routeResult = await route(recurated.output.stops, job.request.budgetMin, {
-          fetch: fetchImpl,
+          // mapboxFetch, not fetchImpl. This second call is the one a
+          // find-and-replace missed, and because it only runs on the
+          // over-budget path it stayed invisible: every test and every manual
+          // check used a 60-minute budget against a ~35-minute tour, so the
+          // re-curation branch never executed.
+          fetch: mapboxFetch,
           token: mapboxToken,
         });
       }
@@ -229,7 +234,11 @@ async function fail(
   stage: JobStage,
   err: unknown,
 ): Promise<void> {
-  const message = err instanceof Error ? err.message : String(err);
+  // Every stage failure funnels through here, so this is the scrub that
+  // actually matters — the two call sites patched earlier were the rarer
+  // paths, and a Mapbox URL still reached the database and the browser
+  // through this one.
+  const message = scrubSecrets(err instanceof Error ? err.message : String(err));
   await repo.updateJob(jobId, { status: 'failed', stage, error: message, costUsd });
 }
 
