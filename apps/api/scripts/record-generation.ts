@@ -1,25 +1,27 @@
 /**
  * L1 — record real curation and narration cassettes.
  *
- * This is the first contact between the prompts and Claude Opus 5. Everything
- * downstream of curation has so far been tested against hand-authored
- * fixtures that were written to satisfy the very validators they are checked
- * against, which is circular by construction. This script breaks that loop.
+ * This was the first contact between the prompts and a real model. Everything
+ * downstream of curation had until then been tested against hand-authored
+ * fixtures written to satisfy the very validators they were checked against,
+ * which is circular by construction. This script breaks that loop.
  *
- * Costs real money. Everything except Anthropic stays on `replay`, so no
- * other API is re-recorded and the only variable is the model.
+ * It is now also the A/B harness. Every paid API except the model stays on
+ * `replay`, so the model is the only variable: run it once per provider and
+ * the printed stop selection, script lengths, latency and cost are directly
+ * comparable.
  *
  *   LLM_MODE is irrelevant here — this script always calls live.
- *   Requires ANTHROPIC_API_KEY.
+ *   LLM_PROVIDER picks the model (default gemini); requires that provider's key.
  */
-import { writeFile, readFile as readFileFn } from 'node:fs/promises';
+import { writeFile, readFile as readFileFn, mkdir } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { haversineM } from '@ai-guide/shared';
 import type { GenerateRequest, CurationOutput } from '@ai-guide/shared';
 import { FileCassetteStore, cassetteFetch } from '../src/cassette/index.ts';
 import { createRedactingCassetteFetch, resolveMapboxToken } from '../src/stages/routing/mapbox.ts';
-import { AnthropicLlmClient } from '../src/llm/anthropic.ts';
+import { liveLlmClient } from '../src/llm/factory.ts';
 import { BRATISLAVA } from '../src/config/cities.ts';
 import { discover } from '../src/stages/discovery/index.ts';
 import { curate } from '../src/stages/curation/index.ts';
@@ -29,9 +31,8 @@ import { narrate, fetchStopExtracts } from '../src/stages/narration/index.ts';
 const here = dirname(fileURLToPath(import.meta.url));
 const cassetteDir = join(here, '..', 'cassettes');
 const syntheticDir = join(cassetteDir, 'synthetic');
-
-const apiKey = process.env.ANTHROPIC_API_KEY;
-if (!apiKey) throw new Error('ANTHROPIC_API_KEY is required for L1.');
+/** Git-ignored: where a provider A/B lands instead of over the golden tour. */
+const comparisonDir = join(cassetteDir, 'comparison');
 
 const store = new FileCassetteStore(cassetteDir);
 
@@ -49,9 +50,11 @@ const mapboxFetch = createRedactingCassetteFetch('replay', store, (async () => {
 // just chosen. Discovery stays on replay above — only these are new.
 const extractsFetch = cassetteFetch('record', store, fetch);
 
-// The one paid live path.
-const anthropicFetch = cassetteFetch('record', store, fetch);
-const llm = new AnthropicLlmClient({ apiKey, fetch: anthropicFetch });
+// The one paid live path. Throws at startup if the chosen provider's key is
+// missing, before any of the free calls above have run.
+const { client: llm, label: modelLabel } = liveLlmClient({
+  fetch: cassetteFetch('record', store, fetch),
+});
 
 const request: GenerateRequest = {
   city: 'bratislava',
@@ -72,7 +75,7 @@ function rule(label: string) {
   console.log(`\n${'─'.repeat(64)}\n${label}\n${'─'.repeat(64)}`);
 }
 
-rule('L1 — live generation against claude-opus-5');
+rule(`L1 — live generation against ${modelLabel}`);
 console.log(`profile : ${request.profileText}`);
 console.log(`persona : ${request.persona}`);
 console.log(`language: ${request.language}   budget: ${request.budgetMin} min`);
@@ -162,22 +165,64 @@ for (const s of segs.slice(0, 4)) {
 }
 
 await saveCuration();
-await writeFile(
-  join(syntheticDir, 'narration-bratislava-sk.json'),
-  `${JSON.stringify({ _synthetic: false, _comment: `Recorded from claude-opus-5 on ${new Date().toISOString()} — real model output, not hand-authored.`, segments: segs }, null, 2)}\n`,
-  'utf8',
-);
+await writeFixture('narration-bratislava-sk.json', { segments: segs });
 
 rule('Total');
 console.log(`cost this run: $${totalCost.toFixed(4)}`);
 
 async function saveCuration() {
-  await writeFile(
-    join(syntheticDir, 'curation-bratislava.json'),
-    `${JSON.stringify({ _synthetic: false, _comment: `Recorded from claude-opus-5 on ${new Date().toISOString()} — real model output, not hand-authored.`, tourTitle: curation.output.tourTitle, stops: curation.output.stops }, null, 2)}\n`,
-    'utf8',
+  await writeFixture('curation-bratislava.json', {
+    tourTitle: curation.output.tourTitle,
+    stops: curation.output.stops,
+  });
+}
+
+/**
+ * Writes a recorded fixture — but never over one produced by a different
+ * model.
+ *
+ * The committed fixtures are the golden tour: a single generation that was
+ * paid for once, read through, and judged good. Every replay test and the
+ * whole synthetic mode serve it. An A/B run of another provider must not
+ * destroy it as a side effect of printing a comparison, because getting it
+ * back means paying again — so a mismatched run lands in `cassettes/comparison`
+ * (git-ignored) instead, where it can be diffed against the golden one.
+ *
+ * `OVERWRITE_GOLDEN=1` promotes this run's output to golden, which is a
+ * deliberate act: it is the moment the project changes its mind about which
+ * model writes its tours.
+ */
+async function writeFixture(name: string, payload: Record<string, unknown>): Promise<void> {
+  const body = `${JSON.stringify(
+    {
+      _synthetic: false,
+      _model: modelLabel,
+      _comment: `Recorded from ${modelLabel} on ${new Date().toISOString()} — real model output, not hand-authored.`,
+      ...payload,
+    },
+    null,
+    2,
+  )}\n`;
+
+  const goldenPath = join(syntheticDir, name);
+  // Fixtures recorded before `_model` existed all came from claude-opus-5.
+  const previous = await readFileFn(goldenPath, 'utf8').then(
+    (text) => (JSON.parse(text) as { _model?: string })._model ?? 'claude-opus-5',
+    () => null,
   );
-  console.log('\nwrote curation-bratislava.json');
+
+  if (previous !== null && previous !== modelLabel && process.env.OVERWRITE_GOLDEN !== '1') {
+    const path = join(comparisonDir, name);
+    await mkdir(comparisonDir, { recursive: true });
+    await writeFile(path, body, 'utf8');
+    console.log(`\nkept the golden ${name} (${previous}); this ${modelLabel} run went to`);
+    console.log(`  cassettes/comparison/${name}`);
+    console.log('  Set OVERWRITE_GOLDEN=1 to promote it to the golden fixture.');
+    return;
+  }
+
+  await writeFile(goldenPath, body, 'utf8');
+  console.log(`\nwrote ${name} (${modelLabel})`);
 }
 
 process.exit(0);

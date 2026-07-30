@@ -4,8 +4,7 @@ import { Hono } from 'hono';
 import { InMemoryTourRepository } from './db/memory.ts';
 import { PostgresTourRepository } from './db/postgres.ts';
 import type { TourRepository } from './db/repository.ts';
-import { AnthropicLlmClient, type LlmClient } from './llm/anthropic.ts';
-import { SyntheticLlmClient } from './llm/synthetic.ts';
+import { llmFromEnv } from './llm/factory.ts';
 import { ChirpTtsProvider } from './tts/chirp.ts';
 import { audioStoreFromEnv } from './tts/supabaseAudioStore.ts';
 import { FileCassetteStore, cassetteFetch, resolveCassetteMode } from './cassette/index.ts';
@@ -37,25 +36,9 @@ const cassetteMode = resolveCassetteMode();
 const cassetteStore = new FileCassetteStore(cassetteDir);
 const wrappedFetch = cassetteFetch(cassetteMode, cassetteStore, fetch);
 
-/**
- * Synthetic unless explicitly told otherwise.
- *
- * The default is the one that cannot spend money: an operator who has not
- * said "use the real model" gets the hand-authored fixtures. Set
- * `LLM_MODE=live` to reach Opus 5, which requires ANTHROPIC_API_KEY and
- * bills real money per generation.
- */
-function buildLlmClient(): LlmClient {
-  if (process.env.LLM_MODE !== 'live') return new SyntheticLlmClient();
-
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error('LLM_MODE=live requires ANTHROPIC_API_KEY. Refusing to start.');
-  }
-  return new AnthropicLlmClient({ apiKey, fetch: wrappedFetch });
-}
-
-const llm = buildLlmClient();
+// Synthetic unless `LLM_MODE=live`, and then `LLM_PROVIDER` (default `gemini`)
+// picks which paid model — see llm/factory.ts for both defaults and why.
+const llm = llmFromEnv({ fetch: wrappedFetch });
 // Mapbox carries its credential in the URL, so it needs the redacting
 // variant: the token must be stripped before a cassette key is derived, or
 // it is written into a cassette file and printed in any miss/error message.

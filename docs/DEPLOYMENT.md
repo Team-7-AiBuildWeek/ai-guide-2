@@ -75,14 +75,16 @@ Recommended for the first one, and for the first real walk:
 | `GENERATE_PASSPHRASE` | a long random string | The app refuses to start without it |
 | `DATABASE_URL` | the session-pooler URI | Jobs and tours |
 | `VITE_MAPBOX_TOKEN` | your `pk.` token | Routing reads it server-side; without it the container will not boot |
-| `ANTHROPIC_API_KEY` | **do not set it** | See below |
+| `GEMINI_API_KEY` | **do not set it** | See below |
 | `LLM_MODE` | leave unset | Defaults to synthetic — serves the recorded fixtures |
 | `CASSETTE_MODE` | leave unset | Defaults to `replay` — never calls a paid API |
 
-Leaving `ANTHROPIC_API_KEY` unset is a safety property, not an oversight: if
+Leaving the model key unset is a safety property, not an oversight: if
 `LLM_MODE=live` were ever set by accident, the app **refuses to start** rather
 than billing you. Add the key only when you deliberately want to pay for a
-live generation.
+live generation. Which key that is follows `LLM_PROVIDER`: unset means Gemini
+(`GEMINI_API_KEY`); `LLM_PROVIDER=anthropic` switches back to Opus 5
+(`ANTHROPIC_API_KEY`).
 
 A deploy configured this way runs the whole pipeline — discovery, curation,
 routing, narration, the map, the player — from the 106 committed cassettes,
@@ -96,7 +98,7 @@ These are read by the Node process at request time, so `fly secrets set` is
 the right mechanism for all of them:
 
 ```bash
-fly secrets set ANTHROPIC_API_KEY="sk-ant-..."
+fly secrets set GEMINI_API_KEY="AIza..."       # or ANTHROPIC_API_KEY with LLM_PROVIDER=anthropic
 fly secrets set DATABASE_URL="postgresql://...pooler..."
 fly secrets set GENERATE_PASSPHRASE="$(openssl rand -hex 32)"
 fly secrets set DAILY_SPEND_CAP_USD=5
@@ -146,8 +148,9 @@ it on every tile request. Restrict it by URL in the Mapbox dashboard
 (Account → Tokens → URL restrictions) to your `.fly.dev` hostname. What
 changed is that it is no longer in version control.
 
-**`/api/config` returns only this token.** `ANTHROPIC_API_KEY`, `DATABASE_URL`
-and `GENERATE_PASSPHRASE` are server-side only and must never be added to it.
+**`/api/config` returns only this token.** `GEMINI_API_KEY`,
+`ANTHROPIC_API_KEY`, `DATABASE_URL` and `GENERATE_PASSPHRASE` are server-side
+only and must never be added to it.
 
 ## 3. Deploy
 

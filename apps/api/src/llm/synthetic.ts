@@ -41,9 +41,12 @@ export class SyntheticLlmClient implements LlmClient {
 
     // Strip the bookkeeping keys so the payload matches what a model would
     // actually return, and the same validators run against it unchanged.
-    const { _synthetic, _comment, ...payload } = raw;
-    void _synthetic;
-    void _comment;
+    // By prefix, not by name: naming them individually meant that adding
+    // `_model` to the fixtures would have leaked an unexpected key straight
+    // into a schema that rejects them.
+    const payload = Object.fromEntries(
+      Object.entries(raw).filter(([key]) => !key.startsWith('_')),
+    );
 
     // Zero, not an estimate. Nothing was spent, and the daily spend cap must
     // not be nudged toward its limit by calls that never cost anything.

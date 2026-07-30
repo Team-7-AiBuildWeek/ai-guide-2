@@ -22,6 +22,11 @@ dist-ssr
 # Toponym-spike output — MP3s to listen to, not artefacts to keep
 apps/api/spike-audio/
 
+# Provider A/B output. record-generation.ts writes here rather than over the
+# golden fixtures when the model it just called is not the one that produced
+# them — comparison material, not a committed baseline.
+apps/api/cassettes/comparison/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
