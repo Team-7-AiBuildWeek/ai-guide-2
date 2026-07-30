@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Tour } from '@ai-guide/shared';
 import type { Fix } from '../lib/location/types';
+import { headingDeltaDeg } from '../lib/location/compass';
 import { loadConfig } from '../lib/api/config';
 
 // The token is fetched from the API at runtime rather than inlined here at
@@ -12,14 +13,60 @@ import { loadConfig } from '../lib/api/config';
 interface TourMapProps {
   tour: Tour;
   lastFix: Fix | null;
+  /** Where the walker is facing, degrees clockwise from north; null hides
+   * the view cone and keeps the camera north-up. */
+  headingDeg: number | null;
   playedIds: ReadonlySet<string>;
   onSelectStop: (id: string) => void;
 }
 
-export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps) {
+/** The camera only rotates for turns bigger than this — following every
+ * compass wobble makes the whole street sway. The view cone itself rotates
+ * freely; it is small enough that jitter reads as "alive", not seasick. */
+const CAMERA_TURN_THRESHOLD_DEG = 12;
+
+/** Navigation-style framing, applied once when the first fix arrives.
+ * Deliberately never re-asserted after that: a walker who pinches to zoom
+ * has expressed an opinion, and fighting it every second loses. */
+const NAV_ZOOM = 16.5;
+const NAV_PITCH = 45;
+
+/**
+ * Google-Maps-style position marker: a blue dot wearing a translucent view
+ * cone. Built as a plain DOM element because Mapbox markers are DOM, not
+ * layers. The cone points up (north) at rotation 0; Marker.setRotation turns
+ * the whole element, and `rotationAlignment: 'map'` keeps that rotation
+ * expressed in map bearings rather than screen degrees, so the cone stays
+ * pointing at the same street corner when the camera itself rotates.
+ */
+function buildUserMarkerElement(): { element: HTMLElement; cone: SVGElement } {
+  const element = document.createElement('div');
+  element.className = 'h-16 w-16';
+  element.innerHTML = `
+    <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+      <defs>
+        <linearGradient id="view-cone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4285f4" stop-opacity="0" />
+          <stop offset="100%" stop-color="#4285f4" stop-opacity="0.45" />
+        </linearGradient>
+      </defs>
+      <path data-cone d="M32 32 L14 4 A34 34 0 0 1 50 4 Z" fill="url(#view-cone)" style="display:none" />
+      <circle cx="32" cy="32" r="12" fill="#4285f4" opacity="0.25">
+        <animate attributeName="r" values="9;14;9" dur="3s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="32" cy="32" r="7" fill="#4285f4" stroke="white" stroke-width="3" />
+    </svg>`;
+  const cone = element.querySelector('[data-cone]') as SVGElement;
+  return { element, cone };
+}
+
+export function TourMap({ tour, lastFix, headingDeg, playedIds, onSelectStop }: TourMapProps) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const userMarker = useRef<mapboxgl.Marker | null>(null);
+  const userCone = useRef<SVGElement | null>(null);
+  /** True once the first fix has applied the navigation zoom/pitch. */
+  const navFramed = useRef(false);
   const stopMarkers = useRef<Map<string, mapboxgl.Marker>>(new Map());
   // The map is an aid, not the product â€” a missing/expired token, a 404'd
   // style, or no network must degrade to a placeholder, never take the
@@ -127,24 +174,63 @@ export function TourMap({ tour, lastFix, playedIds, onSelectStop }: TourMapProps
       const marker = userMarker.current;
       marker?.remove();
       userMarker.current = null;
+      userCone.current = null;
+      navFramed.current = false;
       instance.remove();
       if (map.current === instance) map.current = null;
     };
   }, [tour, onSelectStop, token]);
 
-  // Follow the user.
+  // Follow the user, navigation style: centred, tilted, heading-up.
   useEffect(() => {
     const m = map.current;
     if (!m || lastFix === null) return;
 
     if (userMarker.current === null) {
-      const el = document.createElement('div');
-      el.className = 'h-4 w-4 rounded-full border-2 border-white bg-red-500 shadow';
-      userMarker.current = new mapboxgl.Marker({ element: el });
+      const { element, cone } = buildUserMarkerElement();
+      userCone.current = cone;
+      userMarker.current = new mapboxgl.Marker({
+        element,
+        // Both aligned to the map, not the screen: the cone must keep
+        // pointing at the same street when the camera rotates beneath it,
+        // and lie flat into the tilt rather than standing up like a signpost.
+        rotationAlignment: 'map',
+        pitchAlignment: 'map',
+      });
     }
     userMarker.current.setLngLat([lastFix.lng, lastFix.lat]).addTo(m);
-    m.easeTo({ center: [lastFix.lng, lastFix.lat], duration: 700 });
-  }, [lastFix]);
+
+    const camera: Parameters<typeof m.easeTo>[0] = {
+      center: [lastFix.lng, lastFix.lat],
+      duration: 700,
+    };
+    if (!navFramed.current) {
+      // Once, on the first fix — after this, zoom belongs to the walker.
+      navFramed.current = true;
+      camera.zoom = NAV_ZOOM;
+      camera.pitch = NAV_PITCH;
+    }
+    if (headingDeg !== null) {
+      const delta = Math.abs(headingDeltaDeg(m.getBearing(), headingDeg));
+      if (delta > CAMERA_TURN_THRESHOLD_DEG) camera.bearing = headingDeg;
+    }
+    m.easeTo(camera);
+  }, [lastFix, headingDeg]);
+
+  // Point the view cone. Separate from the camera effect above because the
+  // cone follows every heading change (cheap — one DOM transform) while the
+  // camera deliberately ignores small ones.
+  useEffect(() => {
+    const cone = userCone.current;
+    const marker = userMarker.current;
+    if (cone === null || marker === null) return;
+    if (headingDeg === null) {
+      cone.style.display = 'none';
+      return;
+    }
+    cone.style.display = '';
+    marker.setRotation(headingDeg);
+  }, [headingDeg, lastFix]);
 
   // Grey out stops already visited.
   useEffect(() => {

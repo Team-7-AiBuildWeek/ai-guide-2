@@ -12,6 +12,7 @@ import type { Segment } from '@ai-guide/shared';
 export class HtmlAudioPlayer implements AudioPlayer {
   private readonly element: HTMLAudioElement;
   private playing = false;
+  private paused = false;
   private currentResolve: (() => void) | null = null;
   private currentCleanup: (() => void) | null = null;
 
@@ -69,7 +70,13 @@ export class HtmlAudioPlayer implements AudioPlayer {
 
       this.element.src = segment.audioUrl as string;
       this.playing = true;
-      void this.element.play().catch(fail);
+      // A segment that arrives while the guide is paused loads but does not
+      // speak — its promise stays pending, holding the whole queue, until
+      // resume(). Without this check a GPS trigger would override the
+      // walker's explicit pause, which is the one button they pressed.
+      if (!this.paused) {
+        void this.element.play().catch(fail);
+      }
     });
   }
 
@@ -86,6 +93,29 @@ export class HtmlAudioPlayer implements AudioPlayer {
     }
     this.element.pause();
     this.playing = false;
+    // Deliberately does NOT clear `paused`: stop() runs at the head of every
+    // play(), so clearing here would silently un-pause the guide the moment
+    // the next segment triggered. Only resume() lifts a pause.
+  }
+
+  pause(): void {
+    this.paused = true;
+    this.element.pause();
+  }
+
+  resume(): void {
+    this.paused = false;
+    if (this.currentResolve === null) return; // nothing was frozen mid-play
+    void this.element.play().catch(() => {
+      // The failure path mirrors a play() error: settle the pending segment
+      // so the queue moves on, rather than leaving the tour wedged.
+      console.warn('Resume failed; skipping the current segment');
+      this.stop();
+    });
+  }
+
+  isPaused(): boolean {
+    return this.paused;
   }
 
   isPlaying(): boolean {

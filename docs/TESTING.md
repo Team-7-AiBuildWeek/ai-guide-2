@@ -125,8 +125,21 @@ trigger-engine bug — run this walkthrough at 10× or below.
    Westerkerk → Noordermarkt, each speaking on arrival
 7. Tap **inject bad fix** — nothing should fire (the engine's accuracy gate
    discards it)
-8. Tap a stop in the bottom list — it should play immediately, interrupting
+8. Tap **Stops** (bottom-left pill) to raise the stop list, then tap a stop
+   — the sheet should close and it should play immediately, interrupting
    whatever is speaking
+8a. Tap the round **pause** button (bottom centre) mid-narration — the voice
+    should freeze in place and the banner should read "Paused". Let the
+    simulator reach the next stop while paused: nothing should speak. Tap
+    the button again (now a play triangle) — narration should resume where
+    it stopped, and the queued stop should follow it. This is the pause
+    contract: a latch on the guide, not on one clip.
+8b. Watch the blue dot: it should wear a translucent view cone pointing the
+    way the simulated walker is travelling (the simulator derives heading
+    from the route), and the camera should rotate so that direction reads
+    as up, Google-Maps style. On a real phone the cone follows the compass
+    instead; iOS asks for motion access on Start — declining it falls back
+    to GPS course, which only appears while moving.
 9. **Reload the page and tap Start the walk again.** This is required, not
    optional: step 6 already marked every stop, including Noordermarkt, as
    played, and the trigger engine permanently excludes played segments from

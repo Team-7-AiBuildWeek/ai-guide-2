@@ -108,7 +108,26 @@ export class SimulatedLocation implements LocationProvider {
       lng: jittered.lng,
       accuracyM: this.accuracyM,
       timestamp: Date.now(),
+      // From the un-jittered route direction, so the dev-panel view cone
+      // points down the street being walked instead of flickering with noise.
+      headingDeg: this.headingAt(this.travelledM),
     });
+  }
+
+  /**
+   * Bearing of the route segment at `distanceM`, degrees clockwise from
+   * north — what a GPS course would read for someone walking this route.
+   */
+  private headingAt(distanceM: number): number | null {
+    if (this.points.length < 2) return null;
+    let i = 1;
+    while (i < this.cumulativeM.length - 1 && distanceM > this.cumulativeM[i]) i++;
+    const a = this.points[i - 1];
+    const b = this.points[i];
+    const dNorth = (b.lat - a.lat) * M_PER_DEG_LAT;
+    const dEast = (b.lng - a.lng) * metresPerDegreeLng(a.lat);
+    if (dNorth === 0 && dEast === 0) return null;
+    return (Math.atan2(dEast, dNorth) * (180 / Math.PI) + 360) % 360;
   }
 
   /** Interpolates a coordinate at `distanceM` along the route. */

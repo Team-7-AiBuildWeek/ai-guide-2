@@ -29,7 +29,7 @@ export function DevPanel({ sim, tour }: DevPanelProps) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="absolute right-3 top-3 z-10 rounded bg-black/70 px-3 py-1.5 text-xs font-mono text-white"
+        className="absolute right-3 top-24 z-10 rounded bg-black/70 px-3 py-1.5 text-xs font-mono text-white"
       >
         dev
       </button>
@@ -37,7 +37,7 @@ export function DevPanel({ sim, tour }: DevPanelProps) {
   }
 
   return (
-    <div className="absolute right-3 top-3 z-10 w-60 space-y-3 rounded-lg bg-black/85 p-3 font-mono text-xs text-white">
+    <div className="absolute right-3 top-24 z-10 w-60 space-y-3 rounded-lg bg-black/85 p-3 font-mono text-xs text-white">
       <div className="flex items-center justify-between">
         <span className="font-bold">Simulator</span>
         <button onClick={() => setOpen(false)} className="text-slate-400">

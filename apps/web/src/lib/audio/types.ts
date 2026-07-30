@@ -14,4 +14,17 @@ export interface AudioPlayer {
   play(segment: Segment): Promise<void>;
   stop(): void;
   isPlaying(): boolean;
+  /**
+   * Freezes playback in place; `resume()` continues from the same point.
+   *
+   * Distinct from `stop()` on purpose: stop() SETTLES the current play()
+   * promise (the drain loop moves on to the next segment), while pause()
+   * leaves it pending — the tour holds its breath rather than skipping
+   * ahead. Pausing while nothing is playing is a no-op, not an error, and
+   * the pause survives across segments: anything triggered while paused
+   * queues up behind the frozen one.
+   */
+  pause(): void;
+  resume(): void;
+  isPaused(): boolean;
 }

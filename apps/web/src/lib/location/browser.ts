@@ -38,6 +38,12 @@ export class BrowserLocation implements LocationProvider {
           lng: position.coords.longitude,
           accuracyM: position.coords.accuracy,
           timestamp: position.timestamp,
+          // NaN (some browsers when stationary) normalised to null so
+          // consumers have one "unknown" value to check, not two.
+          headingDeg:
+            position.coords.heading !== null && !Number.isNaN(position.coords.heading)
+              ? position.coords.heading
+              : null,
         };
         this.onError?.(null);
         listener(fix);

@@ -58,6 +58,11 @@ class UnlockFailsOnceAudio implements AudioPlayer {
     this.playing = false;
     this.resolvers.shift()?.();
   }
+  pause() {}
+  resume() {}
+  isPaused() {
+    return false;
+  }
   isPlaying() {
     return this.playing;
   }
@@ -112,6 +117,20 @@ class RecordingAudio implements AudioPlayer {
   }
   isPlaying() {
     return this.playing;
+  }
+  pauseCalls = 0;
+  resumeCalls = 0;
+  private pausedFlag = false;
+  pause() {
+    this.pauseCalls += 1;
+    this.pausedFlag = true;
+  }
+  resume() {
+    this.resumeCalls += 1;
+    this.pausedFlag = false;
+  }
+  isPaused() {
+    return this.pausedFlag;
   }
   /** Finishes the oldest in-flight playback. */
   finishOne() {
@@ -563,6 +582,82 @@ describe('useTourPlayer', () => {
       });
 
       expect(audio.played.some((s) => s.id === 'outro')).toBe(false);
+    });
+  });
+
+  describe('pause and resume', () => {
+    it('passes pause and resume through to the player and tracks the state', async () => {
+      const location = new ManualLocation();
+      const audio = new RecordingAudio();
+      const { result } = renderHook(() =>
+        useTourPlayer({ tour: makeTour(), location, audio }),
+      );
+
+      await act(async () => {
+        await result.current.start();
+      });
+      expect(result.current.paused).toBe(false);
+
+      act(() => {
+        result.current.pause();
+      });
+      expect(result.current.paused).toBe(true);
+      expect(audio.pauseCalls).toBe(1);
+
+      act(() => {
+        result.current.resume();
+      });
+      expect(result.current.paused).toBe(false);
+      expect(audio.resumeCalls).toBe(1);
+    });
+
+    it('keeps queueing GPS-triggered segments while paused', async () => {
+      // Pause silences the voice; it does not stop the walk. Segments that
+      // trigger while paused must be waiting when the walker resumes.
+      const location = new ManualLocation();
+      const audio = new RecordingAudio();
+      const { result } = renderHook(() =>
+        useTourPlayer({ tour: makeTour(), location, audio }),
+      );
+
+      await act(async () => {
+        await result.current.start();
+      });
+      act(() => {
+        result.current.pause();
+      });
+
+      await act(async () => {
+        location.emit(fixAt(STOP_COORDS[0], 10, 1_000_000));
+        location.emit(fixAt(STOP_COORDS[0], 10, 1_001_000));
+      });
+
+      // The drain loop still hands the segment to the player — the player
+      // itself is what holds it frozen (see AudioPlayer.pause's contract).
+      await waitFor(() => expect(audio.played.map((s) => s.id)).toEqual(['seg-0']));
+      expect(result.current.paused).toBe(true);
+    });
+
+    it('a manual tap lifts the pause', async () => {
+      const location = new ManualLocation();
+      const audio = new RecordingAudio();
+      const { result } = renderHook(() =>
+        useTourPlayer({ tour: makeTour(), location, audio }),
+      );
+
+      await act(async () => {
+        await result.current.start();
+      });
+      act(() => {
+        result.current.pause();
+      });
+      act(() => {
+        result.current.playSegment('seg-1');
+      });
+
+      expect(result.current.paused).toBe(false);
+      expect(audio.resumeCalls).toBeGreaterThan(0);
+      await waitFor(() => expect(audio.played.map((s) => s.id)).toEqual(['seg-1']));
     });
   });
 });

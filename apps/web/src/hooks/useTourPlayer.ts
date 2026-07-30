@@ -19,6 +19,15 @@ export interface TourPlayerState {
   lastFix: Fix | null;
   offRoute: boolean;
   playSegment(id: string): void;
+  /**
+   * Freezes the guide's voice without stopping the walk: GPS keeps firing,
+   * triggered segments queue up behind the frozen one, and resume() picks up
+   * mid-sentence where pause left it. A manual playSegment() tap lifts the
+   * pause — a deliberate "play this" outranks a standing "be quiet".
+   */
+  paused: boolean;
+  pause(): void;
+  resume(): void;
 }
 
 export function useTourPlayer({
@@ -33,6 +42,7 @@ export function useTourPlayer({
   const [playedIds, setPlayedIds] = useState<ReadonlySet<string>>(new Set());
   const [lastFix, setLastFix] = useState<Fix | null>(null);
   const [offRoute, setOffRoute] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   // Narration must never be cut off mid-sentence by the next trigger, so
   // segments queue behind whatever is playing (spec Â§8).
@@ -179,6 +189,12 @@ export function useTourPlayer({
       // still queue (spec Â§8) â€” this interruption is user-initiated.
       generation.current += 1;
       audio.stop();
+      // ...and it also outranks a standing pause. stop() has already settled
+      // the frozen segment, so resume() here only clears the latch â€” without
+      // this, the tapped segment would load silently and the button would
+      // look broken.
+      audio.resume();
+      setPaused(false);
       queue.current = [];
       draining.current = false;
       enqueue(segment);
@@ -186,6 +202,16 @@ export function useTourPlayer({
     },
     [audio, enqueue, engine, maybeEnqueueOutro],
   );
+
+  const pause = useCallback(() => {
+    audio.pause();
+    setPaused(true);
+  }, [audio]);
+
+  const resume = useCallback(() => {
+    audio.resume();
+    setPaused(false);
+  }, [audio]);
 
   // Runs once per mount; its cleanup fires only at unmount, via the refs
   // above. Depending on [audio, location] here would make React tear down
@@ -201,5 +227,16 @@ export function useTourPlayer({
     };
   }, []);
 
-  return { started, start, currentSegment, playedIds, lastFix, offRoute, playSegment };
+  return {
+    started,
+    start,
+    currentSegment,
+    playedIds,
+    lastFix,
+    offRoute,
+    playSegment,
+    paused,
+    pause,
+    resume,
+  };
 }

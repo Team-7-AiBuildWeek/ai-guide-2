@@ -5,6 +5,13 @@ export interface Fix {
   accuracyM: number;
   /** Epoch milliseconds. */
   timestamp: number;
+  /**
+   * Direction of travel in degrees clockwise from true north, or null when
+   * unknown. GPS course only exists while moving — a walker standing still
+   * gets null, which is why the map's view cone prefers the device compass
+   * and uses this as the fallback.
+   */
+  headingDeg?: number | null;
 }
 
 export type FixListener = (fix: Fix) => void;

@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { GenerateRequest, Tour } from '@ai-guide/shared';
 import { amsterdamTour } from './fixtures/amsterdam-tour';
 import { useTourPlayer } from './hooks/useTourPlayer';
+import { useHeading } from './hooks/useHeading';
 import { useWakeLock } from './hooks/useWakeLock';
+import { requestCompassPermission } from './lib/location/compass';
 import { SimulatedLocation } from './lib/location/simulated';
 import { BrowserLocation } from './lib/location/browser';
 import { SpeechSynthesisPlayer } from './lib/audio/speechSynthesis';
@@ -19,6 +21,7 @@ import { loadLatest, saveTour } from './lib/storage/tourStore';
 import { TourMap } from './components/TourMap';
 import { NowPlaying } from './components/NowPlaying';
 import { StopList } from './components/StopList';
+import { WalkControls } from './components/WalkControls';
 import { DevPanel } from './components/DevPanel';
 import { GenerateScreen } from './components/GenerateScreen';
 import { ProgressScreen } from './components/ProgressScreen';
@@ -89,6 +92,12 @@ function Player({ tour }: { tour: Tour }) {
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
   const [download, setDownload] = useState<PrefetchProgress | null>(null);
+  const [listOpen, setListOpen] = useState(false);
+  // Set from the Start tap: iOS only grants compass access to a request made
+  // inside a user gesture, and the Start button is the one gesture the walk
+  // is guaranteed to begin with.
+  const [compassAllowed, setCompassAllowed] = useState(false);
+  const headingDeg = useHeading(compassAllowed && player.started, player.lastFix);
 
   /**
    * Pull the whole tour's audio down before the walk begins.
@@ -125,6 +134,10 @@ function Player({ tour }: { tour: Tour }) {
           onClick={async () => {
             setStarting(true);
             setStartError(null);
+            // Called synchronously inside the tap, BEFORE the first await:
+            // iOS ties both the compass prompt and audio unlock to the user
+            // gesture, and an await ahead of this call would spend it.
+            const compassPromise = requestCompassPermission();
             try {
               await player.start();
             } catch {
@@ -132,6 +145,7 @@ function Player({ tour }: { tour: Tour }) {
             } finally {
               setStarting(false);
             }
+            setCompassAllowed((await compassPromise) === 'granted');
           }}
           className="rounded-full bg-blue-600 px-8 py-4 text-lg font-semibold disabled:opacity-50"
         >
@@ -157,34 +171,70 @@ function Player({ tour }: { tour: Tour }) {
     );
   }
 
+  // Navigation-style layout: the map owns the whole screen, and everything
+  // else — instruction banner, controls, stop list — floats over it, the way
+  // a turn-by-turn app arranges itself.
   return (
-    <div className="flex h-dvh flex-col">
+    <div className="relative h-dvh overflow-hidden">
+      <div className="absolute inset-0">
+        <TourMap
+          tour={tour}
+          lastFix={player.lastFix}
+          headingDeg={headingDeg}
+          playedIds={player.playedIds}
+          onSelectStop={player.playSegment}
+        />
+      </div>
+
       {gpsError !== null && (
         <p
-          className="shrink-0 bg-red-600 px-4 py-2 text-center text-sm font-medium text-white"
+          className="absolute inset-x-0 top-0 z-20 bg-red-600 px-4 py-2 text-center text-sm font-medium text-white"
           role="alert"
         >
           {gpsError}
         </p>
       )}
-      <div className="relative min-h-0 flex-1">
-        <TourMap
-          tour={tour}
-          lastFix={player.lastFix}
-          playedIds={player.playedIds}
-          onSelectStop={player.playSegment}
-        />
-        {simRequested && <DevPanel sim={location as SimulatedLocation} tour={tour} />}
-      </div>
-      <NowPlaying segment={player.currentSegment} offRoute={player.offRoute} />
-      <div className="max-h-56 shrink-0 bg-white">
-        <StopList
-          tour={tour}
-          playedIds={player.playedIds}
-          currentId={player.currentSegment?.id ?? null}
-          onSelect={player.playSegment}
+
+      <div className="absolute inset-x-3 top-3 z-10">
+        <NowPlaying
+          segment={player.currentSegment}
+          offRoute={player.offRoute}
+          paused={player.paused}
         />
       </div>
+
+      {simRequested && <DevPanel sim={location as SimulatedLocation} tour={tour} />}
+
+      <WalkControls
+        paused={player.paused}
+        onPause={player.pause}
+        onResume={player.resume}
+        listOpen={listOpen}
+        onToggleList={() => setListOpen((open) => !open)}
+      />
+
+      {listOpen && (
+        <div className="absolute inset-x-0 bottom-0 z-20 flex max-h-[60%] flex-col rounded-t-2xl bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_30px_rgba(0,0,0,0.25)]">
+          <button
+            onClick={() => setListOpen(false)}
+            className="shrink-0 py-3"
+            aria-label="Hide stops"
+          >
+            <span className="mx-auto block h-1.5 w-10 rounded-full bg-slate-300" />
+          </button>
+          <div className="min-h-0 overflow-y-auto">
+            <StopList
+              tour={tour}
+              playedIds={player.playedIds}
+              currentId={player.currentSegment?.id ?? null}
+              onSelect={(id) => {
+                setListOpen(false);
+                player.playSegment(id);
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

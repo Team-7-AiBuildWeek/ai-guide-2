@@ -130,4 +130,57 @@ describe('HtmlAudioPlayer', () => {
     await playPromise;
     expect(player.isPlaying()).toBe(false);
   });
+
+  describe('pause and resume', () => {
+    it('pause() freezes the element without settling the play() promise', async () => {
+      const { getFakeAudio } = installFakeAudio();
+      const player = new HtmlAudioPlayer();
+      const playPromise = player.play(segment);
+      const fakeAudio = getFakeAudio();
+
+      player.pause();
+      expect(player.isPaused()).toBe(true);
+      expect(fakeAudio.paused).toBe(true);
+
+      // The promise must still be pending — pause holds the queue, it does
+      // not skip the segment the way stop() does.
+      let settled = false;
+      void playPromise.then(() => {
+        settled = true;
+      });
+      await Promise.resolve();
+      expect(settled).toBe(false);
+
+      player.resume();
+      expect(player.isPaused()).toBe(false);
+      expect(fakeAudio.paused).toBe(false);
+
+      fakeAudio.fireEnded();
+      await expect(playPromise).resolves.toBeUndefined();
+    });
+
+    it('a segment played while paused loads but stays silent until resume', async () => {
+      const { getFakeAudio } = installFakeAudio();
+      const player = new HtmlAudioPlayer();
+      player.pause();
+
+      // A GPS trigger firing while the walker asked for quiet must not
+      // override the one button they pressed.
+      void player.play(segment);
+      const fakeAudio = getFakeAudio();
+      expect(fakeAudio.paused).toBe(true);
+      expect(fakeAudio.src).toBe(segment.audioUrl);
+
+      player.resume();
+      expect(fakeAudio.paused).toBe(false);
+    });
+
+    it('the pause survives stop(), so the next trigger cannot un-pause the guide', () => {
+      installFakeAudio();
+      const player = new HtmlAudioPlayer();
+      player.pause();
+      player.stop();
+      expect(player.isPaused()).toBe(true);
+    });
+  });
 });

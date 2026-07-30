@@ -20,6 +20,8 @@ function installFakeSpeech() {
       // Don't auto-complete; tests control when onend fires via endSpeaking()
     }),
     cancel: vi.fn(),
+    pause: vi.fn(),
+    resume: vi.fn(),
     speaking: false,
   };
   vi.stubGlobal('speechSynthesis', synth);
@@ -124,5 +126,52 @@ describe('SpeechSynthesisPlayer', () => {
     player.stop();
     await expect(secondPromise).resolves.toBeUndefined();
     expect(player.isPlaying()).toBe(false);
+  });
+
+  describe('pause and resume', () => {
+    it('drives the global speechSynthesis pause state', () => {
+      const { synth } = installFakeSpeech();
+      const player = new SpeechSynthesisPlayer('en');
+      player.pause();
+      expect(player.isPaused()).toBe(true);
+      expect(synth.pause).toHaveBeenCalled();
+      player.resume();
+      expect(player.isPaused()).toBe(false);
+      expect(synth.resume).toHaveBeenCalled();
+    });
+
+    it('pausing does not settle the in-flight play()', async () => {
+      const { synth } = installFakeSpeech();
+      const player = new SpeechSynthesisPlayer('en');
+      const playPromise = player.play(segment);
+      player.pause();
+
+      let settled = false;
+      void playPromise.then(() => {
+        settled = true;
+      });
+      await Promise.resolve();
+      expect(settled).toBe(false);
+      expect(synth.cancel).toHaveBeenCalledTimes(1); // only play()'s own leading stop()
+    });
+
+    it('a segment spoken while paused re-asserts the pause', () => {
+      // stop() at the head of play() calls cancel(), and some browsers drop
+      // the global paused flag on cancel — so play() must pause again.
+      const { synth } = installFakeSpeech();
+      const player = new SpeechSynthesisPlayer('en');
+      player.pause();
+      expect(synth.pause).toHaveBeenCalledTimes(1);
+      void player.play(segment);
+      expect(synth.pause).toHaveBeenCalledTimes(2);
+    });
+
+    it('the pause survives stop()', () => {
+      installFakeSpeech();
+      const player = new SpeechSynthesisPlayer('en');
+      player.pause();
+      player.stop();
+      expect(player.isPaused()).toBe(true);
+    });
   });
 });

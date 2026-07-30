@@ -10,6 +10,7 @@ import type { Segment } from '@ai-guide/shared';
  */
 export class SpeechSynthesisPlayer implements AudioPlayer {
   private playing = false;
+  private paused = false;
   private currentResolve: (() => void) | null = null;
   private readonly lang: string;
 
@@ -52,6 +53,10 @@ export class SpeechSynthesisPlayer implements AudioPlayer {
       this.currentResolve = callResolve;
       this.playing = true;
       speechSynthesis.speak(utterance);
+      // speechSynthesis pause state is global and survives cancel(): a
+      // segment spoken while the guide is paused queues silently until
+      // resume(), matching HtmlAudioPlayer.
+      if (this.paused) speechSynthesis.pause();
     });
   }
 
@@ -62,6 +67,21 @@ export class SpeechSynthesisPlayer implements AudioPlayer {
       this.currentResolve = null;
     }
     this.playing = false;
+    // `paused` deliberately survives stop() — see HtmlAudioPlayer.stop().
+  }
+
+  pause(): void {
+    this.paused = true;
+    speechSynthesis.pause();
+  }
+
+  resume(): void {
+    this.paused = false;
+    speechSynthesis.resume();
+  }
+
+  isPaused(): boolean {
+    return this.paused;
   }
 
   isPlaying(): boolean {
